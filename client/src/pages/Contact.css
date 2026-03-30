@@ -1,0 +1,281 @@
+.contact-page {
+  padding: 50px 0 60px;
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+.contact-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Contact Header */
+.contact-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.contact-header h1 {
+  font-size: 1.5rem;
+  color: #1e3c72;
+  font-weight: 700;
+  position: relative;
+  display: inline-block;
+  letter-spacing: 1px;
+}
+
+.contact-header h1::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 2px;
+}
+
+/* Contact Content Layout */
+.contact-content {
+  display: flex;
+  gap: 3rem;
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+}
+
+.contact-info {
+  flex: 1;
+}
+
+.contact-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.contact-image img {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Office Section */
+.office-section {
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.office-section h2 {
+  font-size: 1.3rem;
+  color: #4a90e2;
+  font-weight: 700;
+  margin-bottom: 1.2rem;
+  letter-spacing: 1px;
+}
+
+.office-details p {
+  color: #5a6c7e;
+  line-height: 1.8;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.office-details .address {
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+.office-details .tel,
+.office-details .email {
+  color: #4a90e2;
+}
+
+/* Mailbox Section */
+.mailbox-section {
+  margin-top: 0.5rem;
+}
+
+.mailbox-section h2 {
+  font-size: 1.3rem;
+  color: #4a90e2;
+  font-weight: 700;
+  margin-bottom: 0.8rem;
+  letter-spacing: 1px;
+}
+
+.mailbox-description {
+  color: #7f8c8d;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+/* Contact Form */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.contact-form input,
+.contact-form textarea {
+  padding: 0.8rem 1rem;
+  border: 2px solid #e9ecef;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+.contact-form input {
+  flex: 1;
+}
+
+.contact-form textarea {
+  resize: vertical;
+  width: 100%;
+}
+
+.send-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 50px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: fit-content;
+  margin-top: 0.5rem;
+}
+
+.send-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.success-message {
+  background: #d4edda;
+  color: #155724;
+  padding: 0.75rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  text-align: center;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 968px) {
+  .contact-content {
+    flex-direction: column;
+    padding: 1.5rem;
+  }
+  
+  .contact-image {
+    order: -1;
+    margin-bottom: 1.5rem;
+  }
+  
+  .contact-image img {
+    max-width: 300px;
+  }
+  
+  .form-row {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .contact-page {
+    padding: 80px 0 40px;
+  }
+  
+  .contact-header h1 {
+    font-size: 2rem;
+  }
+  
+  .contact-content {
+    padding: 1.2rem;
+  }
+  
+  .office-section h2,
+  .mailbox-section h2 {
+    font-size: 1.1rem;
+  }
+  
+  .office-details p {
+    font-size: 0.9rem;
+  }
+  
+  .mailbox-description {
+    font-size: 0.85rem;
+  }
+  
+  .contact-form input,
+  .contact-form textarea {
+    padding: 0.7rem 0.9rem;
+    font-size: 0.85rem;
+  }
+  
+  .send-btn {
+    padding: 0.7rem 1.8rem;
+    font-size: 0.85rem;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-container {
+    padding: 0 1rem;
+  }
+  
+  .contact-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .contact-image img {
+    max-width: 250px;
+  }
+  
+  .office-details p {
+    font-size: 0.85rem;
+  }
+  
+  .mailbox-description {
+    font-size: 0.8rem;
+  }
+}

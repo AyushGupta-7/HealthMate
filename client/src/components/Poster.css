@@ -1,0 +1,151 @@
+.poster-section {
+  padding: 80px 0;
+  background: white;
+  position: relative;
+  overflow: visible;
+}
+
+.poster-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  position: relative;
+  overflow: visible;
+}
+
+.poster-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 20px;
+  padding: 2rem;
+  padding-right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  overflow: visible;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  min-height: 280px;
+}
+
+.poster-content {
+  flex: 1.2;
+  text-align: left;
+  padding: 1rem 1rem 1rem 2rem;
+  z-index: 1;
+}
+
+.poster-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 1.5rem;
+  line-height: 1.3;
+}
+
+.book-appointment-btn {
+  background: white;
+  color: #4a90e2;
+  border: none;
+  padding: 0.9rem 2.2rem;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.book-appointment-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  background: #f8f9fa;
+}
+
+.poster-image-wrapper {
+  flex: 0.8;
+  position: relative;
+  margin-right: -40px;
+  margin-top: -50px;
+  margin-bottom: -50px;
+  z-index: 2;
+}
+
+.poster-image {
+  margin-bottom: 18px;
+  width: 100%;
+  height: auto;
+  max-width: 320px;
+  display: block;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
+}
+
+/* Responsive Design */
+@media (max-width: 968px) {
+  .poster-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 2rem;
+    padding-bottom: 0;
+  }
+  
+  .poster-content {
+    text-align: center;
+    padding: 1rem;
+    order: 2;
+  }
+  
+  .poster-image-wrapper {
+    margin: -50px auto 0 auto;
+    flex: auto;
+    text-align: center;
+    order: 1;
+  }
+  
+  .poster-image {
+    max-width: 220px;
+    margin: 0 auto;
+  }
+  
+  .poster-title {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .poster-section {
+    padding: 60px 0;
+  }
+  
+  .poster-card {
+    padding: 1.5rem;
+    padding-bottom: 0;
+  }
+  
+  .poster-image {
+    max-width: 180px;
+  }
+  
+  .poster-title {
+    font-size: 1.5rem;
+  }
+  
+  .book-appointment-btn {
+    padding: 0.7rem 1.8rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .poster-image {
+    max-width: 150px;
+  }
+  
+  .poster-title {
+    font-size: 1.2rem;
+  }
+  
+  .book-appointment-btn {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.85rem;
+  }
+}

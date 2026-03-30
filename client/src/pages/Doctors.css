@@ -1,0 +1,264 @@
+.doctors-page {
+  padding: 50px 0 60px;
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+.doctors-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Header */
+.doctors-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.doctors-header h1 {
+  font-size: 1.5rem;
+  color: #1e3c72;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+/* Content Layout */
+.doctors-content {
+  display: flex;
+  gap: 2rem;
+}
+
+/* Left Sidebar - Specialties */
+.specialties-sidebar {
+  width: 250px;
+  flex-shrink: 0;
+  background: white;
+  border-radius: 12px;
+  padding: 1rem 0;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  height: fit-content;
+  position: sticky;
+  top: 100px;
+}
+
+.specialty-item {
+  padding: 0.8rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #5a6c7e;
+  font-weight: 500;
+  border-left: 3px solid transparent;
+}
+
+.specialty-item:hover {
+  background: #f8f9fa;
+  color: #4a90e2;
+}
+
+.specialty-item.active {
+  background: #e3f2fd;
+  color: #4a90e2;
+  border-left-color: #4a90e2;
+  font-weight: 600;
+}
+
+/* Right Side - Doctors Grid - 4 cards per row */
+.doctors-grid-container {
+  flex: 1;
+}
+
+.doctors-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.doctor-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+}
+
+.doctor-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+.doctor-image-container {
+  position: relative;
+  width: 100%;
+  padding-top: 100%;
+  overflow: hidden;
+  background: #f8f9fa;
+}
+
+.doctor-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.doctor-card:hover .doctor-image {
+  transform: scale(1.05);
+}
+
+.availability-badge {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  padding: 4px 10px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.7rem;
+  color: white;
+  font-weight: 500;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #4caf50;
+  display: inline-block;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.2);
+  }
+}
+
+.doctor-info {
+  padding: 1rem;
+  text-align: center;
+}
+
+.doctor-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e3c72;
+  margin-bottom: 0.25rem;
+}
+
+.doctor-specialty {
+  font-size: 0.85rem;
+  color: #7f8c8d;
+  margin: 0;
+}
+
+.no-doctors {
+  text-align: center;
+  padding: 3rem;
+  background: white;
+  border-radius: 12px;
+  color: #7f8c8d;
+}
+
+/* Responsive Design */
+@media (max-width: 1100px) {
+  .doctors-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .doctors-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .doctors-page {
+    padding: 80px 0 40px;
+  }
+  
+  .doctors-container {
+    padding: 0 1rem;
+  }
+  
+  .doctors-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .doctors-content {
+    flex-direction: column;
+  }
+  
+  .specialties-sidebar {
+    width: 100%;
+    position: static;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0.5rem;
+    gap: 0.5rem;
+  }
+  
+  .specialty-item {
+    padding: 0.5rem 1rem;
+    border-left: none;
+    border-bottom: 2px solid transparent;
+    border-radius: 8px;
+  }
+  
+  .specialty-item.active {
+    border-left-color: transparent;
+    border-bottom-color: #4a90e2;
+  }
+  
+  .doctors-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  
+  .doctor-name {
+    font-size: 0.9rem;
+  }
+  
+  .doctor-specialty {
+    font-size: 0.75rem;
+  }
+  
+  .availability-badge {
+    font-size: 0.6rem;
+    padding: 3px 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .doctors-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+  }
+  
+  .doctor-name {
+    font-size: 0.8rem;
+  }
+  
+  .doctor-specialty {
+    font-size: 0.7rem;
+  }
+  
+  .doctor-info {
+    padding: 0.7rem;
+  }
+}
