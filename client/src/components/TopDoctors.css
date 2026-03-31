@@ -29,14 +29,14 @@
   line-height: 1.6;
 }
 
-.doctors-grid {
+.doctors-grid2 {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 2rem;
   margin-bottom: 3rem;
 }
 
-.doctor-card {
+.doctor-card2 {
   background: white;
   border-radius: 12px;
   overflow: hidden;
@@ -50,7 +50,7 @@
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
 }
 
-.doctor-image-container {
+.doctor-image-container2 {
   position: relative;
   width: 100%;
   padding-top: 100%;
@@ -108,7 +108,7 @@
   }
 }
 
-.doctor-info {
+.doctor-info3 {
   padding: 1rem;
   text-align: center;
 }

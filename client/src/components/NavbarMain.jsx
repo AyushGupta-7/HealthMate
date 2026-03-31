@@ -14,6 +14,7 @@ const NavbarMain = () => {
   const userName = "Ayush Gupta" // Replace with actual user name from auth
   const userEmail = "ayush@gmail.com" // Replace with actual user email
   const userInitial = userName.charAt(0).toUpperCase()
+  
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
@@ -26,6 +27,9 @@ const NavbarMain = () => {
   const handleLogout = () => {
     // Add logout logic here
     console.log('Logging out...')
+    localStorage.removeItem('isAuthenticated')
+    localStorage.removeItem('userEmail')
+    localStorage.removeItem('userName')
     navigate('/login')
   }
 
@@ -36,7 +40,7 @@ const NavbarMain = () => {
 
   const handleMyAppointments = () => {
     setIsDropdownOpen(false)
-    navigate('/appointments')
+    navigate('/my-appointments')
   }
 
   // Close dropdown when clicking outside
@@ -99,6 +103,13 @@ const NavbarMain = () => {
                 <button className="dropdown-item" onClick={handleMyAppointments}>
                   <span className="dropdown-icon">📅</span>
                   My Appointments
+                </button>
+                <button className="dropdown-item" onClick={() => {
+                  setIsDropdownOpen(false)
+                  navigate('/report-dashboard')
+                }}>
+                  <span className="dropdown-icon">📊</span>
+                  My Reports
                 </button>
                 <div className="dropdown-divider"></div>
                 <button className="dropdown-item logout-item" onClick={handleLogout}>

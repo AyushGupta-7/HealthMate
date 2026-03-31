@@ -22,34 +22,6 @@ const Hero = () => {
             <a href="/signup"><button className="btn-upload">Upload Report</button></a>
           </div>
         </div>
-        
-        {/* <div className="hero-right">
-          <div className="info-card appointment-info-card">
-            <h3>Upcoming Appointment</h3>
-            <p className="appointment-time">11:00 - 110 Jan</p>
-            <p className="doctor-name">Doctor: Dr. Doctor</p>
-          </div>
-          
-          <div className="info-card report-info-card">
-            <h3>Report Summary</h3>
-            <div className="report-circle">
-              <span className="report-percentage">99%</span>
-              <span className="report-status">Status</span>
-            </div>
-          </div>
-          
-          <div className="info-card insights-info-card">
-            <h3>
-              <span className="ai-badge">AI</span>
-              <span>Health Insights</span>
-            </h3>
-            <ul className="insights-list">
-              <li>✓ AI recommendation</li>
-              <li>✓ Key recommendations</li>
-              <li>✓ Key recommendations</li>
-            </ul>
-          </div>
-        </div> */}
       </div>
     </section>
   )

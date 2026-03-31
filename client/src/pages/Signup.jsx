@@ -13,6 +13,7 @@ const Signup = () => {
   const [errors, setErrors] = useState({})
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [message, setMessage] = useState({ type: '', text: '' })
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -26,6 +27,10 @@ const Signup = () => {
         ...prev,
         [name]: ''
       }))
+    }
+    // Clear message when user starts typing
+    if (message.text) {
+      setMessage({ type: '', text: '' })
     }
   }
 
@@ -76,11 +81,17 @@ const Signup = () => {
       localStorage.setItem('userEmail', formData.email)
       localStorage.setItem('userName', formData.fullName)
       
+      // Show success message
+      setMessage({ type: 'success', text: 'Account created successfully! Redirecting to dashboard...' })
+      
       // Redirect to dashboard after successful signup
-      alert('Account created successfully! Redirecting to dashboard...')
-      navigate('/dashboard')
+      setTimeout(() => {
+        navigate('/dashboard')
+      }, 1500)
     } else {
       setErrors(newErrors)
+      setMessage({ type: 'error', text: 'Please fix the errors above' })
+      setTimeout(() => setMessage({ type: '', text: '' }), 3000)
     }
   }
 
@@ -97,6 +108,13 @@ const Signup = () => {
             <h3>Create Account</h3>
             <p>Join HealthMate to start your health journey</p>
           </div>
+
+          {/* Message Alert */}
+          {message.text && (
+            <div className={`message-alert ${message.type}`}>
+              {message.type === 'success' ? '✓' : '⚠️'} {message.text}
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="auth-form">
             <div className="form-group">

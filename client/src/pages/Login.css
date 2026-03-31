@@ -273,3 +273,36 @@
     font-size: 1.5rem;
   }
 }
+
+/* Message Alert Styles */
+.message-alert {
+  padding: 0.8rem 1rem;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  animation: slideIn 0.3s ease;
+  text-align: center;
+}
+
+.message-alert.success {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border-left: 4px solid #2e7d32;
+}
+
+.message-alert.error {
+  background: #ffebee;
+  color: #c62828;
+  border-left: 4px solid #c62828;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -69,8 +69,7 @@ const Doctors = () => {
     { id: 22, name: "Dr. Dilip Hemnani", specialty: "Dermatologist", image: doc22, available: true },
     { id: 23, name: "Dr. Harshita Kothari", specialty: "Dermatologist", image: doc23, available: true },
     { id: 24, name: "Dr. Ashish Jaiswal", specialty: "Pediatricians", image: doc24, available: true },
-    { id: 25, name: "Dr. Mahendra Rathod", specialty: "Pediatricians", image: doc25, available: true },
-    { id: 26, name: "Dr. Saurabh Piparsania", specialty: "Pediatricians", image: doc1, available: true }
+    { id: 25, name: "Dr. Mahendra Rathod", specialty: "Pediatricians", image: doc25, available: true }
   ]
 
   // Convert specialty name to path format
@@ -145,7 +144,12 @@ const Doctors = () => {
             <div className="doctors-grid-container">
               <div className="doctors-grid">
                 {filteredDoctors.map((doctor) => (
-                  <div className="doctor-card" key={doctor.id}>
+                  <div 
+                    className="doctor-card" 
+                    key={doctor.id} 
+                    onClick={() => navigate(`/doctor/${doctor.id}`)}
+                    style={{ cursor: 'pointer' }}
+                  >
                     <div className="doctor-image-container">
                       <img 
                         src={doctor.image} 

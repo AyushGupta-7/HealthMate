@@ -10,6 +10,7 @@ const Login = () => {
   })
   const [errors, setErrors] = useState({})
   const [showPassword, setShowPassword] = useState(false)
+  const [message, setMessage] = useState({ type: '', text: '' })
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -23,6 +24,10 @@ const Login = () => {
         ...prev,
         [name]: ''
       }))
+    }
+    // Clear message when user starts typing
+    if (message.text) {
+      setMessage({ type: '', text: '' })
     }
   }
 
@@ -57,11 +62,17 @@ const Login = () => {
       localStorage.setItem('userEmail', formData.email)
       localStorage.setItem('userName', formData.email.split('@')[0])
       
+      // Show success message
+      setMessage({ type: 'success', text: 'Login successful! Redirecting to dashboard...' })
+      
       // Redirect to dashboard after successful login
-      alert('Login successful! Redirecting to dashboard...')
-      navigate('/dashboard')
+      setTimeout(() => {
+        navigate('/dashboard')
+      }, 1500)
     } else {
       setErrors(newErrors)
+      setMessage({ type: 'error', text: 'Please fix the errors above' })
+      setTimeout(() => setMessage({ type: '', text: '' }), 3000)
     }
   }
 
@@ -78,6 +89,13 @@ const Login = () => {
             <h3>Welcome Back</h3>
             <p>Login to access your health dashboard</p>
           </div>
+
+          {/* Message Alert */}
+          {message.text && (
+            <div className={`message-alert ${message.type}`}>
+              {message.type === 'success' ? '✓' : '⚠️'} {message.text}
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="auth-form">
             <div className="form-group">
