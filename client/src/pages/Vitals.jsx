@@ -133,7 +133,7 @@ const Vitals = () => {
               <h2>Current Vitals</h2>
               <div className="vitals-grid">
                 <div className="vital-card">
-                  <div className="vital-icon">💓</div>
+                  {/* <div className="vital-icon">💓</div> */}
                   <div className="vital-info">
                     <h3>Blood Pressure</h3>
                     {isEditing ? (
@@ -153,7 +153,7 @@ const Vitals = () => {
                 </div>
 
                 <div className="vital-card">
-                  <div className="vital-icon">🍬</div>
+                  {/* <div className="vital-icon">🍬</div> */}
                   <div className="vital-info">
                     <h3>Blood Sugar</h3>
                     {isEditing ? (
@@ -173,7 +173,7 @@ const Vitals = () => {
                 </div>
 
                 <div className="vital-card">
-                  <div className="vital-icon">⚖️</div>
+                  {/* <div className="vital-icon">⚖️</div> */}
                   <div className="vital-info">
                     <h3>Weight</h3>
                     {isEditing ? (
@@ -193,7 +193,7 @@ const Vitals = () => {
                 </div>
 
                 <div className="vital-card note-card">
-                  <div className="vital-icon">📝</div>
+                  {/* <div className="vital-icon">📝</div> */}
                   <div className="vital-info">
                     <h3>Note</h3>
                     {isEditing ? (

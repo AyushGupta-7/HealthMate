@@ -1,5 +1,5 @@
 .vitals-page {
-  padding: 100px 0 60px;
+  padding: 50px 0 60px;
   background: #f8f9fa;
   min-height: 100vh;
 }
@@ -63,7 +63,7 @@
 }
 
 .vitals-header h1 {
-  font-size: 2rem;
+  font-size: 1.5rem;
   color: #1e3c72;
   margin: 0;
 }
@@ -82,7 +82,7 @@
   transition: all 0.3s ease;
   font-weight: 600;
   border: none;
-  background: #4a90e2;
+  background: #2c5f8a;
   color: white;
 }
 
