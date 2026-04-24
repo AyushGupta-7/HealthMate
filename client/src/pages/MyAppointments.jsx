@@ -9,11 +9,9 @@ const MyAppointments = () => {
 
   useEffect(() => {
     const savedAppointments = JSON.parse(localStorage.getItem('appointments') || '[]')
-    // Sort by date (newest first) and keep only last 7
     const sortedAppointments = savedAppointments.sort((a, b) => b.id - a.id)
     const last7Appointments = sortedAppointments.slice(0, 7)
     setAppointments(last7Appointments)
-    // Update localStorage with only last 7
     localStorage.setItem('appointments', JSON.stringify(last7Appointments))
   }, [])
 
@@ -74,7 +72,6 @@ const MyAppointments = () => {
         <div className="appointments-container">
           <h1 className="page-title">My appointments</h1>
 
-          {/* Message Alert */}
           {message.text && (
             <div className={`message-alert ${message.type}`}>
               {message.type === 'success' ? '✓' : '⚠️'} {message.text}
@@ -106,7 +103,6 @@ const MyAppointments = () => {
                     {getStatusButton(appointment)}
                   </div>
 
-                  {/* Cancel Confirmation Modal */}
                   {showCancelConfirm === appointment.id && (
                     <div className="cancel-confirm-overlay">
                       <div className="cancel-confirm-modal">

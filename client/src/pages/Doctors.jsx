@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom'
 import Layout from '../components/Layout'
 import './Doctors.css'
 
-// Import doctor images (doc1.png to doc25.png)
 import doc1 from '../assets/images/doc1.png'
 import doc2 from '../assets/images/doc2.png'
 import doc3 from '../assets/images/doc3.png'
@@ -72,21 +71,18 @@ const Doctors = () => {
     { id: 25, name: "Dr. Mahendra Rathod", specialty: "Pediatricians", image: doc25, available: true }
   ]
 
-  // Convert specialty name to path format
   const getSpecialtyPath = (specialtyName) => {
     if (specialtyName === 'All') return ''
     const specialty = specialties.find(s => s.name === specialtyName)
     return specialty ? specialty.path : ''
   }
 
-  // Convert path to specialty name
   const getSpecialtyFromPath = (path) => {
     if (!path) return 'All'
     const specialty = specialties.find(s => s.path === path)
     return specialty ? specialty.name : 'All'
   }
 
-  // Update URL when specialty changes
   const handleSpecialtyChange = (specialty) => {
     setSelectedSpecialty(specialty)
     const path = getSpecialtyPath(specialty)
@@ -97,7 +93,6 @@ const Doctors = () => {
     }
   }
 
-  // Handle URL parameter on load and when it changes
   useEffect(() => {
     if (specialtyParam) {
       const specialty = getSpecialtyFromPath(specialtyParam)
@@ -115,13 +110,11 @@ const Doctors = () => {
     <Layout>
       <div className="doctors-page">
         <div className="doctors-container">
-          {/* Header */}
           <div className="doctors-header">
             <h1>Browse through the doctors specialist.</h1>
           </div>
 
           <div className="doctors-content">
-            {/* Left Sidebar - Specialties */}
             <div className="specialties-sidebar">
               <div 
                 className={`specialty-item ${selectedSpecialty === 'All' ? 'active' : ''}`}
@@ -140,7 +133,6 @@ const Doctors = () => {
               ))}
             </div>
 
-            {/* Right Side - Doctors Grid */}
             <div className="doctors-grid-container">
               <div className="doctors-grid">
                 {filteredDoctors.map((doctor) => (

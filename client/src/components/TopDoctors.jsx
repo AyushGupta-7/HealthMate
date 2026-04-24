@@ -2,7 +2,6 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import './TopDoctors.css'
 
-// Import doctor images
 import doc1 from '../assets/images/doc1.png'
 import doc2 from '../assets/images/doc2.png'
 import doc3 from '../assets/images/doc3.png'

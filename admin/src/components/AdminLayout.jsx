@@ -1,0 +1,20 @@
+import React from 'react';
+import AdminSidebar from './AdminSidebar';
+import AdminNavbar from './AdminNavbar';
+import './AdminLayout.css';
+
+const AdminLayout = ({ children }) => {
+  return (
+    <div className="admin-layout">
+      <AdminSidebar />
+      <div className="admin-main">
+        <AdminNavbar />
+        <div className="admin-content">
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AdminLayout;

@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom'
 import Layout from '../components/Layout'
 import './DoctorDetails.css'
 
-// Import doctor images
 import doc1 from '../assets/images/doc1.png'
 import doc2 from '../assets/images/doc2.png'
 import doc3 from '../assets/images/doc3.png'
@@ -408,7 +407,6 @@ const DoctorDetails = () => {
     <Layout>
       <div className="doctor-details-page">
         <div className="doctor-details-container">
-          {/* Doctor Info Section */}
           <div className="doctor-info-card">
             <div className="doctor-info2">
               <div className='imageBg'>
@@ -430,11 +428,9 @@ const DoctorDetails = () => {
             </div>
           </div>
 
-          {/* Booking Slots Section */}
           <div className="booking-slots-card">
             <h2>Booking slots</h2>
             
-            {/* Error/Success Message */}
             {errorMessage && errorMessage !== 'success' && (
               <div className="error-message">
                 ⚠️ {errorMessage}
@@ -446,7 +442,6 @@ const DoctorDetails = () => {
               </div>
             )}
             
-            {/* Dates Row - Selectable */}
             <div className="dates-scroll-container">
               <div className="dates-wrapper">
                 {dates.map((date, index) => (
@@ -462,7 +457,6 @@ const DoctorDetails = () => {
               </div>
             </div>
 
-            {/* Times Row - Selectable */}
             <div className="times-scroll-container">
               <div className="times-wrapper">
                 {timeSlots.map((time, index) => (

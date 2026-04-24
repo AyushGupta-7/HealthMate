@@ -1,5 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Footer.css';
+import healthmateLogo from '../assets/images/healthmateLogo.png';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -7,12 +9,17 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-container">
-        {/* Main Footer Content */}
         <div className="footer-main">
-          {/* Brand Section */}
           <div className="footer-brand">
             <div className="footer-logo">
-              <h3>HealthMate</h3>
+              <Link to="/dashboard">
+                <img 
+                  src={healthmateLogo} 
+                  alt="HealthMate Logo" 
+                  className="footer-logo-image"
+                />
+                <h1>HealthMate</h1>
+              </Link>
             </div>
             <p className="footer-tagline">
               Effortless Healthcare Scheduling
@@ -22,18 +29,16 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Company Links Section */}
           <div className="footer-section">
             <h4 className="footer-section-title">COMPANY</h4>
             <ul className="footer-links">
-              <li><a href="/dashboard">Home</a></li>
-              <li><a href="/about">About Us</a></li>
-              <li><a href="/contact">Contact Us</a></li>
+              <li><Link to="/dashboard">Home</Link></li>
+              <li><Link to="/about">About Us</Link></li>
+              <li><Link to="/contact">Contact Us</Link></li>
               <li><a href="/privacy">Privacy Policy</a></li>
             </ul>
           </div>
 
-          {/* Get in Touch Section */}
           <div className="footer-section">
             <h4 className="footer-section-title">GET IN TOUCH</h4>
             <div className="footer-contact">
@@ -47,7 +52,6 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Bottom Bar */}
         <div className="footer-bottom">
           <p>&copy; {currentYear} HealthMate. All rights reserved.</p>
         </div>

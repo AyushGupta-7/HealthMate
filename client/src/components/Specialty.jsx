@@ -2,7 +2,6 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import './Specialty.css'
 
-// Import SVG images
 import generalPhysician from '../assets/images/General_physician.svg'
 import gynecologist from '../assets/images/Gynecologist.svg'
 import dermatologist from '../assets/images/Dermatologist.svg'

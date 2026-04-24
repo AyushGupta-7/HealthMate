@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import API from '../services/api'
 import './Signup.css'
 
 const Signup = () => {
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
-    fullName: '',
+    name: '',
     email: '',
     password: '',
     confirmPassword: ''
@@ -14,6 +15,7 @@ const Signup = () => {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [message, setMessage] = useState({ type: '', text: '' })
+  const [loading, setLoading] = useState(false)
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -21,14 +23,13 @@ const Signup = () => {
       ...prev,
       [name]: value
     }))
-    // Clear error for this field when user starts typing
+    
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
         [name]: ''
       }))
     }
-    // Clear message when user starts typing
     if (message.text) {
       setMessage({ type: '', text: '' })
     }
@@ -37,10 +38,10 @@ const Signup = () => {
   const validateForm = () => {
     const newErrors = {}
     
-    if (!formData.fullName) {
-      newErrors.fullName = 'Full name is required'
-    } else if (formData.fullName.length < 3) {
-      newErrors.fullName = 'Name must be at least 3 characters'
+    if (!formData.name) {
+      newErrors.name = 'Full name is required'
+    } else if (formData.name.length < 3) {
+      newErrors.name = 'Name must be at least 3 characters'
     }
     
     if (!formData.email) {
@@ -73,21 +74,59 @@ const Signup = () => {
     const newErrors = validateForm()
     
     if (Object.keys(newErrors).length === 0) {
-      // Here you would make API call to backend
-      console.log('Signup data:', formData)
+      setLoading(true)
+      setMessage({ type: '', text: '' })
+      setErrors({})
       
-      // Store user data in localStorage (temporary)
-      localStorage.setItem('isAuthenticated', 'true')
-      localStorage.setItem('userEmail', formData.email)
-      localStorage.setItem('userName', formData.fullName)
-      
-      // Show success message
-      setMessage({ type: 'success', text: 'Account created successfully! Redirecting to dashboard...' })
-      
-      // Redirect to dashboard after successful signup
-      setTimeout(() => {
-        navigate('/dashboard')
-      }, 1500)
+      try {
+        const response = await API.post('/auth/register', {
+          name: formData.name,
+          email: formData.email,
+          password: formData.password
+        })
+        
+        const { token, data } = response.data
+        
+        // Store token and user data
+        localStorage.setItem('token', token)
+        localStorage.setItem('userName', data.name)
+        localStorage.setItem('userEmail', data.email)
+        localStorage.setItem('userId', data._id)
+        localStorage.setItem('userRole', data.role || 'user')
+        
+        setMessage({ type: 'success', text: 'Account created successfully! Redirecting...' })
+        
+        setTimeout(() => {
+          navigate('/dashboard')
+        }, 1500)
+      } catch (error) {
+        console.error('Signup error:', error)
+        
+        const errorMessage = error.response?.data?.message || 'Signup failed. Please try again.'
+        
+        // Handle specific error cases
+        if (errorMessage.toLowerCase().includes('user already exists')) {
+          setErrors({ email: 'Email already registered' })
+          setMessage({ 
+            type: 'error', 
+            text: 'An account with this email already exists. Please login instead.' 
+          })
+        } else {
+          setMessage({ 
+            type: 'error', 
+            text: errorMessage
+          })
+        }
+        
+        setTimeout(() => {
+          setMessage({ type: '', text: '' })
+          if (!errors.email) {
+            setErrors({})
+          }
+        }, 5000)
+      } finally {
+        setLoading(false)
+      }
     } else {
       setErrors(newErrors)
       setMessage({ type: 'error', text: 'Please fix the errors above' })
@@ -109,7 +148,6 @@ const Signup = () => {
             <p>Join HealthMate to start your health journey</p>
           </div>
 
-          {/* Message Alert */}
           {message.text && (
             <div className={`message-alert ${message.type}`}>
               {message.type === 'success' ? '✓' : '⚠️'} {message.text}
@@ -118,20 +156,20 @@ const Signup = () => {
 
           <form onSubmit={handleSubmit} className="auth-form">
             <div className="form-group">
-              <label htmlFor="fullName">Full Name</label>
+              <label htmlFor="name">Full Name</label>
               <div className="input-wrapper">
                 <span className="input-icon">👤</span>
                 <input
                   type="text"
-                  id="fullName"
-                  name="fullName"
-                  value={formData.fullName}
+                  id="name"
+                  name="name"
+                  value={formData.name}
                   onChange={handleChange}
                   placeholder="Enter your full name"
-                  className={errors.fullName ? 'error' : ''}
+                  className={errors.name ? 'error' : ''}
                 />
               </div>
-              {errors.fullName && <span className="error-message">{errors.fullName}</span>}
+              {errors.name && <span className="error-message">{errors.name}</span>}
             </div>
 
             <div className="form-group">
@@ -209,7 +247,9 @@ const Signup = () => {
               </label>
             </div>
 
-            <button type="submit" className="auth-btn">Create Account</button>
+            <button type="submit" className="auth-btn" disabled={loading}>
+              {loading ? 'Creating Account...' : 'Create Account'}
+            </button>
           </form>
 
           <div className="auth-footer">

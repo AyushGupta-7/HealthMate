@@ -6,13 +6,18 @@ import healthmateLogo from '../assets/images/healthmateLogo.png'
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const navigate = useNavigate()
+  const token = localStorage.getItem('token')
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
   }
 
   const handleGetStarted = () => {
-    navigate('/signup')
+    if (token) {
+      navigate('/dashboard')
+    } else {
+      navigate('/signup')
+    }
   }
 
   const handleLogin = (e) => {
@@ -36,12 +41,13 @@ const Navbar = () => {
         
         <div className={`nav-menu ${isMenuOpen ? 'active' : ''}`}>
           <ul className="nav-links">
-            <li><Link to="/login" onClick={() => setIsMenuOpen(false)}>Book Now</Link></li>
+            <li><Link to="/login" className="nav-login-link" onClick={handleLogin}>Login</Link></li>
             <li><Link to="/about" onClick={() => setIsMenuOpen(false)}>About</Link></li>
             <li><Link to="/contact" onClick={() => setIsMenuOpen(false)}>Contact</Link></li>
-            <li><a href="/login" className="nav-login-link" onClick={handleLogin}>Login</a></li>
           </ul>
-          <button className="btn-get-started" onClick={handleGetStarted}>Get Started</button>
+          <button className="btn-get-started" onClick={handleGetStarted}>
+            Get Started
+          </button>
         </div>
         
         <div className="hamburger" onClick={toggleMenu}>

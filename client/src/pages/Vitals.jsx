@@ -36,18 +36,15 @@ const Vitals = () => {
   }
 
   const handleSaveAndAdd = () => {
-    // Validate required fields
     if (!editData.bloodPressure || !editData.bloodSugar || !editData.weight) {
       setShowErrorMessage('Please fill Blood Pressure, Blood Sugar, and Weight')
       setTimeout(() => setShowErrorMessage(''), 3000)
       return
     }
 
-    // Update current vitals
     setCurrentVitals(editData)
     localStorage.setItem('currentVitals', JSON.stringify(editData))
 
-    // Add to history with current date and time
     const now = new Date()
     const vitalsEntry = {
       id: Date.now(),
@@ -66,14 +63,12 @@ const Vitals = () => {
   }
 
   const handleSaveOnly = () => {
-    // Validate required fields
     if (!editData.bloodPressure || !editData.bloodSugar || !editData.weight) {
       setShowErrorMessage('Please fill Blood Pressure, Blood Sugar, and Weight')
       setTimeout(() => setShowErrorMessage(''), 3000)
       return
     }
 
-    // Only update current vitals without adding to history
     setCurrentVitals(editData)
     localStorage.setItem('currentVitals', JSON.stringify(editData))
 
@@ -128,7 +123,6 @@ const Vitals = () => {
               )}
             </div>
 
-            {/* Current Vitals Display */}
             <div className="current-vitals-section">
               <h2>Current Vitals</h2>
               <div className="vitals-grid">
@@ -227,8 +221,7 @@ const Vitals = () => {
               )}
             </div>
 
-            {/* Vitals History Section */}
-            {/* Vitals History Section */}
+
             {vitalsHistory.length > 0 && (
               <div className="vitals-history-section">
                 <h2>Vitals History</h2>

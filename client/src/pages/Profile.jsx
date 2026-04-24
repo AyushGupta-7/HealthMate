@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react'
 import Layout from '../components/Layout'
+import API from '../services/api'
 import './Profile.css'
 
 const Profile = () => {
@@ -22,13 +23,11 @@ const Profile = () => {
 
   const handleSaveClick = () => {
     setIsEditing(false)
-    // Here you would save the data to backend
     console.log('Saved profile data:', profileData)
   }
 
   const handleCancelClick = () => {
     setIsEditing(false)
-    // Reset to original data if needed
   }
 
   const handleInputChange = (e) => {
@@ -67,13 +66,11 @@ const Profile = () => {
     <Layout>
       <div className="profile-page">
         <div className="profile-container">
-          {/* Profile Header */}
           <div className="profile-header">
             <h1>My Profile</h1>
           </div>
 
           <div className="profile-content">
-            {/* Left Column - Photo */}
             <div className="profile-photo-section">
               <div className="photo-container" onClick={handlePhotoClick}>
                 {photoPreview ? (
@@ -92,20 +89,17 @@ const Profile = () => {
                   style={{ display: 'none' }}
                 />
               </div>
-              
-              {/* Remove Photo Button */}
+
               {photoPreview && (
                 <button className="remove-photo-btn" onClick={handleRemovePhoto}>
                   Remove Photo
                 </button>
               )}
-              
+
               <h2 className="profile-name">{profileData.fullName}</h2>
             </div>
 
-            {/* Right Column - Information */}
             <div className="profile-info-section">
-              {/* Contact Information */}
               <div className="info-card">
                 <div className="card-header">
                   <h3>CONTACT INFORMATION</h3>
@@ -115,7 +109,7 @@ const Profile = () => {
                     </button>
                   )}
                 </div>
-                
+
                 <div className="info-content">
                   <div className="info-row">
                     <label>Full Name:</label>
@@ -180,12 +174,11 @@ const Profile = () => {
                 </div>
               </div>
 
-              {/* Basic Information */}
               <div className="info-card">
                 <div className="card-header">
                   <h3>BASIC INFORMATION</h3>
                 </div>
-                
+
                 <div className="info-content">
                   <div className="info-row">
                     <label>Gender:</label>
@@ -224,7 +217,6 @@ const Profile = () => {
                 </div>
               </div>
 
-              {/* Edit/Save Buttons */}
               {isEditing && (
                 <div className="action-buttons">
                   <button className="save-btn" onClick={handleSaveClick}>

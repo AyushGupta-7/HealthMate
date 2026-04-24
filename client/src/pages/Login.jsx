@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import API from '../services/api'
 import './Login.css'
 
 const Login = () => {
@@ -11,6 +12,17 @@ const Login = () => {
   const [errors, setErrors] = useState({})
   const [showPassword, setShowPassword] = useState(false)
   const [message, setMessage] = useState({ type: '', text: '' })
+  const [loading, setLoading] = useState(false)
+  const [rememberMe, setRememberMe] = useState(false)
+
+  // Load saved email if remember me was checked
+  useEffect(() => {
+    const savedEmail = localStorage.getItem('savedEmail')
+    if (savedEmail) {
+      setFormData(prev => ({ ...prev, email: savedEmail }))
+      setRememberMe(true)
+    }
+  }, [])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -18,14 +30,14 @@ const Login = () => {
       ...prev,
       [name]: value
     }))
-    // Clear error for this field when user starts typing
+    
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
         [name]: ''
       }))
     }
-    // Clear message when user starts typing
+
     if (message.text) {
       setMessage({ type: '', text: '' })
     }
@@ -50,29 +62,89 @@ const Login = () => {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault() // This prevents page refresh
     const newErrors = validateForm()
     
     if (Object.keys(newErrors).length === 0) {
-      // Here you would make API call to backend
-      console.log('Login data:', formData)
+      setLoading(true)
+      setMessage({ type: '', text: '' })
+      setErrors({})
       
-      // Store user data in localStorage (temporary)
-      localStorage.setItem('isAuthenticated', 'true')
-      localStorage.setItem('userEmail', formData.email)
-      localStorage.setItem('userName', formData.email.split('@')[0])
-      
-      // Show success message
-      setMessage({ type: 'success', text: 'Login successful! Redirecting to dashboard...' })
-      
-      // Redirect to dashboard after successful login
-      setTimeout(() => {
-        navigate('/dashboard')
-      }, 1500)
+      try {
+        const response = await API.post('/auth/login', {
+          email: formData.email,
+          password: formData.password
+        })
+        
+        const { token, data } = response.data
+        
+        // Store token and user data
+        localStorage.setItem('token', token)
+        localStorage.setItem('userName', data.name)
+        localStorage.setItem('userEmail', data.email)
+        localStorage.setItem('userId', data._id)
+        localStorage.setItem('userRole', data.role || 'user')
+        
+        // Handle remember me
+        if (rememberMe) {
+          localStorage.setItem('savedEmail', formData.email)
+        } else {
+          localStorage.removeItem('savedEmail')
+        }
+        
+        setMessage({ type: 'success', text: 'Login successful! Redirecting...' })
+        
+        // Redirect based on role
+        setTimeout(() => {
+          if (data.role === 'admin') {
+            navigate('/admin/dashboard')
+          } else {
+            navigate('/dashboard')
+          }
+        }, 1500)
+      } catch (error) {
+        console.error('Login error:', error)
+        
+        const errorMessage = error.response?.data?.message || 'Login failed. Please try again.'
+        
+        // Show specific error messages for 2 seconds
+        if (errorMessage.toLowerCase().includes('user not found') || 
+            errorMessage.toLowerCase().includes('no account found')) {
+          setErrors({ email: 'Email does not exist' })
+          setMessage({ 
+            type: 'error', 
+            text: 'Email does not exist. Please check your email or sign up.' 
+          })
+        } else if (errorMessage.toLowerCase().includes('incorrect password') || 
+                   errorMessage.toLowerCase().includes('wrong password')) {
+          setErrors({ password: 'Invalid password' })
+          setMessage({ 
+            type: 'error', 
+            text: 'Invalid password. Please try again.' 
+          })
+        } else {
+          setMessage({ 
+            type: 'error', 
+            text: errorMessage
+          })
+        }
+        
+        // Clear error messages after 2 seconds
+        setTimeout(() => {
+          setMessage({ type: '', text: '' })
+          setErrors({})
+        }, 2000)
+      } finally {
+        setLoading(false)
+      }
     } else {
       setErrors(newErrors)
       setMessage({ type: 'error', text: 'Please fix the errors above' })
-      setTimeout(() => setMessage({ type: '', text: '' }), 3000)
+      // Clear error messages after 2 seconds
+      setTimeout(() => {
+        setMessage({ type: '', text: '' })
+        setErrors({})
+      }, 2000)
     }
   }
 
@@ -90,7 +162,6 @@ const Login = () => {
             <p>Login to access your health dashboard</p>
           </div>
 
-          {/* Message Alert */}
           {message.text && (
             <div className={`message-alert ${message.type}`}>
               {message.type === 'success' ? '✓' : '⚠️'} {message.text}
@@ -141,13 +212,19 @@ const Login = () => {
 
             <div className="form-options">
               <label className="checkbox-label">
-                <input type="checkbox" />
+                <input 
+                  type="checkbox" 
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                />
                 <span>Remember me</span>
               </label>
               <a href="#forgot" className="forgot-link">Forgot Password?</a>
             </div>
 
-            <button type="submit" className="auth-btn">Login</button>
+            <button type="submit" className="auth-btn" disabled={loading}>
+              {loading ? 'Logging in...' : 'Login'}
+            </button>
           </form>
 
           <div className="auth-footer">

@@ -8,7 +8,6 @@ const About = () => {
     <Layout>
       <div className="about-page">
         <div className="about-container">
-          {/* About Us Section */}
           <div className="about-section">
             <div className="about-header">
               <h1>ABOUT US</h1>
@@ -41,7 +40,6 @@ const About = () => {
             </div>
           </div>
 
-          {/* Our Vision Section */}
           <div className="vision-section">
             <h2>Our Vision</h2>
             <p>
@@ -53,7 +51,6 @@ const About = () => {
             </p>
           </div>
 
-          {/* Why Choose Us Section */}
           <div className="why-choose-section">
             <h2>WHY CHOOSE US</h2>
             <div className="features-grid-about">

@@ -22,7 +22,6 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    // Here you would typically send the email
     console.log('Form submitted:', formData)
     setIsSubmitted(true)
     setTimeout(() => setIsSubmitted(false), 3000)
@@ -33,13 +32,11 @@ const Contact = () => {
     <Layout>
       <div className="contact-page">
         <div className="contact-container">
-          {/* Contact Header */}
           <div className="contact-header">
             <h1>CONTACT US</h1>
           </div>
 
           <div className="contact-content">
-            {/* Left Side - Office Info */}
             <div className="contact-info">
               <div className="office-section">
                 <h2>OUR OFFICE</h2>
@@ -51,7 +48,6 @@ const Contact = () => {
                 </div>
               </div>
 
-              {/* Mailbox Section instead of Careers */}
               <div className="mailbox-section">
                 <h2>SEND US A MESSAGE</h2>
                 <p className="mailbox-description">
@@ -106,7 +102,6 @@ const Contact = () => {
               </div>
             </div>
 
-            {/* Right Side - Image */}
             <div className="contact-image">
               <img src={contactImage} alt="Contact Us" />
             </div>

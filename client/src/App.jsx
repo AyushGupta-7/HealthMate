@@ -13,6 +13,7 @@ import DoctorDetails from './pages/DoctorDetails'
 import MyAppointments from './pages/MyAppointments'
 import About from './pages/About'
 import Contact from './pages/Contact'
+import ProtectedRoute from './components/ProtectedRoute'
 import './App.css'
 
 function App() {
@@ -20,21 +21,64 @@ function App() {
     <Router>
       <div className="App">
         <Routes>
+          {/* Public Routes */}
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/doctors" element={<Doctors />} />
-          <Route path="/doctors/:specialtyParam" element={<Doctors />} />
-          <Route path="/doctor/:id" element={<DoctorDetails />} />
-          <Route path="/my-appointments" element={<MyAppointments />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/report-dashboard" element={<ReportDashboard />} />
-          <Route path="/vitals" element={<Vitals />} />
-          <Route path="/ai-insights" element={<AIInsights />} />
-          <Route path="/previous-reports" element={<PreviousReports />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          
+          {/* Protected Routes - Require Authentication */}
+          <Route path="/dashboard" element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/doctors" element={
+            <ProtectedRoute>
+              <Doctors />
+            </ProtectedRoute>
+          } />
+          <Route path="/doctors/:specialtyParam" element={
+            <ProtectedRoute>
+              <Doctors />
+            </ProtectedRoute>
+          } />
+          <Route path="/doctor/:id" element={
+            <ProtectedRoute>
+              <DoctorDetails />
+            </ProtectedRoute>
+          } />
+          <Route path="/my-appointments" element={
+            <ProtectedRoute>
+              <MyAppointments />
+            </ProtectedRoute>
+          } />
+          <Route path="/profile" element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          } />
+          <Route path="/report-dashboard" element={
+            <ProtectedRoute>
+              <ReportDashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/vitals" element={
+            <ProtectedRoute>
+              <Vitals />
+            </ProtectedRoute>
+          } />
+          <Route path="/ai-insights" element={
+            <ProtectedRoute>
+              <AIInsights />
+            </ProtectedRoute>
+          } />
+          <Route path="/previous-reports" element={
+            <ProtectedRoute>
+              <PreviousReports />
+            </ProtectedRoute>
+          } />
         </Routes>
       </div>
     </Router>

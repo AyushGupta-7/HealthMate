@@ -10,11 +10,9 @@ const NavbarMain = () => {
   const dropdownRef = useRef(null)
   const avatarRef = useRef(null)
   
-  // This would come from your auth context/state
-  const userName = "Ayush Gupta" // Replace with actual user name from auth
-  const userEmail = "ayush@gmail.com" // Replace with actual user email
+  const userName = localStorage.getItem('userName') || 'User'
+  const userEmail = localStorage.getItem('userEmail') || 'user@example.com'
   const userInitial = userName.charAt(0).toUpperCase()
-  
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
@@ -25,11 +23,10 @@ const NavbarMain = () => {
   }
 
   const handleLogout = () => {
-    // Add logout logic here
-    console.log('Logging out...')
-    localStorage.removeItem('isAuthenticated')
-    localStorage.removeItem('userEmail')
+    localStorage.removeItem('token')
     localStorage.removeItem('userName')
+    localStorage.removeItem('userEmail')
+    localStorage.removeItem('userId')
     navigate('/login')
   }
 
@@ -43,7 +40,6 @@ const NavbarMain = () => {
     navigate('/my-appointments')
   }
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target) && 
