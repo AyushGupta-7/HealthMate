@@ -403,3 +403,46 @@
 .upload-btn:active {
   transform: translateY(0);
 }
+
+/* Add to existing ReportDashboard.css */
+
+.download-btn {
+  background: transparent;
+  color: #2c5f8a;
+  border: 1px solid #2c5f8a;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.7rem;
+  transition: all 0.2s ease;
+  margin-left: 10px;
+}
+
+.download-btn:hover {
+  background: #2c5f8a;
+  color: white;
+  transform: translateY(-1px);
+}
+
+.report-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.report-item:hover {
+  background: #eef2f7;
+}
+
+.report-status {
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  background: #e8f5e9;
+  color: #2e7d32;
+}

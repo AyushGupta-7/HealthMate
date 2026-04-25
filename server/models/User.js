@@ -87,6 +87,7 @@ const userSchema = new mongoose.Schema({
   dob: { type: String, default: 'Not Selected' },
   role: { type: String, enum: ['user', 'admin'], default: 'user' },
   createdAt: { type: Date, default: Date.now }
+  
 });
 
 // Hash password before saving

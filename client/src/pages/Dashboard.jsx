@@ -8,6 +8,7 @@ import Poster from '../components/Poster'
 
 const Dashboard = () => {
   return (
+    
     <div>
       <NavbarMain />
       <HeroMain />

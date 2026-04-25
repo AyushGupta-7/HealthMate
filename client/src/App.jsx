@@ -14,10 +14,11 @@ import MyAppointments from './pages/MyAppointments'
 import About from './pages/About'
 import Contact from './pages/Contact'
 import ProtectedRoute from './components/ProtectedRoute'
-import AdminDashboard from './pages/admin/AdminDashboard'
-import AdminDoctors from './pages/admin/AdminDoctors'
-import AdminUsers from './pages/admin/AdminUsers'
-import AdminAppointments from './pages/admin/AdminAppointments'
+// import AdminDashboard from './pages/admin/AdminDashboard'
+// import AdminDoctors from './pages/admin/AdminDoctors'
+// import AdminUsers from './pages/admin/AdminUsers'
+// import AdminAppointments from './pages/admin/AdminAppointments'
+// import AdminLogin from './pages/admin/AdminLogin';
 import './App.css'
 
 function App() {
@@ -33,7 +34,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
 
-          {/* Admin Routes (Protected) */}
+          {/* Admin Routes (Protected)
           <Route path="/admin/dashboard" element={
             <ProtectedRoute adminOnly={true}>
               <AdminDashboard />
@@ -53,7 +54,7 @@ function App() {
             <ProtectedRoute adminOnly={true}>
               <AdminAppointments />
             </ProtectedRoute>
-          } />
+          } /> */}
 
           {/* User Protected Routes */}
           <Route path="/dashboard" element={

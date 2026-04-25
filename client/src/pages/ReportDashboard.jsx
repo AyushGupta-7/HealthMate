@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Layout from '../components/Layout'
 import ReportSidebar from '../components/ReportSidebar'
-import { analyzeMedicalReport } from '../services/aiService'
+import API from '../services/api'
 import './ReportDashboard.css'
 
 const ReportDashboard = () => {
@@ -10,87 +10,118 @@ const ReportDashboard = () => {
   const [uploadProgress, setUploadProgress] = useState('')
   const [showSuccessMessage, setShowSuccessMessage] = useState('')
   const [showErrorMessage, setShowErrorMessage] = useState('')
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const savedReports = JSON.parse(localStorage.getItem('medicalReports') || '[]')
-    setReports(savedReports)
+    fetchReports()
   }, [])
 
-  const extractFileContent = (file) => {
-    return new Promise((resolve, reject) => {
-      if (file.type === 'application/pdf') {
-        resolve(`PDF Report: ${file.name}\nThis appears to be a medical document. Please ensure the file is readable.`);
-      } else if (file.type.startsWith('image/')) {
-        resolve(`Image Report: ${file.name}\nThis is a medical image report. Visual analysis would require OCR technology.`);
-      } else if (file.type === 'text/plain') {
-        const reader = new FileReader();
-        reader.onload = (e) => resolve(e.target.result);
-        reader.onerror = reject;
-        reader.readAsText(file);
-      } else {
-        resolve(`Medical Report: ${file.name}`);
+  const fetchReports = async () => {
+    try {
+      setLoading(true)
+      const response = await API.get('/reports')
+      if (response.data.success) {
+        setReports(response.data.data)
       }
-    });
-  };
+    } catch (error) {
+      console.error('Error fetching reports:', error)
+      setShowErrorMessage('Failed to load reports')
+      setTimeout(() => setShowErrorMessage(''), 3000)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const handleFileUpload = async (e) => {
     const file = e.target.files[0];
-    if (file) {
-      setUploading(true);
-      setUploadProgress('Reading file...');
-      setShowSuccessMessage('');
-      setShowErrorMessage('');
+    if (!file) return;
+    
+    setUploading(true);
+    setUploadProgress('Uploading file...');
+    setShowSuccessMessage('');
+    setShowErrorMessage('');
+    
+    const formData = new FormData();
+    formData.append('report', file);
+    formData.append('title', file.name.replace(/\.[^/.]+$/, ""));
+    formData.append('type', file.type.includes('image') ? 'Image' : file.type.includes('pdf') ? 'PDF' : 'Document');
+    
+    try {
+      const response = await API.post('/reports/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
       
-      try {
-        setUploadProgress('Extracting content...');
-        const fileContent = await extractFileContent(file);
-        
+      if (response.data.success) {
         setUploadProgress('AI analyzing report...');
-        const analysis = await analyzeMedicalReport(file.name, fileContent, file.type);
-        
-        const safeAnalysis = {
-          summary: analysis?.summary || 'No summary available.',
-          findings: analysis?.findings || ['No findings available'],
-          recommendations: analysis?.recommendations || ['Consult with your doctor for personalized advice'],
-          insights: analysis?.insights || 'Regular health monitoring is recommended.'
-        };
-        
-        const newReport = {
-          id: Date.now(),
-          title: file.name.replace(/\.[^/.]+$/, ""),
-          fileName: file.name,
-          date: new Date().toLocaleDateString('en-US'),
-          type: file.type.includes('image') ? 'Image' : file.type.includes('pdf') ? 'PDF' : 'Document',
-          status: 'Analyzed',
-          fileUrl: URL.createObjectURL(file),
-          fileContent: fileContent.substring(0, 1000),
-          aiAnalysis: safeAnalysis
-        };
-        
-        const updatedReports = [newReport, ...reports];
-        setReports(updatedReports);
-        localStorage.setItem('medicalReports', JSON.stringify(updatedReports));
-        
-        setUploadProgress('');
-        setUploading(false);
-        setShowSuccessMessage(`"${file.name}" uploaded and analyzed successfully.`);
-        setTimeout(() => setShowSuccessMessage(''), 5000);
-        
-        e.target.value = '';
-      } catch (error) {
-        console.error('Upload failed:', error);
-        setUploading(false);
-        setUploadProgress('');
-        setShowErrorMessage(`Failed to analyze "${file.name}". Please try again.`);
-        setTimeout(() => setShowErrorMessage(''), 5000);
-        e.target.value = '';
+        setTimeout(() => {
+          setUploadProgress('');
+          setUploading(false);
+          setShowSuccessMessage(`"${file.name}" uploaded and AI analysis started.`);
+          fetchReports();
+          setTimeout(() => setShowSuccessMessage(''), 5000);
+        }, 1500);
       }
+      e.target.value = '';
+    } catch (error) {
+      console.error('Upload failed:', error);
+      setUploading(false);
+      setUploadProgress('');
+      setShowErrorMessage(error.response?.data?.message || `Failed to upload "${file.name}"`);
+      setTimeout(() => setShowErrorMessage(''), 5000);
+      e.target.value = '';
+    }
+  }
+
+  const handleDownload = async (reportId, title) => {
+    try {
+      const response = await API.get(`/reports/${reportId}/download`, {
+        responseType: 'blob'
+      });
+      
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `${title.replace(/[^a-z0-9]/gi, '_')}_report.txt`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+      
+      setShowSuccessMessage('Report downloaded successfully!');
+      setTimeout(() => setShowSuccessMessage(''), 3000);
+    } catch (error) {
+      setShowErrorMessage('Failed to download report');
+      setTimeout(() => setShowErrorMessage(''), 3000);
     }
   };
 
   const totalReports = reports.length;
   const analyzedReports = reports.filter(r => r.status === 'Analyzed').length;
   const recentReports = reports.slice(0, 5);
+
+  const getCurrentMonthReports = () => {
+    const now = new Date();
+    return reports.filter(r => {
+      const reportDate = new Date(r.createdAt);
+      return reportDate.getMonth() === now.getMonth() && 
+             reportDate.getFullYear() === now.getFullYear();
+    }).length;
+  };
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="report-dashboard-page">
+          <div className="reports-layout">
+            <ReportSidebar />
+            <div className="dashboard-container">
+              <div className="loading-spinner">Loading reports...</div>
+            </div>
+          </div>
+        </div>
+      </Layout>
+    )
+  }
 
   return (
     <Layout>
@@ -105,12 +136,12 @@ const ReportDashboard = () => {
 
             {showSuccessMessage && (
               <div className="success-message">
-                {showSuccessMessage}
+                ✓ {showSuccessMessage}
               </div>
             )}
             {showErrorMessage && (
               <div className="error-message">
-                {showErrorMessage}
+                ⚠️ {showErrorMessage}
               </div>
             )}
 
@@ -136,11 +167,7 @@ const ReportDashboard = () => {
               <div className="stat-card">
                 <div className="stat-info">
                   <p className="stat-label">This Month</p>
-                  <h2 className="stat-number">{reports.filter(r => {
-                    const reportDate = new Date(r.date);
-                    const now = new Date();
-                    return reportDate.getMonth() === now.getMonth();
-                  }).length}</h2>
+                  <h2 className="stat-number">{getCurrentMonthReports()}</h2>
                 </div>
               </div>
             </div>
@@ -158,8 +185,8 @@ const ReportDashboard = () => {
                     disabled={uploading}
                     style={{ display: 'none' }}
                   />
-                  <label htmlFor="reportUpload" className="upload-btn">
-                    {uploading ? 'Analyzing...' : 'Choose File'}
+                  <label htmlFor="reportUpload" className="upload-btn" style={{ opacity: uploading ? 0.6 : 1 }}>
+                    {uploading ? '⏳ Analyzing...' : '📁 Choose File'}
                   </label>
                   {uploadProgress && <p className="upload-progress">{uploadProgress}</p>}
                   <p className="upload-hint">Supported formats: PDF, JPG, PNG, TXT (Max 10MB)</p>
@@ -181,14 +208,22 @@ const ReportDashboard = () => {
                 </div>
               ) : (
                 <div className="reports-list">
-                  {recentReports.map(report => (
-                    <div className="report-item" key={report.id}>
+                  {recentReports.map((reportItem) => (
+                    <div className="report-item" key={reportItem._id}>
                       <div className="report-icon">📄</div>
                       <div className="report-info">
-                        <div className="report-title">{report.title}</div>
-                        <div className="report-meta">{report.date} • {report.type}</div>
+                        <div className="report-title">{reportItem.title}</div>
+                        <div className="report-meta">
+                          {new Date(reportItem.createdAt).toLocaleDateString()} • {reportItem.type}
+                        </div>
                       </div>
-                      <div className="report-status">Analyzed</div>
+                      <div className="report-status">{reportItem.status || 'Analyzed'}</div>
+                      <button 
+                        className="download-btn" 
+                        onClick={() => handleDownload(reportItem._id, reportItem.title)}
+                      >
+                        📥 Download
+                      </button>
                     </div>
                   ))}
                 </div>

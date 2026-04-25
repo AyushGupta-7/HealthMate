@@ -1,13 +1,31 @@
 import express from 'express';
-import { getCurrentVitals, updateCurrentVitals, addVitalsHistory, getVitalsHistory, deleteVitalsEntry } from '../controllers/vitalsController.js';
 import { protect } from '../middleware/authMiddleware.js';
+import {
+  getCurrentVitals,
+  updateCurrentVitals,
+  addVitalsHistory,
+  getVitalsHistory,
+  deleteVitalsEntry,
+  getVitalsTrend,
+  getVitalsStats
+} from '../controllers/vitalsController.js';
 
 const router = express.Router();
 
-router.get('/current', protect, getCurrentVitals);
-router.put('/current', protect, updateCurrentVitals);
-router.post('/history', protect, addVitalsHistory);
-router.get('/history', protect, getVitalsHistory);
-router.delete('/history/:id', protect, deleteVitalsEntry);
+// All routes require authentication
+router.use(protect);
+
+// Current vitals routes
+router.get('/current', getCurrentVitals);
+router.put('/current', updateCurrentVitals);
+
+// History routes
+router.get('/history', getVitalsHistory);
+router.post('/history', addVitalsHistory);
+router.delete('/history/:id', deleteVitalsEntry);
+
+// Analytics routes
+router.get('/trend', getVitalsTrend);
+router.get('/stats', getVitalsStats);
 
 export default router;

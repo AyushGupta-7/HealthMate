@@ -64,7 +64,7 @@ import doctorRoutes from './routes/doctorRoutes.js';
 import appointmentRoutes from './routes/appointmentRoutes.js';
 import reportRoutes from './routes/reportRoutes.js';
 import vitalsRoutes from './routes/vitalsRoutes.js';
-import adminRoutes from './routes/adminRoutes.js';
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -89,7 +89,8 @@ app.use('/api/doctors', doctorRoutes);
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/vitals', vitalsRoutes);
-app.use('/api/admin', adminRoutes);
+
+
 
 // Health Check
 app.get('/api/health', (req, res) => {
@@ -98,6 +99,7 @@ app.get('/api/health', (req, res) => {
 
 // Error Handler
 app.use(errorHandler);
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

@@ -5,6 +5,9 @@
 .env.*
 # frontend/.env
 # server/.env
+.env
+.env.local
+.env.production
 
 # =========================
 # NODE MODULES

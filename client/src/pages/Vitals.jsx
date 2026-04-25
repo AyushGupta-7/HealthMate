@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Layout from '../components/Layout'
 import ReportSidebar from '../components/ReportSidebar'
+import API from '../services/api'
 import './Vitals.css'
 
 const Vitals = () => {
@@ -10,71 +11,127 @@ const Vitals = () => {
     weight: "72",
     note: ""
   })
-
   const [vitalsHistory, setVitalsHistory] = useState([])
   const [isEditing, setIsEditing] = useState(false)
   const [editData, setEditData] = useState({ ...currentVitals })
   const [showSuccessMessage, setShowSuccessMessage] = useState('')
   const [showErrorMessage, setShowErrorMessage] = useState('')
+  const [loading, setLoading] = useState(true)
+  const [isSaving, setIsSaving] = useState(false)
 
   useEffect(() => {
-    // Load vitals history from localStorage
-    const savedHistory = JSON.parse(localStorage.getItem('vitalsHistory') || '[]')
-    setVitalsHistory(savedHistory)
-
-    // Load current vitals from localStorage
-    const savedCurrent = JSON.parse(localStorage.getItem('currentVitals'))
-    if (savedCurrent) {
-      setCurrentVitals(savedCurrent)
-      setEditData(savedCurrent)
-    }
+    fetchCurrentVitals()
+    fetchVitalsHistory()
   }, [])
+
+  const fetchCurrentVitals = async () => {
+    try {
+      const response = await API.get('/vitals/current')
+      if (response.data.success) {
+        setCurrentVitals(response.data.data)
+        setEditData(response.data.data)
+      }
+    } catch (error) {
+      setShowErrorMessage('Failed to load current vitals')
+      setTimeout(() => setShowErrorMessage(''), 3000)
+    }
+  }
+
+  const fetchVitalsHistory = async () => {
+    try {
+      setLoading(true)
+      const response = await API.get('/vitals/history')
+      if (response.data.success) {
+        setVitalsHistory(response.data.data)
+      }
+    } catch (error) {
+      setShowErrorMessage('Failed to load vitals history')
+      setTimeout(() => setShowErrorMessage(''), 3000)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const handleEdit = () => {
     setIsEditing(true)
     setEditData({ ...currentVitals })
   }
 
-  const handleSaveAndAdd = () => {
+  const handleSaveOnly = async () => {
     if (!editData.bloodPressure || !editData.bloodSugar || !editData.weight) {
       setShowErrorMessage('Please fill Blood Pressure, Blood Sugar, and Weight')
       setTimeout(() => setShowErrorMessage(''), 3000)
       return
     }
 
-    setCurrentVitals(editData)
-    localStorage.setItem('currentVitals', JSON.stringify(editData))
+    try {
+      setIsSaving(true)
+      const response = await API.put('/vitals/current', {
+        bloodPressure: editData.bloodPressure,
+        bloodSugar: editData.bloodSugar,
+        weight: editData.weight,
+        note: editData.note || ''
+      })
 
-    const now = new Date()
-    const vitalsEntry = {
-      id: Date.now(),
-      ...editData,
-      date: now.toLocaleDateString('en-US'),
-      time: now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+      if (response.data.success) {
+        setCurrentVitals(editData)
+        setIsEditing(false)
+        setShowSuccessMessage('Current vitals updated successfully!')
+        setTimeout(() => setShowSuccessMessage(''), 3000)
+      }
+    } catch (error) {
+      setShowErrorMessage(error.response?.data?.message || 'Failed to update vitals')
+      setTimeout(() => setShowErrorMessage(''), 3000)
+    } finally {
+      setIsSaving(false)
     }
-
-    const updatedHistory = [vitalsEntry, ...vitalsHistory]
-    setVitalsHistory(updatedHistory)
-    localStorage.setItem('vitalsHistory', JSON.stringify(updatedHistory))
-
-    setIsEditing(false)
-    setShowSuccessMessage('Vitals updated and saved to history successfully!')
-    setTimeout(() => setShowSuccessMessage(''), 3000)
   }
 
-  const handleSaveOnly = () => {
+  const handleSaveAndAdd = async () => {
     if (!editData.bloodPressure || !editData.bloodSugar || !editData.weight) {
       setShowErrorMessage('Please fill Blood Pressure, Blood Sugar, and Weight')
       setTimeout(() => setShowErrorMessage(''), 3000)
       return
     }
 
-    setCurrentVitals(editData)
-    localStorage.setItem('currentVitals', JSON.stringify(editData))
+    try {
+      setIsSaving(true)
+      
+      await API.put('/vitals/current', {
+        bloodPressure: editData.bloodPressure,
+        bloodSugar: editData.bloodSugar,
+        weight: editData.weight,
+        note: editData.note || ''
+      })
 
-    setIsEditing(false)
-    setShowSuccessMessage('Current vitals updated successfully!')
-    setTimeout(() => setShowSuccessMessage(''), 3000)
+      const now = new Date()
+      const historyData = {
+        bloodPressure: editData.bloodPressure,
+        bloodSugar: editData.bloodSugar,
+        weight: editData.weight,
+        note: editData.note || '',
+        date: now.toLocaleDateString('en-US'),
+        time: now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+      }
+      
+      const historyResponse = await API.post('/vitals/history', historyData)
+
+      if (historyResponse.data.success) {
+        setCurrentVitals(editData)
+        setIsEditing(false)
+        const refreshedHistory = await API.get('/vitals/history')
+        if (refreshedHistory.data.success) {
+          setVitalsHistory(refreshedHistory.data.data)
+        }
+        setShowSuccessMessage('Vitals updated and saved to history successfully!')
+        setTimeout(() => setShowSuccessMessage(''), 3000)
+      }
+    } catch (error) {
+      setShowErrorMessage(error.response?.data?.message || 'Failed to save vitals')
+      setTimeout(() => setShowErrorMessage(''), 3000)
+    } finally {
+      setIsSaving(false)
+    }
   }
 
   const handleCancel = () => {
@@ -87,12 +144,37 @@ const Vitals = () => {
     setEditData(prev => ({ ...prev, [name]: value }))
   }
 
-  const handleDeleteVitals = (id) => {
-    const updatedHistory = vitalsHistory.filter(entry => entry.id !== id)
-    setVitalsHistory(updatedHistory)
-    localStorage.setItem('vitalsHistory', JSON.stringify(updatedHistory))
-    setShowSuccessMessage('Vitals entry deleted successfully!')
-    setTimeout(() => setShowSuccessMessage(''), 3000)
+  const handleDeleteVitals = async (id) => {
+    try {
+      const response = await API.delete(`/vitals/history/${id}`)
+      
+      if (response.data.success) {
+        setVitalsHistory(prevHistory => prevHistory.filter(entry => entry._id !== id))
+        setShowSuccessMessage('Vitals entry deleted successfully!')
+        setTimeout(() => setShowSuccessMessage(''), 3000)
+      } else {
+        setShowErrorMessage(response.data.message || 'Failed to delete vitals entry')
+        setTimeout(() => setShowErrorMessage(''), 3000)
+      }
+    } catch (error) {
+      setShowErrorMessage('Failed to delete vitals entry')
+      setTimeout(() => setShowErrorMessage(''), 3000)
+    }
+  }
+
+  if (loading && vitalsHistory.length === 0) {
+    return (
+      <Layout>
+        <div className="vitals-page">
+          <div className="reports-layout">
+            <ReportSidebar />
+            <div className="vitals-container">
+              <div className="loading-spinner">Loading vitals data...</div>
+            </div>
+          </div>
+        </div>
+      </Layout>
+    )
   }
 
   return (
@@ -101,7 +183,6 @@ const Vitals = () => {
         <div className="reports-layout">
           <ReportSidebar />
           <div className="vitals-container">
-            {/* Success/Error Messages */}
             {showSuccessMessage && (
               <div className="success-message">
                 ✓ {showSuccessMessage}
@@ -127,7 +208,6 @@ const Vitals = () => {
               <h2>Current Vitals</h2>
               <div className="vitals-grid">
                 <div className="vital-card">
-                  {/* <div className="vital-icon">💓</div> */}
                   <div className="vital-info">
                     <h3>Blood Pressure</h3>
                     {isEditing ? (
@@ -147,7 +227,6 @@ const Vitals = () => {
                 </div>
 
                 <div className="vital-card">
-                  {/* <div className="vital-icon">🍬</div> */}
                   <div className="vital-info">
                     <h3>Blood Sugar</h3>
                     {isEditing ? (
@@ -167,7 +246,6 @@ const Vitals = () => {
                 </div>
 
                 <div className="vital-card">
-                  {/* <div className="vital-icon">⚖️</div> */}
                   <div className="vital-info">
                     <h3>Weight</h3>
                     {isEditing ? (
@@ -187,7 +265,6 @@ const Vitals = () => {
                 </div>
 
                 <div className="vital-card note-card">
-                  {/* <div className="vital-icon">📝</div> */}
                   <div className="vital-info">
                     <h3>Note</h3>
                     {isEditing ? (
@@ -208,11 +285,19 @@ const Vitals = () => {
 
               {isEditing && (
                 <div className="edit-actions">
-                  <button className="save-only-btn" onClick={handleSaveOnly}>
-                    Save Changes
+                  <button 
+                    className="save-only-btn" 
+                    onClick={handleSaveOnly}
+                    disabled={isSaving}
+                  >
+                    {isSaving ? 'Saving...' : 'Save Changes'}
                   </button>
-                  <button className="save-add-btn" onClick={handleSaveAndAdd}>
-                    Save & Add to History
+                  <button 
+                    className="save-add-btn" 
+                    onClick={handleSaveAndAdd}
+                    disabled={isSaving}
+                  >
+                    {isSaving ? 'Saving...' : 'Save & Add to History'}
                   </button>
                   <button className="cancel-btn" onClick={handleCancel}>
                     Cancel
@@ -220,7 +305,6 @@ const Vitals = () => {
                 </div>
               )}
             </div>
-
 
             {vitalsHistory.length > 0 && (
               <div className="vitals-history-section">
@@ -236,7 +320,7 @@ const Vitals = () => {
                   </div>
                   <div className="table-body">
                     {vitalsHistory.map(entry => (
-                      <div className="table-row2" key={entry.id}>
+                      <div className="table-row2" key={entry._id}>
                         <span className="date-time">{entry.date} {entry.time}</span>
                         <span>{entry.bloodPressure || '-'}</span>
                         <span>{entry.bloodSugar || '-'}</span>
@@ -245,7 +329,7 @@ const Vitals = () => {
                         <div className="action-cell">
                           <button
                             className="delete-history-btn"
-                            onClick={() => handleDeleteVitals(entry.id)}
+                            onClick={() => handleDeleteVitals(entry._id)}
                             title="Delete entry"
                           >
                             🗑️ Delete

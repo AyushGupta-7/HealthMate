@@ -402,3 +402,65 @@
     width: 100%;
   }
 }
+
+/* Add to existing AIInsights.css */
+
+.insight-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.download-insight-btn {
+  background: transparent;
+  color: #2c5f8a;
+  border: 1px solid #2c5f8a;
+  padding: 0.2rem 0.6rem;
+  border-radius: 15px;
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.download-insight-btn:hover {
+  background: #2c5f8a;
+  color: white;
+}
+
+.insight-insight {
+  background: #e3f2fd;
+  padding: 0.8rem;
+  border-radius: 10px;
+  margin-top: 0.8rem;
+  font-size: 0.85rem;
+  color: #1565c0;
+}
+
+.message-alert {
+  padding: 12px 16px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  animation: slideIn 0.3s ease;
+}
+
+.message-alert.success {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border-left: 4px solid #2e7d32;
+}
+
+.message-alert.error {
+  background: #ffebee;
+  color: #c62828;
+  border-left: 4px solid #c62828;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
