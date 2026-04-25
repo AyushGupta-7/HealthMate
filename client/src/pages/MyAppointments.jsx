@@ -1,43 +1,80 @@
 import React, { useState, useEffect } from 'react'
 import Layout from '../components/Layout'
+import API from '../services/api'
 import './MyAppointments.css'
 
 const MyAppointments = () => {
   const [appointments, setAppointments] = useState([])
+  const [loading, setLoading] = useState(true)
   const [showCancelConfirm, setShowCancelConfirm] = useState(null)
+  const [showPaymentConfirm, setShowPaymentConfirm] = useState(null)
   const [message, setMessage] = useState({ type: '', text: '' })
 
   useEffect(() => {
-    const savedAppointments = JSON.parse(localStorage.getItem('appointments') || '[]')
-    const sortedAppointments = savedAppointments.sort((a, b) => b.id - a.id)
-    const last7Appointments = sortedAppointments.slice(0, 7)
-    setAppointments(last7Appointments)
-    localStorage.setItem('appointments', JSON.stringify(last7Appointments))
+    fetchAppointments()
   }, [])
 
-  const handlePayOnline = (appointmentId) => {
-    setMessage({ type: 'success', text: 'Payment gateway will be integrated here' })
-    const updatedAppointments = appointments.map(apt =>
-      apt.id === appointmentId ? { ...apt, status: 'paid' } : apt
-    )
-    setAppointments(updatedAppointments)
-    localStorage.setItem('appointments', JSON.stringify(updatedAppointments))
-    setTimeout(() => setMessage({ type: '', text: '' }), 3000)
+  const fetchAppointments = async () => {
+    try {
+      setLoading(true)
+      const response = await API.get('/appointments')
+      if (response.data.success) {
+        setAppointments(response.data.data || [])
+      }
+    } catch (error) {
+      console.error('Error fetching appointments:', error)
+      setMessage({ type: 'error', text: 'Failed to load appointments' })
+      setTimeout(() => setMessage({ type: '', text: '' }), 3000)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handlePayClick = (appointment) => {
+    setShowPaymentConfirm(appointment)
+  }
+
+  const handleConfirmPayment = async (appointment) => {
+    try {
+      setShowPaymentConfirm(null)
+      setMessage({ type: 'info', text: 'Processing payment...' })
+      
+      const response = await API.put(`/appointments/${appointment._id}/pay`)
+      
+      if (response.data.success) {
+        setMessage({ type: 'success', text: 'Payment successful!' })
+        fetchAppointments() // Refresh the list
+      }
+    } catch (error) {
+      console.error('Payment error:', error)
+      setMessage({ type: 'error', text: error.response?.data?.message || 'Payment failed' })
+    } finally {
+      setTimeout(() => setMessage({ type: '', text: '' }), 3000)
+    }
+  }
+
+  const handleCancelPayment = () => {
+    setShowPaymentConfirm(null)
   }
 
   const handleCancelClick = (appointmentId) => {
     setShowCancelConfirm(appointmentId)
   }
 
-  const handleConfirmCancel = (appointmentId) => {
-    const updatedAppointments = appointments.map(apt =>
-      apt.id === appointmentId ? { ...apt, status: 'cancelled' } : apt
-    )
-    setAppointments(updatedAppointments)
-    localStorage.setItem('appointments', JSON.stringify(updatedAppointments))
-    setMessage({ type: 'warning', text: 'Appointment cancelled successfully' })
-    setShowCancelConfirm(null)
-    setTimeout(() => setMessage({ type: '', text: '' }), 3000)
+  const handleConfirmCancel = async (appointmentId) => {
+    try {
+      const response = await API.put(`/appointments/${appointmentId}/cancel`)
+      
+      if (response.data.success) {
+        setMessage({ type: 'success', text: 'Appointment cancelled successfully' })
+        fetchAppointments()
+      }
+    } catch (error) {
+      setMessage({ type: 'error', text: error.response?.data?.message || 'Failed to cancel appointment' })
+    } finally {
+      setShowCancelConfirm(null)
+      setTimeout(() => setMessage({ type: '', text: '' }), 3000)
+    }
   }
 
   const handleCancelCancel = () => {
@@ -56,13 +93,25 @@ const MyAppointments = () => {
     }
     return (
       <>
-        <button className="btn-pay" onClick={() => handlePayOnline(appointment.id)}>
+        <button className="btn-pay" onClick={() => handlePayClick(appointment)}>
           Pay Online
         </button>
-        <button className="btn-cancel" onClick={() => handleCancelClick(appointment.id)}>
+        <button className="btn-cancel" onClick={() => handleCancelClick(appointment._id)}>
           Cancel appointment
         </button>
       </>
+    )
+  }
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="my-appointments-page">
+          <div className="appointments-container">
+            <div className="loading-spinner">Loading appointments...</div>
+          </div>
+        </div>
+      </Layout>
     )
   }
 
@@ -74,7 +123,7 @@ const MyAppointments = () => {
 
           {message.text && (
             <div className={`message-alert ${message.type}`}>
-              {message.type === 'success' ? '✓' : '⚠️'} {message.text}
+              {message.type === 'success' ? '✓' : message.type === 'error' ? '⚠️' : 'ℹ️'} {message.text}
             </div>
           )}
 
@@ -88,9 +137,13 @@ const MyAppointments = () => {
           ) : (
             <div className="appointments-list">
               {appointments.map((appointment) => (
-                <div className="appointment-card" key={appointment.id}>
+                <div className="appointment-card" key={appointment._id}>
                   <div className="appointment-image">
-                    <img src={appointment.doctorImage} alt={appointment.doctorName} />
+                    <img 
+                      src={appointment.doctorImage || '/default-doctor.png'} 
+                      alt={appointment.doctorName}
+                      onError={(e) => { e.target.src = '/default-doctor.png' }}
+                    />
                   </div>
                   <div className="appointment-details">
                     <h3>{appointment.doctorName}</h3>
@@ -103,23 +156,33 @@ const MyAppointments = () => {
                     {getStatusButton(appointment)}
                   </div>
 
-                  {showCancelConfirm === appointment.id && (
-                    <div className="cancel-confirm-overlay">
-                      <div className="cancel-confirm-modal">
+                  {/* Cancel Confirmation Modal */}
+                  {showCancelConfirm === appointment._id && (
+                    <div className="confirm-overlay" onClick={handleCancelCancel}>
+                      <div className="confirm-modal" onClick={e => e.stopPropagation()}>
+                        <div className="confirm-icon">⚠️</div>
+                        <h3>Cancel Appointment</h3>
                         <p>Are you sure you want to cancel this appointment?</p>
-                        <div className="cancel-confirm-buttons">
-                          <button 
-                            className="confirm-yes" 
-                            onClick={() => handleConfirmCancel(appointment.id)}
-                          >
-                            Yes, Cancel
-                          </button>
-                          <button 
-                            className="confirm-no" 
-                            onClick={handleCancelCancel}
-                          >
-                            No, Go Back
-                          </button>
+                        <p className="confirm-warning">This action cannot be undone.</p>
+                        <div className="confirm-buttons">
+                          <button className="confirm-no" onClick={handleCancelCancel}>No, Go Back</button>
+                          <button className="confirm-yes" onClick={() => handleConfirmCancel(appointment._id)}>Yes, Cancel</button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Payment Confirmation Modal */}
+                  {showPaymentConfirm === appointment && (
+                    <div className="confirm-overlay" onClick={handleCancelPayment}>
+                      <div className="confirm-modal" onClick={e => e.stopPropagation()}>
+                        <div className="confirm-icon">💰</div>
+                        <h3>Confirm Payment</h3>
+                        <p>Do you want to make a payment of <strong>₹{appointment.fee}</strong> for</p>
+                        <p className="payment-details">{appointment.doctorName} on {appointment.date} at {appointment.time}?</p>
+                        <div className="confirm-buttons">
+                          <button className="confirm-no" onClick={handleCancelPayment}>No</button>
+                          <button className="confirm-yes" onClick={() => handleConfirmPayment(appointment)}>Yes, Pay Now</button>
                         </div>
                       </div>
                     </div>

@@ -1,29 +1,17 @@
 import express from 'express';
-import authUser from '../middleware/authUser.js';
+import { 
+  createAppointment, 
+  getUserAppointments, 
+  cancelAppointment,
+  payForAppointment 
+} from '../controllers/appointmentController.js';
+import { protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-// All routes require authentication
-router.use(authUser);
-
-// Create appointment
-router.post("/", (req, res) => {
-  res.json({ success: true, message: 'Appointment created' });
-});
-
-// Get user appointments
-router.get("/", (req, res) => {
-  res.json({ success: true, data: [] });
-});
-
-// Get appointment by ID
-router.get("/:id", (req, res) => {
-  res.json({ success: true, data: null });
-});
-
-// Cancel appointment
-router.put("/:id/cancel", (req, res) => {
-  res.json({ success: true, message: 'Appointment cancelled' });
-});
+router.post('/', protect, createAppointment);
+router.get('/', protect, getUserAppointments);
+router.put('/:id/cancel', protect, cancelAppointment);
+router.put('/:id/pay', protect, payForAppointment);
 
 export default router;

@@ -262,3 +262,19 @@
     padding: 0.7rem;
   }
 }
+
+.loading-spinner {
+  text-align: center;
+  padding: 50px;
+  color: #8a9bb0;
+  font-size: 1.1rem;
+}
+
+.error-message {
+  text-align: center;
+  padding: 50px;
+  color: #c62828;
+  background: #ffebee;
+  border-radius: 12px;
+  margin: 20px;
+}

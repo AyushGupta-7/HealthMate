@@ -1,29 +1,14 @@
 import express from 'express';
-import authUser from '../middleware/authUser.js';
+import { uploadReport, getUserReports, deleteReport } from '../controllers/reportController.js';
+import { protect } from '../middleware/authMiddleware.js';
+import multer from 'multer';
+
+const upload = multer({ dest: 'uploads/' });
 
 const router = express.Router();
 
-// All routes require authentication
-router.use(authUser);
-
-// Upload report
-router.post("/upload", (req, res) => {
-  res.json({ success: true, message: 'Report uploaded' });
-});
-
-// Get user reports
-router.get("/", (req, res) => {
-  res.json({ success: true, data: [] });
-});
-
-// Get report by ID
-router.get("/:id", (req, res) => {
-  res.json({ success: true, data: null });
-});
-
-// Delete report
-router.delete("/:id", (req, res) => {
-  res.json({ success: true, message: 'Report deleted' });
-});
+router.post('/upload', protect, upload.single('report'), uploadReport);
+router.get('/', protect, getUserReports);
+router.delete('/:id', protect, deleteReport);
 
 export default router;

@@ -15,6 +15,10 @@ const Login = () => {
   const [loading, setLoading] = useState(false)
   const [rememberMe, setRememberMe] = useState(false)
 
+  // Get admin credentials from environment variables
+  const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL
+  const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD
+
   // Load saved email if remember me was checked
   useEffect(() => {
     const savedEmail = localStorage.getItem('savedEmail')
@@ -62,7 +66,7 @@ const Login = () => {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault() // This prevents page refresh
+    e.preventDefault()
     const newErrors = validateForm()
     
     if (Object.keys(newErrors).length === 0) {
@@ -70,6 +74,32 @@ const Login = () => {
       setMessage({ type: '', text: '' })
       setErrors({})
       
+      // Check for hardcoded admin credentials first
+      if (formData.email === ADMIN_EMAIL && formData.password === ADMIN_PASSWORD) {
+        // Admin login - hardcoded
+        localStorage.setItem('token', 'admin-hardcoded-token')
+        localStorage.setItem('userName', 'Admin User')
+        localStorage.setItem('userEmail', formData.email)
+        localStorage.setItem('userId', 'admin-id')
+        localStorage.setItem('userRole', 'admin')
+        
+        // Handle remember me
+        if (rememberMe) {
+          localStorage.setItem('savedEmail', formData.email)
+        } else {
+          localStorage.removeItem('savedEmail')
+        }
+        
+        setMessage({ type: 'success', text: 'Admin login successful! Redirecting...' })
+        
+        setTimeout(() => {
+          navigate('/admin/dashboard')
+        }, 1500)
+        setLoading(false)
+        return
+      }
+      
+      // Regular user login - try API
       try {
         const response = await API.post('/auth/login', {
           email: formData.email,
@@ -107,7 +137,7 @@ const Login = () => {
         
         const errorMessage = error.response?.data?.message || 'Login failed. Please try again.'
         
-        // Show specific error messages for 2 seconds
+        // Show specific error messages
         if (errorMessage.toLowerCase().includes('user not found') || 
             errorMessage.toLowerCase().includes('no account found')) {
           setErrors({ email: 'Email does not exist' })
@@ -140,11 +170,11 @@ const Login = () => {
     } else {
       setErrors(newErrors)
       setMessage({ type: 'error', text: 'Please fix the errors above' })
-      // Clear error messages after 2 seconds
       setTimeout(() => {
         setMessage({ type: '', text: '' })
         setErrors({})
       }, 2000)
+      setLoading(false)
     }
   }
 
@@ -230,6 +260,8 @@ const Login = () => {
           <div className="auth-footer">
             <p>Don't have an account? <Link to="/signup" className="auth-link">Sign up now</Link></p>
           </div>
+          
+          {/* Admin login hint - only shown in development */}
         </div>
       </div>
     </div>

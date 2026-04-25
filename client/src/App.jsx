@@ -14,6 +14,10 @@ import MyAppointments from './pages/MyAppointments'
 import About from './pages/About'
 import Contact from './pages/Contact'
 import ProtectedRoute from './components/ProtectedRoute'
+import AdminDashboard from './pages/admin/AdminDashboard'
+import AdminDoctors from './pages/admin/AdminDoctors'
+import AdminUsers from './pages/admin/AdminUsers'
+import AdminAppointments from './pages/admin/AdminAppointments'
 import './App.css'
 
 function App() {
@@ -21,14 +25,37 @@ function App() {
     <Router>
       <div className="App">
         <Routes>
+
           {/* Public Routes */}
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
-          
-          {/* Protected Routes - Require Authentication */}
+
+          {/* Admin Routes (Protected) */}
+          <Route path="/admin/dashboard" element={
+            <ProtectedRoute adminOnly={true}>
+              <AdminDashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/doctors" element={
+            <ProtectedRoute adminOnly={true}>
+              <AdminDoctors />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/users" element={
+            <ProtectedRoute adminOnly={true}>
+              <AdminUsers />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/appointments" element={
+            <ProtectedRoute adminOnly={true}>
+              <AdminAppointments />
+            </ProtectedRoute>
+          } />
+
+          {/* User Protected Routes */}
           <Route path="/dashboard" element={
             <ProtectedRoute>
               <Dashboard />
@@ -79,6 +106,7 @@ function App() {
               <PreviousReports />
             </ProtectedRoute>
           } />
+
         </Routes>
       </div>
     </Router>

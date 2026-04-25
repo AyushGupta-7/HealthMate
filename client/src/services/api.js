@@ -5,6 +5,7 @@ const API = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  timeout: 10000, // 10 second timeout
 });
 
 // Add token to requests
@@ -25,11 +26,22 @@ API.interceptors.request.use(
 API.interceptors.response.use(
   (response) => response,
   (error) => {
+    if (error.code === 'ERR_NETWORK') {
+      console.error('Network error: Backend server might not be running');
+      // Don't redirect, just show error in component
+      return Promise.reject(error);
+    }
+    
     if (error.response?.status === 401) {
       localStorage.removeItem('token');
+      localStorage.removeItem('adminToken');
+      localStorage.removeItem('isAdmin');
       localStorage.removeItem('userName');
       localStorage.removeItem('userEmail');
-      //window.location.href = '/login';
+      
+      if (window.location.pathname.includes('/admin')) {
+        window.location.href = '/admin/login';
+      } 
     }
     return Promise.reject(error);
   }

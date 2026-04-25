@@ -1,183 +1,169 @@
 import Doctor from '../models/Doctor.js';
-import bcrypt from 'bcryptjs';
+import Appointment from '../models/Appointment.js';
 
-// @desc    Get all doctors
-// @route   GET /api/doctors
-// @access  Public
 export const getAllDoctors = async (req, res) => {
-    try {
-        const doctors = await Doctor.find().select('-password');
-        res.json({ success: true, data: doctors });
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
-    }
+  try {
+    const doctors = await Doctor.find().select('-password');
+    res.json({ success: true, data: doctors });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
 };
 
-// @desc    Get doctor by ID
-// @route   GET /api/doctors/:id
-// @access  Public
 export const getDoctorById = async (req, res) => {
-    try {
-        const doctor = await Doctor.findById(req.params.id).select('-password');
-        if (!doctor) {
-            return res.status(404).json({ success: false, message: 'Doctor not found' });
-        }
-        res.json({ success: true, data: doctor });
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+  try {
+    const doctor = await Doctor.findById(req.params.id).select('-password');
+    if (!doctor) {
+      return res.status(404).json({ success: false, message: 'Doctor not found' });
     }
+    
+    const upcomingAppointments = await Appointment.countDocuments({
+      doctorId: doctor._id,
+      date: { $gte: new Date().toISOString().split('T')[0] },
+      status: { $ne: 'cancelled' }
+    });
+    
+    const doctorData = doctor.toObject();
+    doctorData.upcomingAppointments = upcomingAppointments;
+    
+    res.json({ success: true, data: doctorData });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
 };
 
-// @desc    Get doctors by specialty
-// @route   GET /api/doctors/specialty/:specialty
-// @access  Public
 export const getDoctorsBySpecialty = async (req, res) => {
-    try {
-        const doctors = await Doctor.find({ 
-            speciality: req.params.specialty 
-        }).select('-password');
-        res.json({ success: true, data: doctors });
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
-    }
+  try {
+    const doctors = await Doctor.find({ 
+      speciality: req.params.specialty,
+      available: true 
+    }).select('-password');
+    res.json({ success: true, data: doctors });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
 };
 
-// @desc    Add new doctor (Admin only)
-// @route   POST /api/doctors
-// @access  Private/Admin
-export const addDoctor = async (req, res) => {
-    try {
-        const { name, email, password, image, speciality, degree, experience, about, fees, address } = req.body;
-        
-        // Check if doctor already exists
-        const doctorExists = await Doctor.findOne({ email });
-        if (doctorExists) {
-            return res.status(400).json({ success: false, message: 'Doctor already exists with this email' });
-        }
-        
-        // Hash password
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
-        
-        const doctor = await Doctor.create({
-            name,
-            email,
-            password: hashedPassword,
-            image,
-            speciality,
-            degree,
-            experience,
-            about,
-            fees,
-            address
-        });
-        
-        res.status(201).json({ 
-            success: true, 
-            data: doctor,
-            message: 'Doctor added successfully' 
-        });
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
-    }
+const isSlotAvailable = async (doctorId, date, time) => {
+  const doctor = await Doctor.findById(doctorId);
+  if (!doctor) return false;
+  if (!doctor.available) return false;
+  
+  const dateKey = new Date(date).toDateString();
+  const bookedSlots = doctor.slots_booked[dateKey] || [];
+  return !bookedSlots.includes(time);
 };
 
-// @desc    Update doctor (Admin only)
-// @route   PUT /api/doctors/:id
-// @access  Private/Admin
-export const updateDoctor = async (req, res) => {
-    try {
-        const doctor = await Doctor.findById(req.params.id);
-        if (!doctor) {
-            return res.status(404).json({ success: false, message: 'Doctor not found' });
+export const bookAppointment = async (req, res) => {
+  try {
+    const { doctorId, date, time, fee, doctorName, doctorSpecialty, doctorImage, doctorAddress } = req.body;
+    
+    const slotAvailable = await isSlotAvailable(doctorId, date, time);
+    if (!slotAvailable) {
+      return res.status(400).json({ success: false, message: 'This time slot is no longer available' });
+    }
+    
+    const appointment = await Appointment.create({
+      user: req.user._id,
+      doctorId,
+      doctorName,
+      doctorSpecialty,
+      doctorImage,
+      doctorAddress,
+      date,
+      time,
+      fee,
+      status: 'pending'
+    });
+    
+    const doctor = await Doctor.findById(doctorId);
+    const dateKey = new Date(date).toDateString();
+    if (!doctor.slots_booked[dateKey]) {
+      doctor.slots_booked[dateKey] = [];
+    }
+    doctor.slots_booked[dateKey].push(time);
+    await doctor.save();
+    
+    res.status(201).json({ success: true, data: appointment, message: 'Appointment booked successfully' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const getUserAppointments = async (req, res) => {
+  try {
+    const appointments = await Appointment.find({ user: req.user._id }).sort({ createdAt: -1 });
+
+    const appointmentsWithFlags = appointments.map(apt => {
+      const appointmentDate = new Date(apt.date);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const canCancel = appointmentDate >= today && apt.status === 'pending';
+      return { ...apt.toObject(), canCancel };
+    });
+    
+    res.json({ success: true, data: appointmentsWithFlags });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const cancelAppointment = async (req, res) => {
+  try {
+    const appointment = await Appointment.findById(req.params.id);
+    if (!appointment) {
+      return res.status(404).json({ success: false, message: 'Appointment not found' });
+    }
+    
+    if (appointment.user.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ success: false, message: 'Unauthorized' });
+    }
+    
+    const appointmentDate = new Date(appointment.date);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    if (appointmentDate < today) {
+      return res.status(400).json({ success: false, message: 'Cannot cancel past appointments' });
+    }
+    
+    const doctor = await Doctor.findById(appointment.doctorId);
+    if (doctor) {
+      const dateKey = new Date(appointment.date).toDateString();
+      if (doctor.slots_booked[dateKey]) {
+        doctor.slots_booked[dateKey] = doctor.slots_booked[dateKey].filter(t => t !== appointment.time);
+        if (doctor.slots_booked[dateKey].length === 0) {
+          delete doctor.slots_booked[dateKey];
         }
-        
-        const { name, image, speciality, degree, experience, about, fees, address, available } = req.body;
-        
-        doctor.name = name || doctor.name;
-        doctor.image = image || doctor.image;
-        doctor.speciality = speciality || doctor.speciality;
-        doctor.degree = degree || doctor.degree;
-        doctor.experience = experience || doctor.experience;
-        doctor.about = about || doctor.about;
-        doctor.fees = fees || doctor.fees;
-        doctor.address = address || doctor.address;
-        doctor.available = available !== undefined ? available : doctor.available;
-        
         await doctor.save();
-        
-        res.json({ success: true, data: doctor, message: 'Doctor updated successfully' });
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+      }
     }
+    
+    appointment.status = 'cancelled';
+    await appointment.save();
+    
+    res.json({ success: true, message: 'Appointment cancelled successfully' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
 };
 
-// @desc    Delete doctor (Admin only)
-// @route   DELETE /api/doctors/:id
-// @access  Private/Admin
-export const deleteDoctor = async (req, res) => {
-    try {
-        const doctor = await Doctor.findByIdAndDelete(req.params.id);
-        if (!doctor) {
-            return res.status(404).json({ success: false, message: 'Doctor not found' });
-        }
-        res.json({ success: true, message: 'Doctor deleted successfully' });
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+export const payForAppointment = async (req, res) => {
+  try {
+    const appointment = await Appointment.findById(req.params.id);
+    if (!appointment) {
+      return res.status(404).json({ success: false, message: 'Appointment not found' });
     }
-};
-
-// @desc    Update doctor availability slots
-// @route   PUT /api/doctors/:id/availability
-// @access  Private/Admin
-export const updateDoctorAvailability = async (req, res) => {
-    try {
-        const { date, slots } = req.body;
-        const doctor = await Doctor.findById(req.params.id);
-        
-        if (!doctor) {
-            return res.status(404).json({ success: false, message: 'Doctor not found' });
-        }
-        
-        const dateKey = new Date(date).toDateString();
-        
-        if (!doctor.slots_booked[dateKey]) {
-            doctor.slots_booked[dateKey] = [];
-        }
-        
-        // Update slots (remove or add)
-        slots.forEach(slot => {
-            const index = doctor.slots_booked[dateKey].indexOf(slot.time);
-            if (slot.isAvailable && index !== -1) {
-                doctor.slots_booked[dateKey].splice(index, 1);
-            } else if (!slot.isAvailable && index === -1) {
-                doctor.slots_booked[dateKey].push(slot.time);
-            }
-        });
-        
-        await doctor.save();
-        
-        res.json({ success: true, message: 'Availability updated successfully' });
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+    
+    if (appointment.user.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ success: false, message: 'Unauthorized' });
     }
-};
-
-// @desc    Get doctor availability for a date
-// @route   GET /api/doctors/:id/availability/:date
-// @access  Public
-export const getDoctorAvailability = async (req, res) => {
-    try {
-        const doctor = await Doctor.findById(req.params.id);
-        if (!doctor) {
-            return res.status(404).json({ success: false, message: 'Doctor not found' });
-        }
-        
-        const dateKey = new Date(req.params.date).toDateString();
-        const bookedSlots = doctor.slots_booked[dateKey] || [];
-        
-        res.json({ success: true, data: { bookedSlots } });
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
-    }
+    
+    appointment.status = 'paid';
+    await appointment.save();
+    
+    res.json({ success: true, message: 'Payment successful' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
 };

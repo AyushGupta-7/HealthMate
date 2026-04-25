@@ -309,3 +309,16 @@
 
 
 
+/* Add this to existing Login.css */
+.admin-hint {
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid #eef2f6;
+  text-align: center;
+  font-size: 0.75rem;
+  color: #8a9bb0;
+}
+
+.admin-hint p {
+  margin: 0;
+}
