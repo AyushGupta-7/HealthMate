@@ -14,11 +14,9 @@ import MyAppointments from './pages/MyAppointments'
 import About from './pages/About'
 import Contact from './pages/Contact'
 import ProtectedRoute from './components/ProtectedRoute'
-// import AdminDashboard from './pages/admin/AdminDashboard'
-// import AdminDoctors from './pages/admin/AdminDoctors'
-// import AdminUsers from './pages/admin/AdminUsers'
-// import AdminAppointments from './pages/admin/AdminAppointments'
-// import AdminLogin from './pages/admin/AdminLogin';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminDoctors from './pages/admin/AdminDoctors';
+import AdminAvailability from './pages/admin/AdminAvailability';
 import './App.css'
 
 function App() {
@@ -34,27 +32,11 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
 
-          {/* Admin Routes (Protected)
-          <Route path="/admin/dashboard" element={
-            <ProtectedRoute adminOnly={true}>
-              <AdminDashboard />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/doctors" element={
-            <ProtectedRoute adminOnly={true}>
-              <AdminDoctors />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/users" element={
-            <ProtectedRoute adminOnly={true}>
-              <AdminUsers />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/appointments" element={
-            <ProtectedRoute adminOnly={true}>
-              <AdminAppointments />
-            </ProtectedRoute>
-          } /> */}
+          {/* Admin Routes  */}
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/doctors" element={<AdminDoctors />} />
+          <Route path="/admin/availability" element={<AdminAvailability />} />
+
 
           {/* User Protected Routes */}
           <Route path="/dashboard" element={

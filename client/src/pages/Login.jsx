@@ -74,30 +74,21 @@ const Login = () => {
       setMessage({ type: '', text: '' })
       setErrors({})
       
-      // Check for hardcoded admin credentials first
-      if (formData.email === ADMIN_EMAIL && formData.password === ADMIN_PASSWORD) {
-        // Admin login - hardcoded
-        localStorage.setItem('token', 'admin-hardcoded-token')
-        localStorage.setItem('userName', 'Admin User')
-        localStorage.setItem('userEmail', formData.email)
-        localStorage.setItem('userId', 'admin-id')
-        localStorage.setItem('userRole', 'admin')
-        
-        // Handle remember me
-        if (rememberMe) {
-          localStorage.setItem('savedEmail', formData.email)
-        } else {
-          localStorage.removeItem('savedEmail')
-        }
-        
-        setMessage({ type: 'success', text: 'Admin login successful! Redirecting...' })
-        
-        setTimeout(() => {
-          navigate('/admin/dashboard')
-        }, 1500)
-        setLoading(false)
-        return
-      }
+      // Admin login check - should redirect to /admin/dashboard, NOT /admin/login
+if (formData.email === ADMIN_EMAIL && formData.password === ADMIN_PASSWORD) {
+  localStorage.setItem('token', 'admin-token');
+  localStorage.setItem('userRole', 'admin');
+  localStorage.setItem('userName', 'Admin User');
+  localStorage.setItem('userEmail', formData.email);
+  
+  setMessage({ type: 'success', text: 'Admin login successful! Redirecting...' });
+  
+  setTimeout(() => {
+    navigate('/admin/dashboard');  // Make sure this is /admin/dashboard
+  }, 1500);
+  setLoading(false);
+  return;
+}
       
       // Regular user login - try API
       try {
@@ -260,8 +251,6 @@ const Login = () => {
           <div className="auth-footer">
             <p>Don't have an account? <Link to="/signup" className="auth-link">Sign up now</Link></p>
           </div>
-          
-          {/* Admin login hint - only shown in development */}
         </div>
       </div>
     </div>

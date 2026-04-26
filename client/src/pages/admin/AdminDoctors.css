@@ -1,0 +1,283 @@
+.admin-doctors-container {
+  padding: 20px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.page-header h1 {
+  font-size: 1.8rem;
+  color: #1a2c3e;
+  margin: 0;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.add-btn {
+  background: #2c5f8a;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.delete-btn-header {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.message {
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.message.success {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border-left: 4px solid #2e7d32;
+}
+
+.message.error {
+  background: #ffebee;
+  color: #c62828;
+  border-left: 4px solid #c62828;
+}
+
+.doctors-table-wrapper {
+  background: white;
+  border-radius: 12px;
+  overflow-x: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.doctors-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.doctors-table th,
+.doctors-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #eef2f6;
+}
+
+.doctors-table th {
+  background: #f8f9fa;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.doctor-thumb {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.status-badge.available {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-badge.unavailable {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.loading {
+  text-align: center;
+  padding: 50px;
+  font-size: 1.1rem;
+  color: #666;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 16px;
+  padding: 25px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.modal-content h2 {
+  margin-bottom: 20px;
+  color: #1a2c3e;
+}
+
+.modal-content h3 {
+  margin: 15px 0 10px;
+  color: #1a2c3e;
+  font-size: 1rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.modal-content input,
+.modal-content select,
+.modal-content textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #e0e6ed;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.modal-content input:focus,
+.modal-content select:focus,
+.modal-content textarea:focus {
+  outline: none;
+  border-color: #2c5f8a;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.modal-buttons button {
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.modal-buttons button[type="submit"] {
+  background: #2c5f8a;
+  color: white;
+  border: none;
+}
+
+.modal-buttons button[type="submit"]:hover {
+  background: #1e4568;
+}
+
+.delete-confirm-btn {
+  background: #e74c3c;
+  color: white;
+  border: none;
+}
+
+.delete-confirm-btn:hover {
+  background: #c0392b;
+}
+
+.delete-modal {
+  max-width: 400px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #e0e6ed;
+  border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .header-buttons {
+    width: 100%;
+  }
+  
+  .add-btn, .delete-btn-header {
+    flex: 1;
+    text-align: center;
+  }
+}
+
+
+
+.action-btn {
+  padding: 6px 12px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.action-btn.make-unavailable {
+  background: #e74c3c;
+  color: white;
+}
+
+.action-btn.make-unavailable:hover {
+  background: #c0392b;
+}
+
+.action-btn.make-available {
+  background: #27ae60;
+  color: white;
+}
+
+.action-btn.make-available:hover {
+  background: #229954;
+}

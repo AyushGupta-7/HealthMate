@@ -11,7 +11,7 @@ const DoctorDetails = () => {
   const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
-  const [bookedSlots, setBookedSlots] = useState([]);
+  const [unavailableSlots, setUnavailableSlots] = useState([]);
   const [message, setMessage] = useState({ type: '', text: '' });
 
   useEffect(() => {
@@ -31,19 +31,34 @@ const DoctorDetails = () => {
     }
   };
 
+  // Fetch unavailable slots when date changes
   useEffect(() => {
     if (selectedDate && doctor) {
-      fetchBookedSlots();
+      fetchUnavailableSlots();
     }
   }, [selectedDate, doctor]);
 
-  const fetchBookedSlots = async () => {
+  const fetchUnavailableSlots = async () => {
     try {
-      const response = await API.get(`/doctors/${id}/availability/${selectedDate.fullDate}`);
-      setBookedSlots(response.data.data?.bookedSlots || []);
+      // Format date to YYYY-MM-DD for the API
+      const year = selectedDate.fullDate.getFullYear();
+      const month = String(selectedDate.fullDate.getMonth() + 1).padStart(2, '0');
+      const day = String(selectedDate.fullDate.getDate()).padStart(2, '0');
+      const formattedDate = `${year}-${month}-${day}`;
+      
+      console.log('Fetching slots for date:', formattedDate);
+      
+      // Use the correct endpoint
+      const response = await API.get(`/doctors/${id}/slots/${formattedDate}`);
+      console.log('Response:', response.data);
+      
+      if (response.data.success) {
+        // Use unavailableSlots from the response (not bookedSlots)
+        setUnavailableSlots(response.data.data?.unavailableSlots || []);
+      }
     } catch (error) {
       console.error('Error fetching slots:', error);
-      setBookedSlots([]);
+      setUnavailableSlots([]);
     }
   };
 
@@ -72,18 +87,27 @@ const DoctorDetails = () => {
 
   const dates = generateDates();
 
-  const isSlotBooked = (time) => {
-    return bookedSlots.includes(time);
+  const isSlotUnavailable = (time) => {
+    return unavailableSlots.includes(time);
   };
 
   const handleDateSelect = (date) => {
     setSelectedDate(date);
     setSelectedTime(null);
+    // Clear any previous messages
+    setMessage({ type: '', text: '' });
   };
 
   const handleBookAppointment = async () => {
     if (!selectedDate || !selectedTime) {
       setMessage({ type: 'error', text: 'Please select date and time' });
+      setTimeout(() => setMessage({ type: '', text: '' }), 3000);
+      return;
+    }
+
+    // Double check if slot is still available
+    if (isSlotUnavailable(selectedTime)) {
+      setMessage({ type: 'error', text: 'This time slot is no longer available' });
       setTimeout(() => setMessage({ type: '', text: '' }), 3000);
       return;
     }
@@ -196,57 +220,74 @@ const DoctorDetails = () => {
             </div>
           </div>
 
-          <div className="booking-slots-card">
-            <h2>Booking slots</h2>
-            
-            <div className="dates-scroll-container">
-              <div className="dates-wrapper">
-                {dates.map((date, index) => (
-                  <div 
-                    key={index} 
-                    className={`date-card ${selectedDate?.date === date.date ? 'selected' : ''}`}
-                    onClick={() => handleDateSelect(date)}
-                  >
-                    <div className="date-day">{date.day}</div>
-                    <div className="date-number">{date.date}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="times-scroll-container">
-              <div className="times-wrapper">
-                {timeSlots.map((time, index) => {
-                  const isBooked = selectedDate ? isSlotBooked(time) : false;
-                  return (
-                    <button
-                      key={index}
-                      className={`time-slot-btn ${selectedTime === time ? 'selected' : ''} ${isBooked ? 'booked' : ''}`}
-                      onClick={() => !isBooked && setSelectedTime(time)}
-                      disabled={!selectedDate || isBooked}
+          {doctor.available ? (
+            <div className="booking-slots-card">
+              <h2>Booking slots</h2>
+              
+              {/* Dates */}
+              <div className="dates-scroll-container">
+                <div className="dates-wrapper">
+                  {dates.map((date, index) => (
+                    <div 
+                      key={index} 
+                      className={`date-card ${selectedDate?.date === date.date ? 'selected' : ''}`}
+                      onClick={() => handleDateSelect(date)}
                     >
-                      {time}
-                      {isBooked && <span className="booked-label">(Booked)</span>}
-                    </button>
-                  );
-                })}
+                      <div className="date-day">{date.day}</div>
+                      <div className="date-number">{date.date}</div>
+                    </div>
+                  ))}
+                </div>
               </div>
+
+              {/* Time Slots - Only show if a date is selected */}
+              {selectedDate && (
+                <>
+                  <div className="times-scroll-container">
+                    <div className="times-wrapper">
+                      {timeSlots.map((time, index) => {
+                        const isUnavailable = isSlotUnavailable(time);
+                        return (
+                          <button
+                            key={index}
+                            className={`time-slot-btn ${selectedTime === time ? 'selected' : ''} ${isUnavailable ? 'unavailable' : ''}`}
+                            onClick={() => !isUnavailable && setSelectedTime(time)}
+                            disabled={isUnavailable}
+                            style={isUnavailable ? { opacity: 0.5, textDecoration: 'line-through', cursor: 'not-allowed' } : {}}
+                          >
+                            {time}
+                            {isUnavailable && <span className="unavailable-label"> (Unavailable)</span>}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {selectedTime && (
+                    <div className="selected-slot-info">
+                      <p>Selected: <strong>{selectedDate.formattedDate}</strong> at <strong>{selectedTime}</strong></p>
+                    </div>
+                  )}
+
+                  <button 
+                    className="book-appointment-btn" 
+                    onClick={handleBookAppointment}
+                    disabled={!selectedTime}
+                  >
+                    Book an appointment
+                  </button>
+                </>
+              )}
             </div>
-
-            {selectedDate && selectedTime && (
-              <div className="selected-slot-info">
-                <p>Selected: <strong>{selectedDate.formattedDate}</strong> at <strong>{selectedTime}</strong></p>
-              </div>
-            )}
-
-            <button 
-              className="book-appointment-btn" 
-              onClick={handleBookAppointment}
-              disabled={!selectedDate || !selectedTime || !doctor.available}
-            >
-              {!doctor.available ? 'Doctor Unavailable' : 'Book an appointment'}
-            </button>
-          </div>
+          ) : (
+            <div className="doctor-unavailable-card">
+              <h2>Doctor Currently Unavailable</h2>
+              <p>This doctor is not accepting appointments at the moment. Please check back later or try another doctor.</p>
+              <button className="back-btn" onClick={() => navigate('/doctors')}>
+                Find Other Doctors
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </Layout>

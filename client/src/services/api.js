@@ -39,9 +39,9 @@ API.interceptors.response.use(
       localStorage.removeItem('userName');
       localStorage.removeItem('userEmail');
       
-      if (window.location.pathname.includes('/admin')) {
-        window.location.href = '/admin/login';
-      } 
+      // if (window.location.pathname.includes('/admin')) {
+      //   window.location.href = '/admin/login';
+      // } 
     }
     return Promise.reject(error);
   }

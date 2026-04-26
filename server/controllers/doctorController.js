@@ -44,6 +44,7 @@ export const getDoctorsBySpecialty = async (req, res) => {
   }
 };
 
+// Helper function to check if a slot is available
 const isSlotAvailable = async (doctorId, date, time) => {
   const doctor = await Doctor.findById(doctorId);
   if (!doctor) return false;
@@ -58,11 +59,26 @@ export const bookAppointment = async (req, res) => {
   try {
     const { doctorId, date, time, fee, doctorName, doctorSpecialty, doctorImage, doctorAddress } = req.body;
     
-    const slotAvailable = await isSlotAvailable(doctorId, date, time);
-    if (!slotAvailable) {
-      return res.status(400).json({ success: false, message: 'This time slot is no longer available' });
+    // Find the doctor first
+    const doctor = await Doctor.findById(doctorId);
+    if (!doctor) {
+      return res.status(404).json({ success: false, message: 'Doctor not found' });
     }
     
+    // Check if doctor is available overall
+    if (!doctor.available) {
+      return res.status(400).json({ success: false, message: 'This doctor is currently not accepting appointments' });
+    }
+    
+    // Check if the specific time slot is available
+    const dateKey = new Date(date).toDateString();
+    const bookedSlots = doctor.slots_booked[dateKey] || [];
+    
+    if (bookedSlots.includes(time)) {
+      return res.status(400).json({ success: false, message: 'This time slot is already booked' });
+    }
+    
+    // Create appointment
     const appointment = await Appointment.create({
       user: req.user._id,
       doctorId,
@@ -76,8 +92,7 @@ export const bookAppointment = async (req, res) => {
       status: 'pending'
     });
     
-    const doctor = await Doctor.findById(doctorId);
-    const dateKey = new Date(date).toDateString();
+    // Book the slot
     if (!doctor.slots_booked[dateKey]) {
       doctor.slots_booked[dateKey] = [];
     }
@@ -86,6 +101,7 @@ export const bookAppointment = async (req, res) => {
     
     res.status(201).json({ success: true, data: appointment, message: 'Appointment booked successfully' });
   } catch (error) {
+    console.error('Booking error:', error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
@@ -127,6 +143,7 @@ export const cancelAppointment = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Cannot cancel past appointments' });
     }
     
+    // Free up the slot in doctor's schedule
     const doctor = await Doctor.findById(appointment.doctorId);
     if (doctor) {
       const dateKey = new Date(appointment.date).toDateString();
@@ -164,6 +181,69 @@ export const payForAppointment = async (req, res) => {
     
     res.json({ success: true, message: 'Payment successful' });
   } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+
+// Add this missing function - Get available slots for a doctor on a specific date
+export const getAvailableSlots = async (req, res) => {
+  try {
+    const { doctorId, date } = req.params;
+    const doctor = await Doctor.findById(doctorId);
+    
+    if (!doctor) {
+      return res.status(404).json({ success: false, message: 'Doctor not found' });
+    }
+    
+    // Create date key in the same format used when saving
+    const inputDate = new Date(date);
+    const dateKey = inputDate.toDateString();
+    
+    console.log('Input date:', date);
+    console.log('Generated dateKey:', dateKey);
+    console.log('All stored slots_booked:', doctor.slots_booked);
+    
+    // Get slots marked unavailable by admin
+    const adminBlockedSlots = doctor.slots_booked[dateKey] || [];
+    
+    // Get slots already booked by users
+    const bookedAppointments = await Appointment.find({
+      doctorId: doctorId,
+      date: date,
+      status: { $nin: ['cancelled'] }
+    });
+    
+    const bookedSlots = bookedAppointments.map(apt => apt.time);
+    
+    // Combine both
+    const allUnavailableSlots = [...new Set([...adminBlockedSlots, ...bookedSlots])];
+    
+    console.log('Admin blocked slots:', adminBlockedSlots);
+    console.log('Booked appointments:', bookedSlots);
+    console.log('All unavailable slots:', allUnavailableSlots);
+    
+    const allSlots = [
+      "10:30", "11:00", "11:30", "12:00", "12:30", "13:00",
+      "13:30", "14:00", "14:30", "15:00", "15:30", "16:00",
+      "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00"
+    ];
+    
+    const availableSlots = allSlots.filter(slot => !allUnavailableSlots.includes(slot));
+    
+    res.json({ 
+      success: true, 
+      data: { 
+        availableSlots,
+        unavailableSlots: allUnavailableSlots,
+        adminBlockedSlots,
+        bookedSlots,
+        dateKey,
+        isDoctorAvailable: doctor.available 
+      } 
+    });
+  } catch (error) {
+    console.error('Error fetching available slots:', error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
