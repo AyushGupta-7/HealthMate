@@ -52,3 +52,19 @@ lerna-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+
+# =========================
+# SCRIPTS FOLDER (ADD THIS)
+# =========================
+scripts/
+server/scripts/
+client/scripts/
+**/scripts/
+
+# =========================
+# UPLOADS
+# =========================
+uploads/
+server/uploads/
+**/uploads/
