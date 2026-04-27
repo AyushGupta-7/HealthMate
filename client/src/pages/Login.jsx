@@ -84,7 +84,7 @@ if (formData.email === ADMIN_EMAIL && formData.password === ADMIN_PASSWORD) {
   setMessage({ type: 'success', text: 'Admin login successful! Redirecting...' });
   
   setTimeout(() => {
-    navigate('/admin/dashboard');  // Make sure this is /admin/dashboard
+    navigate('/admin/dashboard');
   }, 1500);
   setLoading(false);
   return;
@@ -128,7 +128,7 @@ if (formData.email === ADMIN_EMAIL && formData.password === ADMIN_PASSWORD) {
         
         const errorMessage = error.response?.data?.message || 'Login failed. Please try again.'
         
-        // Show specific error messages
+        // Show error messages
         if (errorMessage.toLowerCase().includes('user not found') || 
             errorMessage.toLowerCase().includes('no account found')) {
           setErrors({ email: 'Email does not exist' })

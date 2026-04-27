@@ -43,7 +43,7 @@ const MyAppointments = () => {
       
       if (response.data.success) {
         setMessage({ type: 'success', text: 'Payment successful!' })
-        fetchAppointments() // Refresh the list
+        fetchAppointments()
       }
     } catch (error) {
       console.error('Payment error:', error)

@@ -10,8 +10,15 @@ const appointmentSchema = new mongoose.Schema({
   date: { type: String, required: true },
   time: { type: String, required: true },
   fee: { type: Number, required: true },
-  status: { type: String, enum: ['pending', 'paid', 'completed', 'cancelled'], default: 'pending' },
+  status: { 
+    type: String, 
+    enum: ['pending', 'paid', 'completed', 'cancelled'], 
+    default: 'pending' 
+  },
   createdAt: { type: Date, default: Date.now }
 });
+
+// Add compound index to prevent duplicate appointments
+appointmentSchema.index({ doctorId: 1, date: 1, time: 1 }, { unique: true });
 
 export default mongoose.model('Appointment', appointmentSchema);

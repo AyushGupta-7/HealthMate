@@ -181,7 +181,7 @@ const Profile = () => {
     }
   };
 
-  // Handle clearing individual fields
+  
   const clearField = (fieldName) => {
     setEditData(prev => ({ ...prev, [fieldName]: '' }));
   };

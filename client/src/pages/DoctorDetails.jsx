@@ -40,7 +40,6 @@ const DoctorDetails = () => {
 
   const fetchUnavailableSlots = async () => {
     try {
-      // Format date to YYYY-MM-DD for the API
       const year = selectedDate.fullDate.getFullYear();
       const month = String(selectedDate.fullDate.getMonth() + 1).padStart(2, '0');
       const day = String(selectedDate.fullDate.getDate()).padStart(2, '0');
@@ -48,12 +47,10 @@ const DoctorDetails = () => {
       
       console.log('Fetching slots for date:', formattedDate);
       
-      // Use the correct endpoint
       const response = await API.get(`/doctors/${id}/slots/${formattedDate}`);
       console.log('Response:', response.data);
       
       if (response.data.success) {
-        // Use unavailableSlots from the response (not bookedSlots)
         setUnavailableSlots(response.data.data?.unavailableSlots || []);
       }
     } catch (error) {
@@ -94,7 +91,6 @@ const DoctorDetails = () => {
   const handleDateSelect = (date) => {
     setSelectedDate(date);
     setSelectedTime(null);
-    // Clear any previous messages
     setMessage({ type: '', text: '' });
   };
 
@@ -105,9 +101,8 @@ const DoctorDetails = () => {
       return;
     }
 
-    // Double check if slot is still available
     if (isSlotUnavailable(selectedTime)) {
-      setMessage({ type: 'error', text: 'This time slot is no longer available' });
+      setMessage({ type: 'error', text: '❌ This time slot is no longer available. Please select another time.' });
       setTimeout(() => setMessage({ type: '', text: '' }), 3000);
       return;
     }
@@ -129,14 +124,30 @@ const DoctorDetails = () => {
       const response = await API.post('/appointments', appointmentData);
       
       if (response.data.success) {
-        setMessage({ type: 'success', text: 'Appointment booked successfully! Redirecting...' });
+        setMessage({ type: 'success', text: '✅ Appointment booked successfully! Redirecting...' });
         setTimeout(() => {
           navigate('/my-appointments');
         }, 1500);
       }
     } catch (error) {
-      setMessage({ type: 'error', text: error.response?.data?.message || 'Failed to book appointment' });
-      setTimeout(() => setMessage({ type: '', text: '' }), 3000);
+      console.error('Booking error:', error);
+      
+      const errorMsg = error.response?.data?.message || '';
+      
+      if (errorMsg.includes('already booked') || errorMsg.includes('duplicate') || error.response?.status === 400) {
+        setMessage({ 
+          type: 'error', 
+          text: '❌ Slot is already booked. Please check for another slot. (This slot might become available if cancelled)' 
+        });
+      } else {
+        setMessage({ type: 'error', text: 'Failed to book appointment. Please try again.' });
+      }
+      
+      setTimeout(() => setMessage({ type: '', text: '' }), 4000);
+      
+      if (selectedDate) {
+        await fetchUnavailableSlots();
+      }
     }
   };
 
@@ -184,12 +195,7 @@ const DoctorDetails = () => {
     <Layout>
       <div className="doctor-details-page">
         <div className="doctor-details-container">
-          {message.text && (
-            <div className={`message-alert ${message.type}`}>
-              {message.type === 'success' ? '✓' : '⚠️'} {message.text}
-            </div>
-          )}
-
+          {/* Doctor Info Card */}
           <div className="doctor-info-card">
             <div className="doctor-info2">
               <div className='imageBg'>
@@ -219,6 +225,13 @@ const DoctorDetails = () => {
               </div>
             </div>
           </div>
+
+          {/* Message Alert - Moved after doctor-info-card */}
+          {message.text && (
+            <div className={`message-alert ${message.type}`}>
+              {message.type === 'success' ? '✓' : '⚠️'} {message.text}
+            </div>
+          )}
 
           {doctor.available ? (
             <div className="booking-slots-card">

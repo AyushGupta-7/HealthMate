@@ -59,7 +59,7 @@ export const bookAppointment = async (req, res) => {
   try {
     const { doctorId, date, time, fee, doctorName, doctorSpecialty, doctorImage, doctorAddress } = req.body;
     
-    // Find the doctor first
+    // Find the doctor
     const doctor = await Doctor.findById(doctorId);
     if (!doctor) {
       return res.status(404).json({ success: false, message: 'Doctor not found' });
@@ -70,12 +70,30 @@ export const bookAppointment = async (req, res) => {
       return res.status(400).json({ success: false, message: 'This doctor is currently not accepting appointments' });
     }
     
-    // Check if the specific time slot is available
-    const dateKey = new Date(date).toDateString();
-    const bookedSlots = doctor.slots_booked[dateKey] || [];
+    // Check if this specific slot is already booked by another user (excluding cancelled)
+const existingAppointment = await Appointment.findOne({
+  doctorId: doctorId,
+  date: date,
+  time: time,
+  status: { $nin: ['cancelled'] }
+});
+
+if (existingAppointment) {
+  return res.status(400).json({ 
+    success: false, 
+    message: 'Slot is already booked. Please check for another slot. (This slot might become available if cancelled)' 
+  });
+}
     
-    if (bookedSlots.includes(time)) {
-      return res.status(400).json({ success: false, message: 'This time slot is already booked' });
+    // Check if admin marked this slot as unavailable
+    const dateKey = new Date(date).toDateString();
+    const adminBlockedSlots = doctor.slots_booked[dateKey] || [];
+    
+    if (adminBlockedSlots.includes(time)) {
+      return res.status(400).json({ 
+        success: false, 
+        message: '❌ This time slot is not available. Please select another time.' 
+      });
     }
     
     // Create appointment
@@ -92,14 +110,16 @@ export const bookAppointment = async (req, res) => {
       status: 'pending'
     });
     
-    // Book the slot
+    // Mark the slot in doctor's slots_booked
     if (!doctor.slots_booked[dateKey]) {
       doctor.slots_booked[dateKey] = [];
     }
-    doctor.slots_booked[dateKey].push(time);
-    await doctor.save();
+    if (!doctor.slots_booked[dateKey].includes(time)) {
+      doctor.slots_booked[dateKey].push(time);
+      await doctor.save();
+    }
     
-    res.status(201).json({ success: true, data: appointment, message: 'Appointment booked successfully' });
+    res.status(201).json({ success: true, data: appointment, message: '✅ Appointment booked successfully!' });
   } catch (error) {
     console.error('Booking error:', error);
     res.status(500).json({ success: false, message: error.message });
@@ -143,7 +163,7 @@ export const cancelAppointment = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Cannot cancel past appointments' });
     }
     
-    // Free up the slot in doctor's schedule
+    // Free up the slot in doctor's schedule (remove from slots_booked)
     const doctor = await Doctor.findById(appointment.doctorId);
     if (doctor) {
       const dateKey = new Date(appointment.date).toDateString();
@@ -159,7 +179,7 @@ export const cancelAppointment = async (req, res) => {
     appointment.status = 'cancelled';
     await appointment.save();
     
-    res.json({ success: true, message: 'Appointment cancelled successfully' });
+    res.json({ success: true, message: '✅ Appointment cancelled successfully. This slot is now available for others to book.' });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -186,7 +206,7 @@ export const payForAppointment = async (req, res) => {
 };
 
 
-// Add this missing function - Get available slots for a doctor on a specific date
+// Get available slots for a doctor on a specific date
 export const getAvailableSlots = async (req, res) => {
   try {
     const { doctorId, date } = req.params;
