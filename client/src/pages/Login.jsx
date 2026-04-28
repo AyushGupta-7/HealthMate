@@ -3,6 +3,12 @@ import { Link, useNavigate } from 'react-router-dom'
 import API from '../services/api'
 import './Login.css'
 
+// Import PNG icons
+import mailIcon from '../assets/icons/mail.png'
+import padlockIcon from '../assets/icons/padlock.png'
+import eyeIcon from '../assets/icons/eye.png'
+import hideIcon from '../assets/icons/hide.png'
+
 const Login = () => {
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
@@ -11,9 +17,9 @@ const Login = () => {
   })
   const [errors, setErrors] = useState({})
   const [showPassword, setShowPassword] = useState(false)
-  const [message, setMessage] = useState({ type: '', text: '' })
   const [loading, setLoading] = useState(false)
   const [rememberMe, setRememberMe] = useState(false)
+  const [redirectMsg, setRedirectMsg] = useState('')
 
   // Get admin credentials from environment variables
   const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL
@@ -41,9 +47,8 @@ const Login = () => {
         [name]: ''
       }))
     }
-
-    if (message.text) {
-      setMessage({ type: '', text: '' })
+    if (redirectMsg) {
+      setRedirectMsg('')
     }
   }
 
@@ -71,24 +76,24 @@ const Login = () => {
     
     if (Object.keys(newErrors).length === 0) {
       setLoading(true)
-      setMessage({ type: '', text: '' })
       setErrors({})
+      setRedirectMsg('')
       
-      // Admin login check - should redirect to /admin/dashboard, NOT /admin/login
-if (formData.email === ADMIN_EMAIL && formData.password === ADMIN_PASSWORD) {
-  localStorage.setItem('token', 'admin-token');
-  localStorage.setItem('userRole', 'admin');
-  localStorage.setItem('userName', 'Admin User');
-  localStorage.setItem('userEmail', formData.email);
-  
-  setMessage({ type: 'success', text: 'Admin login successful! Redirecting...' });
-  
-  setTimeout(() => {
-    navigate('/admin/dashboard');
-  }, 1500);
-  setLoading(false);
-  return;
-}
+      // Admin login check
+      if (formData.email === ADMIN_EMAIL && formData.password === ADMIN_PASSWORD) {
+        localStorage.setItem('token', 'admin-token')
+        localStorage.setItem('userRole', 'admin')
+        localStorage.setItem('userName', 'Admin User')
+        localStorage.setItem('userEmail', formData.email)
+        
+        setRedirectMsg('✓ Admin login successful! Redirecting to admin dashboard...')
+        
+        setTimeout(() => {
+          navigate('/admin/dashboard')
+        }, 1500)
+        setLoading(false)
+        return
+      }
       
       // Regular user login - try API
       try {
@@ -99,23 +104,20 @@ if (formData.email === ADMIN_EMAIL && formData.password === ADMIN_PASSWORD) {
         
         const { token, data } = response.data
         
-        // Store token and user data
         localStorage.setItem('token', token)
         localStorage.setItem('userName', data.name)
         localStorage.setItem('userEmail', data.email)
         localStorage.setItem('userId', data._id)
         localStorage.setItem('userRole', data.role || 'user')
         
-        // Handle remember me
         if (rememberMe) {
           localStorage.setItem('savedEmail', formData.email)
         } else {
           localStorage.removeItem('savedEmail')
         }
         
-        setMessage({ type: 'success', text: 'Login successful! Redirecting...' })
+        setRedirectMsg('✓ Login successful! Redirecting to dashboard...')
         
-        // Redirect based on role
         setTimeout(() => {
           if (data.role === 'admin') {
             navigate('/admin/dashboard')
@@ -128,43 +130,25 @@ if (formData.email === ADMIN_EMAIL && formData.password === ADMIN_PASSWORD) {
         
         const errorMessage = error.response?.data?.message || 'Login failed. Please try again.'
         
-        // Show error messages
         if (errorMessage.toLowerCase().includes('user not found') || 
             errorMessage.toLowerCase().includes('no account found')) {
           setErrors({ email: 'Email does not exist' })
-          setMessage({ 
-            type: 'error', 
-            text: 'Email does not exist. Please check your email or sign up.' 
-          })
         } else if (errorMessage.toLowerCase().includes('incorrect password') || 
                    errorMessage.toLowerCase().includes('wrong password')) {
           setErrors({ password: 'Invalid password' })
-          setMessage({ 
-            type: 'error', 
-            text: 'Invalid password. Please try again.' 
-          })
         } else {
-          setMessage({ 
-            type: 'error', 
-            text: errorMessage
-          })
+          setErrors({ general: errorMessage })
         }
         
-        // Clear error messages after 2 seconds
         setTimeout(() => {
-          setMessage({ type: '', text: '' })
           setErrors({})
-        }, 2000)
+        }, 5000)
       } finally {
         setLoading(false)
       }
     } else {
       setErrors(newErrors)
-      setMessage({ type: 'error', text: 'Please fix the errors above' })
-      setTimeout(() => {
-        setMessage({ type: '', text: '' })
-        setErrors({})
-      }, 2000)
+      setTimeout(() => setErrors({}), 5000)
       setLoading(false)
     }
   }
@@ -183,17 +167,14 @@ if (formData.email === ADMIN_EMAIL && formData.password === ADMIN_PASSWORD) {
             <p>Login to access your health dashboard</p>
           </div>
 
-          {message.text && (
-            <div className={`message-alert ${message.type}`}>
-              {message.type === 'success' ? '✓' : '⚠️'} {message.text}
-            </div>
-          )}
+          {errors.general && <div className="error-text">{errors.general}</div>}
+          {redirectMsg && <div className="redirect-msg">{redirectMsg}</div>}
 
           <form onSubmit={handleSubmit} className="auth-form">
             <div className="form-group">
               <label htmlFor="email">Email Address</label>
               <div className="input-wrapper">
-                <span className="input-icon">📧</span>
+                <img src={mailIcon} alt="email" className="input-icon" />
                 <input
                   type="email"
                   id="email"
@@ -204,13 +185,13 @@ if (formData.email === ADMIN_EMAIL && formData.password === ADMIN_PASSWORD) {
                   className={errors.email ? 'error' : ''}
                 />
               </div>
-              {errors.email && <span className="error-message">{errors.email}</span>}
+              {errors.email && <div className="error-text">{errors.email}</div>}
             </div>
 
             <div className="form-group">
               <label htmlFor="password">Password</label>
               <div className="input-wrapper">
-                <span className="input-icon">🔒</span>
+                <img src={padlockIcon} alt="password" className="input-icon" />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   id="password"
@@ -225,10 +206,10 @@ if (formData.email === ADMIN_EMAIL && formData.password === ADMIN_PASSWORD) {
                   className="toggle-password"
                   onClick={() => setShowPassword(!showPassword)}
                 >
-                  {showPassword ? '🙈' : '👁️'}
+                  <img src={showPassword ? eyeIcon : hideIcon} alt="toggle" className="toggle-icon" />
                 </button>
               </div>
-              {errors.password && <span className="error-message">{errors.password}</span>}
+              {errors.password && <div className="error-text">{errors.password}</div>}
             </div>
 
             <div className="form-options">

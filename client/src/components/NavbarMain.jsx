@@ -3,6 +3,12 @@ import { Link, useNavigate } from 'react-router-dom'
 import './NavbarMain.css'
 import healthmateLogo from '../assets/images/healthmateLogo.png'
 
+// Import PNG icons
+import userIcon from '../assets/icons/user.png'
+import scheduleIcon from '../assets/icons/schedule.png'
+import reportIcon from '../assets/icons/report.png'
+import exitIcon from '../assets/icons/exit.png'
+
 const NavbarMain = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
@@ -93,23 +99,23 @@ const NavbarMain = () => {
                 </div>
                 <div className="dropdown-divider"></div>
                 <button className="dropdown-item" onClick={handleMyProfile}>
-                  <span className="dropdown-icon">👤</span>
+                  <img src={userIcon} alt="Profile" className="dropdown-icon-img" />
                   My Profile
                 </button>
                 <button className="dropdown-item" onClick={handleMyAppointments}>
-                  <span className="dropdown-icon">📅</span>
+                  <img src={scheduleIcon} alt="Appointments" className="dropdown-icon-img" />
                   My Appointments
                 </button>
                 <button className="dropdown-item" onClick={() => {
                   setIsDropdownOpen(false)
                   navigate('/report-dashboard')
                 }}>
-                  <span className="dropdown-icon">📊</span>
+                  <img src={reportIcon} alt="Reports" className="dropdown-icon-img" />
                   My Reports
                 </button>
                 <div className="dropdown-divider"></div>
                 <button className="dropdown-item logout-item" onClick={handleLogout}>
-                  <span className="dropdown-icon">🚪</span>
+                  <img src={exitIcon} alt="Logout" className="dropdown-icon-img" />
                   Logout
                 </button>
               </div>

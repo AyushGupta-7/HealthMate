@@ -10,7 +10,7 @@
 }
 
 .nav-container2 {
-  max-width: calc(100% - 45px); /* 30px left + 15px right */
+  max-width: calc(100% - 45px);
   margin-left: 80px;
   margin-right: 15px;
   padding: 1rem 2rem;
@@ -23,6 +23,7 @@
   display: flex;
   align-items: center;
 }
+
 .nav-logo h1 {
   font-size: 2.1rem;
 }
@@ -31,6 +32,7 @@
   text-decoration: none;
   display: flex;
   align-items: center;
+  gap: 0.5rem;
 }
 
 .logo-image {
@@ -61,14 +63,15 @@
 
 .nav-links li a {
   text-decoration: none;
-  color: #2c3e50;
+  color: #1a3c5e;
   font-weight: 500;
   transition: color 0.3s ease;
   cursor: pointer;
+  font-size: 0.95rem;
 }
 
 .nav-links li a:hover {
-  color: #4a90e2;
+  color: #2c6e9e;
 }
 
 .user-menu {
@@ -79,7 +82,7 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2c6e9e 0%, #1e5a85 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -132,20 +135,20 @@
 .dropdown-user-name {
   display: block;
   font-weight: 600;
-  color: #1e3c72;
+  color: #1a3c5e;
   font-size: 0.95rem;
   margin-bottom: 0.25rem;
 }
 
 .dropdown-user-email {
   display: block;
-  color: #7f8c8d;
+  color: #8a9bb0;
   font-size: 0.8rem;
 }
 
 .dropdown-divider {
   height: 1px;
-  background: #e9ecef;
+  background: #eef2f6;
   margin: 0.5rem 0;
 }
 
@@ -161,19 +164,25 @@
   align-items: center;
   gap: 0.75rem;
   font-size: 0.9rem;
-  color: #2c3e50;
+  color: #1a3c5e;
 }
 
 .dropdown-item:hover {
   background: #f8f9fa;
 }
 
-.dropdown-icon {
-  font-size: 1.1rem;
+.dropdown-icon-img {
+  width: 18px;
+  height: 18px;
+  opacity: 0.7;
+}
+
+.dropdown-item:hover .dropdown-icon-img {
+  opacity: 1;
 }
 
 .logout-item {
-  color: #e74c3c;
+  color: #c0392b;
 }
 
 .logout-item:hover {
@@ -189,7 +198,7 @@
 .hamburger span {
   width: 25px;
   height: 3px;
-  background: #1e3c72;
+  background: #1a3c5e;
   margin: 3px 0;
   transition: 0.3s;
 }
@@ -203,6 +212,10 @@
   
   .logo-image {
     height: 38px;
+  }
+  
+  .nav-logo h1 {
+    font-size: 1.5rem;
   }
   
   .hamburger {
@@ -253,8 +266,17 @@
     height: 32px;
   }
   
+  .nav-logo h1 {
+    font-size: 1.2rem;
+  }
+  
   .nav-container2 {
     margin-left: 15px;
     padding: 0.6rem 1rem;
+  }
+  
+  .dropdown-icon-img {
+    width: 16px;
+    height: 16px;
   }
 }

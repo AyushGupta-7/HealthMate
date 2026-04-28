@@ -3,6 +3,9 @@ import Layout from '../components/Layout';
 import API from '../services/api';
 import './Profile.css';
 
+// Import PNG icon
+import userFillIcon from '../assets/icons/userFill.png';
+
 const Profile = () => {
   const [profile, setProfile] = useState({
     name: '',
@@ -54,7 +57,6 @@ const Profile = () => {
         image: userData.image || ''
       });
       
-      // Set image preview
       if (userData.image) {
         setImagePreview(userData.image.startsWith('http') ? userData.image : `http://localhost:5000${userData.image}`);
       }
@@ -181,7 +183,6 @@ const Profile = () => {
     }
   };
 
-  
   const clearField = (fieldName) => {
     setEditData(prev => ({ ...prev, [fieldName]: '' }));
   };
@@ -219,7 +220,7 @@ const Profile = () => {
                   <img src={imagePreview} alt="Profile" className="profile-photo" />
                 ) : (
                   <div className="photo-placeholder">
-                    <span className="camera-icon">📷</span>
+                    <img src={userFillIcon} alt="User" className="user-fill-icon" />
                     <p>Click to upload</p>
                   </div>
                 )}

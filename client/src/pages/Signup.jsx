@@ -3,6 +3,14 @@ import { Link, useNavigate } from 'react-router-dom'
 import API from '../services/api'
 import './Signup.css'
 
+// Import PNG icons
+import userIcon from '../assets/icons/user.png'
+import mailIcon from '../assets/icons/mail.png'
+import padlockIcon from '../assets/icons/padlock.png'
+import confirmPassIcon from '../assets/icons/approve.png'
+import eyeIcon from '../assets/icons/eye.png'
+import hideIcon from '../assets/icons/hide.png'
+
 const Signup = () => {
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
@@ -14,8 +22,8 @@ const Signup = () => {
   const [errors, setErrors] = useState({})
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const [message, setMessage] = useState({ type: '', text: '' })
   const [loading, setLoading] = useState(false)
+  const [redirectMsg, setRedirectMsg] = useState('')
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -30,8 +38,8 @@ const Signup = () => {
         [name]: ''
       }))
     }
-    if (message.text) {
-      setMessage({ type: '', text: '' })
+    if (redirectMsg) {
+      setRedirectMsg('')
     }
   }
 
@@ -75,8 +83,8 @@ const Signup = () => {
     
     if (Object.keys(newErrors).length === 0) {
       setLoading(true)
-      setMessage({ type: '', text: '' })
       setErrors({})
+      setRedirectMsg('')
       
       try {
         const response = await API.post('/auth/register', {
@@ -87,14 +95,13 @@ const Signup = () => {
         
         const { token, data } = response.data
         
-        // Store token and user data
         localStorage.setItem('token', token)
         localStorage.setItem('userName', data.name)
         localStorage.setItem('userEmail', data.email)
         localStorage.setItem('userId', data._id)
         localStorage.setItem('userRole', data.role || 'user')
         
-        setMessage({ type: 'success', text: 'Account created successfully! Redirecting...' })
+        setRedirectMsg('✓ Account created successfully! Redirecting to dashboard...')
         
         setTimeout(() => {
           navigate('/dashboard')
@@ -104,33 +111,21 @@ const Signup = () => {
         
         const errorMessage = error.response?.data?.message || 'Signup failed. Please try again.'
         
-        // Handle specific error cases
         if (errorMessage.toLowerCase().includes('user already exists')) {
           setErrors({ email: 'Email already registered' })
-          setMessage({ 
-            type: 'error', 
-            text: 'An account with this email already exists. Please login instead.' 
-          })
         } else {
-          setMessage({ 
-            type: 'error', 
-            text: errorMessage
-          })
+          setErrors({ general: errorMessage })
         }
         
         setTimeout(() => {
-          setMessage({ type: '', text: '' })
-          if (!errors.email) {
-            setErrors({})
-          }
+          setErrors({})
         }, 5000)
       } finally {
         setLoading(false)
       }
     } else {
       setErrors(newErrors)
-      setMessage({ type: 'error', text: 'Please fix the errors above' })
-      setTimeout(() => setMessage({ type: '', text: '' }), 3000)
+      setTimeout(() => setErrors({}), 5000)
     }
   }
 
@@ -148,17 +143,14 @@ const Signup = () => {
             <p>Join HealthMate to start your health journey</p>
           </div>
 
-          {message.text && (
-            <div className={`message-alert ${message.type}`}>
-              {message.type === 'success' ? '✓' : '⚠️'} {message.text}
-            </div>
-          )}
+          {errors.general && <div className="error-text">{errors.general}</div>}
+          {redirectMsg && <div className="redirect-msg">{redirectMsg}</div>}
 
           <form onSubmit={handleSubmit} className="auth-form">
             <div className="form-group">
               <label htmlFor="name">Full Name</label>
               <div className="input-wrapper">
-                <span className="input-icon">👤</span>
+                <img src={userIcon} alt="user" className="input-icon" />
                 <input
                   type="text"
                   id="name"
@@ -169,13 +161,13 @@ const Signup = () => {
                   className={errors.name ? 'error' : ''}
                 />
               </div>
-              {errors.name && <span className="error-message">{errors.name}</span>}
+              {errors.name && <div className="error-text">{errors.name}</div>}
             </div>
 
             <div className="form-group">
               <label htmlFor="email">Email Address</label>
               <div className="input-wrapper">
-                <span className="input-icon">📧</span>
+                <img src={mailIcon} alt="email" className="input-icon" />
                 <input
                   type="email"
                   id="email"
@@ -186,13 +178,13 @@ const Signup = () => {
                   className={errors.email ? 'error' : ''}
                 />
               </div>
-              {errors.email && <span className="error-message">{errors.email}</span>}
+              {errors.email && <div className="error-text">{errors.email}</div>}
             </div>
 
             <div className="form-group">
               <label htmlFor="password">Password</label>
               <div className="input-wrapper">
-                <span className="input-icon">🔒</span>
+                <img src={padlockIcon} alt="password" className="input-icon" />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   id="password"
@@ -207,10 +199,10 @@ const Signup = () => {
                   className="toggle-password"
                   onClick={() => setShowPassword(!showPassword)}
                 >
-                  {showPassword ? '🙈' : '👁️'}
+                  <img src={showPassword ? eyeIcon : hideIcon} alt="toggle" className="toggle-icon" />
                 </button>
               </div>
-              {errors.password && <span className="error-message">{errors.password}</span>}
+              {errors.password && <div className="error-text">{errors.password}</div>}
               <div className="password-hint">
                 <small>Password must be at least 6 characters with 1 uppercase and 1 number</small>
               </div>
@@ -219,7 +211,7 @@ const Signup = () => {
             <div className="form-group">
               <label htmlFor="confirmPassword">Confirm Password</label>
               <div className="input-wrapper">
-                <span className="input-icon">✓</span>
+                <img src={confirmPassIcon} alt="confirm" className="input-icon" />
                 <input
                   type={showConfirmPassword ? 'text' : 'password'}
                   id="confirmPassword"
@@ -234,10 +226,10 @@ const Signup = () => {
                   className="toggle-password"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 >
-                  {showConfirmPassword ? '🙈' : '👁️'}
+                  <img src={showConfirmPassword ? eyeIcon : hideIcon} alt="toggle" className="toggle-icon" />
                 </button>
               </div>
-              {errors.confirmPassword && <span className="error-message">{errors.confirmPassword}</span>}
+              {errors.confirmPassword && <div className="error-text">{errors.confirmPassword}</div>}
             </div>
 
             <div className="form-terms">
