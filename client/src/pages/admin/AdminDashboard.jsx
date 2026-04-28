@@ -70,8 +70,8 @@ const AdminDashboard = () => {
   if (loading) {
     return (
       <AdminLayout>
-        <div className="dashboard-container">
-          <div className="loading">Loading dashboard data...</div>
+        <div className="admin-dashboard-container">
+          <div className="admin-dashboard-loading">Loading dashboard data...</div>
         </div>
       </AdminLayout>
     );
@@ -80,8 +80,8 @@ const AdminDashboard = () => {
   if (error) {
     return (
       <AdminLayout>
-        <div className="dashboard-container">
-          <div className="error">{error}</div>
+        <div className="admin-dashboard-container">
+          <div className="admin-dashboard-error">{error}</div>
         </div>
       </AdminLayout>
     );
@@ -89,58 +89,58 @@ const AdminDashboard = () => {
 
   return (
     <AdminLayout>
-      <div className="dashboard-container">
-        <h1>Welcome, {adminName}! 👋</h1>
-        <p className="welcome-text">
+      <div className="admin-dashboard-container">
+        <h1 className="admin-dashboard-title">Welcome, {adminName}! 👋</h1>
+        <p className="admin-dashboard-welcome-text">
           Welcome to the HealthMate Admin Dashboard. Here's your overview.
         </p>
         
-        <div className="stats-grid-admin">
-          <div className="stat-card">
-            <div className="stat-icon">👨‍⚕️</div>
-            <div className="stat-info-admin">
-              <h3>Total Doctors</h3>
-              <p>{stats.totalDoctors}</p>
+        <div className="admin-stats-grid">
+          <div className="admin-stat-card">
+            <div className="admin-stat-icon">👨‍⚕️</div>
+            <div className="admin-stat-info">
+              <h3 className="admin-stat-label">Total Doctors</h3>
+              <p className="admin-stat-value">{stats.totalDoctors}</p>
             </div>
           </div>
           
-          <div className="stat-card">
-            <div className="stat-icon">👥</div>
-            <div className="stat-info-admin">
-              <h3>Total Users</h3>
-              <p>{stats.totalUsers}</p>
+          <div className="admin-stat-card">
+            <div className="admin-stat-icon">👥</div>
+            <div className="admin-stat-info">
+              <h3 className="admin-stat-label">Total Users</h3>
+              <p className="admin-stat-value">{stats.totalUsers}</p>
             </div>
           </div>
           
-          <div className="stat-card">
-            <div className="stat-icon">📋</div>
-            <div className="stat-info-admin">
-              <h3>Total Appointments</h3>
-              <p>{stats.totalAppointments}</p>
+          <div className="admin-stat-card">
+            <div className="admin-stat-icon">📋</div>
+            <div className="admin-stat-info">
+              <h3 className="admin-stat-label">Total Appointments</h3>
+              <p className="admin-stat-value">{stats.totalAppointments}</p>
             </div>
           </div>
           
-          <div className="stat-card">
-            <div className="stat-icon">⏳</div>
-            <div className="stat-info-admin">
-              <h3>Pending</h3>
-              <p>{stats.pendingAppointments}</p>
+          <div className="admin-stat-card">
+            <div className="admin-stat-icon">⏳</div>
+            <div className="admin-stat-info">
+              <h3 className="admin-stat-label">Pending</h3>
+              <p className="admin-stat-value">{stats.pendingAppointments}</p>
             </div>
           </div>
           
-          <div className="stat-card">
-            <div className="stat-icon">✅</div>
-            <div className="stat-info-admin">
-              <h3>Completed</h3>
-              <p>{stats.completedAppointments}</p>
+          <div className="admin-stat-card">
+            <div className="admin-stat-icon">✅</div>
+            <div className="admin-stat-info">
+              <h3 className="admin-stat-label">Completed</h3>
+              <p className="admin-stat-value">{stats.completedAppointments}</p>
             </div>
           </div>
           
-          <div className="stat-card">
-            <div className="stat-icon">❌</div>
-            <div className="stat-info-admin">
-              <h3>Cancelled</h3>
-              <p>{stats.cancelledAppointments}</p>
+          <div className="admin-stat-card">
+            <div className="admin-stat-icon">❌</div>
+            <div className="admin-stat-info">
+              <h3 className="admin-stat-label">Cancelled</h3>
+              <p className="admin-stat-value">{stats.cancelledAppointments}</p>
             </div>
           </div>
         </div>

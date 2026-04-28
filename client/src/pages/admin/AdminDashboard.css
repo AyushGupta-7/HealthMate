@@ -1,11 +1,11 @@
 /* Professional Hospital Style Admin Dashboard */
-.dashboard-container {
+.admin-dashboard-container {
   padding: 2rem;
-  max-width: 1400px;
-  margin: 0 auto;
+  background: #f8fafc;
+  min-height: 100vh;
 }
 
-.dashboard-container h1 {
+.admin-dashboard-title {
   font-size: 1.8rem;
   color: #1a3c5e;
   margin-bottom: 0.5rem;
@@ -13,22 +13,23 @@
   font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
-.welcome-text {
+.admin-dashboard-welcome-text {
   color: #5a6c7e;
-  font-size: 0.95rem;
   margin-bottom: 2rem;
+  font-size: 0.95rem;
   font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 /* Stats Grid */
-.stats-grid-admin {
+.admin-stats-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
+  margin-top: 1rem;
 }
 
 /* Stat Card */
-.stat-card {
+.admin-stat-card {
   background: #ffffff;
   border-radius: 8px;
   padding: 1.5rem;
@@ -40,39 +41,38 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
-.stat-card:hover {
+.admin-stat-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(26, 107, 138, 0.08);
   border-color: #1a6b8a;
 }
 
-.stat-icon {
-  font-size: 2.5rem;
-  width: 60px;
-  height: 60px;
+.admin-stat-icon {
+  font-size: 2.2rem;
+  width: 55px;
+  height: 55px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: #f0f4f8;
   border-radius: 8px;
-  color: #1a6b8a;
 }
 
-.stat-info-admin {
+.admin-stat-info {
   flex: 1;
 }
 
-.stat-info-admin h3 {
-  font-size: 0.8rem;
+.admin-stat-label {
+  font-size: 0.75rem;
   font-weight: 600;
   color: #5a6c7e;
-  margin: 0 0 0.5rem 0;
+  margin-bottom: 0.3rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
-.stat-info-admin p {
+.admin-stat-value {
   font-size: 1.8rem;
   font-weight: 700;
   color: #1a3c5e;
@@ -80,102 +80,104 @@
   font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
-/* Loading and Error States */
-.loading {
+/* Loading State */
+.admin-dashboard-loading {
   text-align: center;
   padding: 3rem;
-  color: #8a9bb0;
   font-size: 1rem;
+  color: #8a9bb0;
   font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
-.error {
+/* Error State */
+.admin-dashboard-error {
   text-align: center;
   padding: 3rem;
   color: #c0392b;
   background: #ffebee;
   border-radius: 8px;
-  margin: 1rem;
   font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
   border-left: 3px solid #c0392b;
   font-weight: 500;
+  margin: 1rem;
 }
 
 /* Responsive Design */
 @media (max-width: 1024px) {
-  .stats-grid-admin {
+  .admin-stats-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 1.2rem;
   }
 }
 
 @media (max-width: 768px) {
-  .dashboard-container {
+  .admin-dashboard-container {
     padding: 1.5rem;
   }
   
-  .dashboard-container h1 {
+  .admin-dashboard-title {
     font-size: 1.5rem;
   }
   
-  .welcome-text {
+  .admin-dashboard-welcome-text {
     font-size: 0.85rem;
     margin-bottom: 1.5rem;
   }
   
-  .stats-grid-admin {
+  .admin-stats-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
   }
   
-  .stat-card {
+  .admin-stat-card {
     padding: 1rem;
   }
   
-  .stat-icon {
+  .admin-stat-icon {
     width: 45px;
     height: 45px;
     font-size: 1.8rem;
   }
   
-  .stat-info-admin p {
+  .admin-stat-value {
     font-size: 1.4rem;
   }
   
-  .stat-info-admin h3 {
+  .admin-stat-label {
     font-size: 0.7rem;
   }
 }
 
 @media (max-width: 480px) {
-  .dashboard-container {
+  .admin-dashboard-container {
     padding: 1rem;
   }
   
-  .dashboard-container h1 {
+  .admin-dashboard-title {
     font-size: 1.3rem;
   }
   
-  .stats-grid-admin {
+  .admin-stats-grid {
     grid-template-columns: 1fr;
     gap: 0.8rem;
   }
   
-  .stat-card {
+  .admin-stat-card {
     padding: 0.8rem;
   }
   
-  .stat-icon {
+  .admin-stat-icon {
     width: 40px;
     height: 40px;
     font-size: 1.5rem;
   }
   
-  .stat-info-admin p {
+  .admin-stat-value {
     font-size: 1.2rem;
   }
   
-  .loading, .error {
+  .admin-dashboard-loading,
+  .admin-dashboard-error {
     padding: 2rem;
     font-size: 0.9rem;
   }
