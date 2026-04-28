@@ -78,8 +78,8 @@ const DoctorDetails = () => {
 
   const timeSlots = [
     "10:30", "11:00", "11:30", "12:00", "12:30", "13:00",
-    "13:30", "14:00", "14:30", "15:00", "15:30", "16:00",
-    "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00"
+    "13:30", "14:00", "14:30", "15:00", "15:30", "16:00"
+    // "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00"
   ];
 
   const dates = generateDates();
@@ -102,7 +102,7 @@ const DoctorDetails = () => {
     }
 
     if (isSlotUnavailable(selectedTime)) {
-      setMessage({ type: 'error', text: '❌ This time slot is no longer available. Please select another time.' });
+      setMessage({ type: 'error', text: 'This time slot is no longer available. Please select another time.' });
       setTimeout(() => setMessage({ type: '', text: '' }), 3000);
       return;
     }
@@ -124,7 +124,7 @@ const DoctorDetails = () => {
       const response = await API.post('/appointments', appointmentData);
       
       if (response.data.success) {
-        setMessage({ type: 'success', text: '✅ Appointment booked successfully! Redirecting...' });
+        setMessage({ type: 'success', text: 'Appointment booked successfully! Redirecting...' });
         setTimeout(() => {
           navigate('/my-appointments');
         }, 1500);
@@ -137,7 +137,7 @@ const DoctorDetails = () => {
       if (errorMsg.includes('already booked') || errorMsg.includes('duplicate') || error.response?.status === 400) {
         setMessage({ 
           type: 'error', 
-          text: '❌ Slot is already booked. Please check for another slot. (This slot might become available if cancelled)' 
+          text: 'Slot is already booked. Please select another slot.' 
         });
       } else {
         setMessage({ type: 'error', text: 'Failed to book appointment. Please try again.' });
@@ -226,10 +226,10 @@ const DoctorDetails = () => {
             </div>
           </div>
 
-          {/* Message Alert - Moved after doctor-info-card */}
+          {/* Simple Text Message - Between Doctor Info and Booking Slots */}
           {message.text && (
-            <div className={`message-alert ${message.type}`}>
-              {message.type === 'success' ? '✓' : '⚠️'} {message.text}
+            <div className={`simple-message ${message.type}`}>
+              {message.type === 'success' ? '✓ ' : '⚠️ '}{message.text}
             </div>
           )}
 

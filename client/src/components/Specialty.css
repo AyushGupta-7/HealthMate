@@ -1,6 +1,7 @@
+/* Professional Hospital Style Specialty Section */
 .specialty-section {
   padding: 80px 0;
-  background: whitesmoke;
+  background: #f8fafc;
 }
 
 .specialty-container {
@@ -16,17 +17,19 @@
 
 .specialty-header h2 {
   font-size: 2.5rem;
-  color: #1e3c72;
+  color: #1a3c5e;
   margin-bottom: 1rem;
   font-weight: 700;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .specialty-header p {
   font-size: 1.1rem;
-  color: #7f8c8d;
+  color: #5a6c7e;
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.6;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 /* Centered horizontal layout - no scroll */
@@ -34,7 +37,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
+  gap: 1.5rem;
   flex-wrap: nowrap;
   padding: 0.5rem 0;
   width: 100%;
@@ -43,7 +46,7 @@
 .specialty-card {
   text-align: center;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   padding: 1rem;
   flex: 1;
   min-width: 0;
@@ -51,12 +54,12 @@
 }
 
 .specialty-card:hover {
-  transform: translateY(-8px);
+  transform: translateY(-4px);
 }
 
 .specialty-card:hover .specialty-circle {
-  transform: scale(1.05);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(26, 107, 138, 0.15);
 }
 
 .specialty-circle {
@@ -67,9 +70,9 @@
   align-items: center;
   justify-content: center;
   margin: 0 auto 1rem;
-  transition: all 0.3s ease;
-  border: 3px solid;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+  border: 2px solid;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
   overflow: hidden;
   background: white;
 }
@@ -78,32 +81,33 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s ease;
+  transition: transform 0.2s ease;
   display: block;
 }
 
 .specialty-card:hover .specialty-image {
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 .specialty-name {
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 600;
-  color: #2c3e50;
+  color: #2c5a7a;
   margin-top: 0.5rem;
-  transition: color 0.3s ease;
+  transition: color 0.2s ease;
   white-space: normal;
   word-wrap: break-word;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .specialty-card:hover .specialty-name {
-  color: #4a90e2;
+  color: #1a6b8a;
 }
 
 /* Responsive scaling - no scroll */
 @media (max-width: 1100px) {
   .specialties-grid {
-    gap: 1.5rem;
+    gap: 1.2rem;
   }
   
   .specialty-card {
@@ -113,10 +117,11 @@
   .specialty-circle {
     width: 100px;
     height: 100px;
+    border-width: 2px;
   }
   
   .specialty-name {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
   }
 }
 
@@ -135,7 +140,7 @@
   }
   
   .specialty-name {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
   }
 }
 
@@ -168,18 +173,18 @@
   }
   
   .specialty-name {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
   }
 }
 
 @media (max-width: 600px) {
   .specialties-grid {
-    gap: 0.5rem;
+    gap: 0.6rem;
   }
   
   .specialty-card {
     max-width: 100px;
-    padding: 0.3rem;
+    padding: 0.4rem;
   }
   
   .specialty-circle {
@@ -188,18 +193,18 @@
   }
   
   .specialty-name {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
   }
 }
 
 @media (max-width: 480px) {
   .specialties-grid {
-    gap: 0.3rem;
+    gap: 0.4rem;
   }
   
   .specialty-card {
     max-width: 85px;
-    padding: 0.2rem;
+    padding: 0.3rem;
   }
   
   .specialty-circle {
@@ -208,6 +213,6 @@
   }
   
   .specialty-name {
-    font-size: 0.65rem;
+    font-size: 0.6rem;
   }
 }

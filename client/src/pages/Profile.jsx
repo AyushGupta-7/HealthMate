@@ -112,11 +112,11 @@ const Profile = () => {
           dob: editData.dob
         }));
         setIsEditing(false);
-        setMessage({ type: 'success', text: 'Profile updated successfully!' });
+        setMessage({ type: 'success', text: '✓ Profile updated successfully!' });
         setTimeout(() => setMessage({ type: '', text: '' }), 3000);
       }
     } catch (error) {
-      setMessage({ type: 'error', text: error.response?.data?.message || 'Failed to update profile' });
+      setMessage({ type: 'error', text: '⚠️ ' + (error.response?.data?.message || 'Failed to update profile') });
       setTimeout(() => setMessage({ type: '', text: '' }), 3000);
     } finally {
       setUpdating(false);
@@ -128,13 +128,13 @@ const Profile = () => {
     if (!file) return;
     
     if (!file.type.startsWith('image/')) {
-      setMessage({ type: 'error', text: 'Please upload an image file' });
+      setMessage({ type: 'error', text: '⚠️ Please upload an image file' });
       setTimeout(() => setMessage({ type: '', text: '' }), 3000);
       return;
     }
     
     if (file.size > 5 * 1024 * 1024) {
-      setMessage({ type: 'error', text: 'Image size must be less than 5MB' });
+      setMessage({ type: 'error', text: '⚠️ Image size must be less than 5MB' });
       setTimeout(() => setMessage({ type: '', text: '' }), 3000);
       return;
     }
@@ -152,12 +152,12 @@ const Profile = () => {
         const imageUrl = `http://localhost:5000${response.data.data.imageUrl}`;
         setImagePreview(imageUrl);
         setProfile(prev => ({ ...prev, image: response.data.data.imageUrl }));
-        setMessage({ type: 'success', text: 'Profile photo updated!' });
+        setMessage({ type: 'success', text: '✓ Profile photo updated!' });
         setTimeout(() => setMessage({ type: '', text: '' }), 3000);
       }
     } catch (error) {
       console.error('Upload error:', error);
-      setMessage({ type: 'error', text: error.response?.data?.message || 'Failed to upload image' });
+      setMessage({ type: 'error', text: '⚠️ ' + (error.response?.data?.message || 'Failed to upload image') });
       setTimeout(() => setMessage({ type: '', text: '' }), 3000);
     } finally {
       setUpdating(false);
@@ -172,11 +172,11 @@ const Profile = () => {
       if (response.data.success) {
         setImagePreview('');
         setProfile(prev => ({ ...prev, image: '' }));
-        setMessage({ type: 'success', text: 'Profile photo removed!' });
+        setMessage({ type: 'success', text: '✓ Profile photo removed!' });
         setTimeout(() => setMessage({ type: '', text: '' }), 3000);
       }
     } catch (error) {
-      setMessage({ type: 'error', text: 'Failed to remove image' });
+      setMessage({ type: 'error', text: '⚠️ Failed to remove image' });
       setTimeout(() => setMessage({ type: '', text: '' }), 3000);
     } finally {
       setUpdating(false);
@@ -207,8 +207,9 @@ const Profile = () => {
             <h1>My Profile</h1>
           </div>
 
+          {/* Simple Text Message - No box */}
           {message.text && (
-            <div className={`profile-message ${message.type}`}>
+            <div className={`simple-message ${message.type}`}>
               {message.text}
             </div>
           )}

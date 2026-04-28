@@ -1,6 +1,7 @@
+/* Professional Hospital Style Report Dashboard */
 .report-dashboard-page {
   padding: 50px 0 60px;
-  background: #f5f7fa;
+  background: #f8fafc;
   min-height: 100vh;
 }
 
@@ -24,14 +25,16 @@
 .dashboard-header h1 {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #1a2c3e;
+  color: #1a3c5e;
   margin-bottom: 0.5rem;
   letter-spacing: -0.3px;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .dashboard-header p {
-  color: #6c7a89;
-  font-size: 0.95rem;
+  color: #5a6c7e;
+  font-size: 0.9rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 /* Stats Grid */
@@ -43,45 +46,49 @@
 }
 
 .stat-card {
-  background: white;
-  border-radius: 16px;
+  background: #ffffff;
+  border-radius: 8px;
   padding: 1.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
   transition: all 0.2s ease;
-  border: 1px solid #eef2f6;
+  border: 1px solid #e0e8f0;
 }
 
 .stat-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(26, 107, 138, 0.08);
+  border-color: #1a6b8a;
 }
 
 .stat-info {
   text-align: left;
 }
 
+
 .stat-label {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 500;
-  color: #6c7a89;
+  color: #5a6c7e;
   margin-bottom: 0.5rem;
   text-transform: uppercase;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.5px;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .stat-number {
   font-size: 2rem;
   font-weight: 600;
-  color: #1a2c3e;
+  color: #1a3c5e;
   margin: 0;
   line-height: 1.2;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 /* Upload Section */
 .upload-section {
-  background: white;
-  border-radius: 16px;
-  border: 1px solid #eef2f6;
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #e0e8f0;
   margin-bottom: 2rem;
   overflow: hidden;
 }
@@ -92,16 +99,18 @@
 }
 
 .upload-content h3 {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 600;
-  color: #1a2c3e;
+  color: #1a3c5e;
   margin-bottom: 0.5rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .upload-content p {
-  color: #6c7a89;
-  font-size: 0.9rem;
+  color: #5a6c7e;
+  font-size: 0.85rem;
   margin-bottom: 1.5rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .upload-area {
@@ -110,41 +119,51 @@
 
 .upload-btn {
   display: inline-block;
-  background: #2c5f8a;
-  color: white;
+  background: #1a6b8a;
+  color: #ffffff;
   padding: 0.7rem 1.8rem;
-  border-radius: 8px;
-  font-size: 0.9rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
   border: none;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  letter-spacing: 0.5px;
 }
 
 .upload-btn:hover {
-  background: #1e4568;
+  background: #0e5a77;
   transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(26, 107, 138, 0.2);
+}
+
+.upload-btn:active {
+  transform: translateY(0);
 }
 
 .upload-hint {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: #8a9bb0;
   margin-top: 1rem;
   margin-bottom: 0;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .upload-progress {
-  color: #2c5f8a;
-  font-size: 0.85rem;
+  color: #1a6b8a;
+  font-size: 0.8rem;
   margin-top: 1rem;
   font-weight: 500;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  animation: pulse 1.5s ease-in-out infinite;
 }
 
 /* Recent Reports */
 .recent-reports {
-  background: white;
-  border-radius: 16px;
-  border: 1px solid #eef2f6;
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #e0e8f0;
   overflow: hidden;
 }
 
@@ -153,22 +172,26 @@
   justify-content: space-between;
   align-items: center;
   padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid #eef2f6;
+  border-bottom: 1px solid #e0e8f0;
 }
 
 .recent-header h3 {
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 600;
-  color: #1a2c3e;
+  color: #1a3c5e;
   margin: 0;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
 .report-count {
-  font-size: 0.8rem;
-  color: #8a9bb0;
-  background: #f5f7fa;
+  font-size: 0.75rem;
+  color: #6a7c8e;
+  background: #f0f4f8;
   padding: 0.2rem 0.6rem;
-  border-radius: 20px;
+  border-radius: 4px;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .reports-list {
@@ -181,17 +204,17 @@
   align-items: center;
   gap: 1rem;
   padding: 1rem 1.5rem;
-  border-bottom: 1px solid #f0f2f5;
+  border-bottom: 1px solid #e0e8f0;
   transition: background 0.2s ease;
 }
 
 .report-item:hover {
-  background: #fafbfc;
+  background: #f8fafc;
 }
 
 .report-icon {
   font-size: 1.2rem;
-  color: #6c7a89;
+  color: #5a6c7e;
 }
 
 .report-info {
@@ -200,23 +223,46 @@
 
 .report-title {
   font-weight: 500;
-  color: #1a2c3e;
-  font-size: 0.95rem;
+  color: #1a3c5e;
+  font-size: 0.9rem;
   margin-bottom: 0.2rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .report-meta {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: #8a9bb0;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .report-status {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 500;
-  padding: 0.2rem 0.6rem;
-  background: #e8f0e8;
-  color: #2c6e2c;
-  border-radius: 20px;
+  padding: 0.25rem 0.7rem;
+  background: #e8f5e9;
+  color: #2e7d32;
+  border-radius: 4px;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+}
+
+/* Download Button */
+.download-btn {
+  background: transparent;
+  color: #1a6b8a;
+  border: 1px solid #1a6b8a;
+  padding: 0.25rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.7rem;
+  transition: all 0.2s ease;
+  margin-left: 10px;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+}
+
+.download-btn:hover {
+  background: #1a6b8a;
+  color: #ffffff;
+  transform: translateY(-1px);
 }
 
 /* Empty State */
@@ -228,34 +274,69 @@
 .empty-state p {
   color: #8a9bb0;
   margin-bottom: 0.5rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .empty-state .empty-hint {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: #a0b0c0;
 }
 
 /* Messages */
 .success-message {
-  background: #e8f0e8;
-  color: #2c6e2c;
+  background: #e8f5e9;
+  color: #2e7d32;
   padding: 0.75rem 1rem;
-  border-radius: 10px;
+  border-radius: 4px;
   margin-bottom: 1.5rem;
   font-size: 0.85rem;
-  border-left: 3px solid #2c6e2c;
+  border-left: 3px solid #2e7d32;
   text-align: center;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  animation: slideIn 0.3s ease;
 }
 
 .error-message {
-  background: #fee8e8;
-  color: #c23d3d;
+  background: #ffebee;
+  color: #c0392b;
   padding: 0.75rem 1rem;
-  border-radius: 10px;
+  border-radius: 4px;
   margin-bottom: 1.5rem;
   font-size: 0.85rem;
-  border-left: 3px solid #c23d3d;
+  border-left: 3px solid #c0392b;
   text-align: center;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  animation: slideIn 0.3s ease;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  text-align: center;
+  padding: 3rem;
+  color: #8a9bb0;
+  font-size: 1rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+}
+
+/* Animations */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
 }
 
 /* Responsive */
@@ -266,6 +347,7 @@
   
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
   }
 }
 
@@ -291,6 +373,10 @@
     font-size: 1.5rem;
   }
   
+  .stat-label {
+    font-size: 0.7rem;
+  }
+  
   .upload-content {
     padding: 1.5rem;
   }
@@ -301,6 +387,11 @@
   
   .report-item {
     padding: 0.8rem 1.2rem;
+    flex-wrap: wrap;
+  }
+  
+  .download-btn {
+    margin-left: auto;
   }
 }
 
@@ -310,7 +401,7 @@
   }
   
   .dashboard-header h1 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
   
   .stat-card {
@@ -320,129 +411,14 @@
   .stat-info {
     text-align: center;
   }
-}
-
-/* Add to existing ReportDashboard.css */
-
-.loading-spinner {
-  text-align: center;
-  padding: 3rem;
-  color: #7f8c8d;
-  font-size: 1.1rem;
-}
-
-.success-message {
-  background: #e8f5e9;
-  color: #2e7d32;
-  padding: 0.8rem 1rem;
-  border-radius: 10px;
-  margin-bottom: 1.5rem;
-  font-size: 0.9rem;
-  animation: slideIn 0.3s ease;
-  border-left: 4px solid #2e7d32;
-  text-align: center;
-}
-
-.error-message {
-  background: #ffebee;
-  color: #c62828;
-  padding: 0.8rem 1rem;
-  border-radius: 10px;
-  margin-bottom: 1.5rem;
-  font-size: 0.9rem;
-  animation: slideIn 0.3s ease;
-  border-left: 4px solid #c62828;
-  text-align: center;
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
+  
+  .report-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  
+  .download-btn {
+    margin-left: 0;
   }
-}
-
-.upload-progress {
-  color: #2c5f8a;
-  font-size: 0.85rem;
-  margin-top: 0.5rem;
-  animation: pulse 1.5s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.6;
-  }
-}
-
-.upload-btn {
-  display: inline-block;
-  background: #2c5f8a;
-  color: white;
-  padding: 0.7rem 1.8rem;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: none;
-}
-
-.upload-btn:hover {
-  background: #1e4568;
-  transform: translateY(-1px);
-}
-
-.upload-btn:active {
-  transform: translateY(0);
-}
-
-/* Add to existing ReportDashboard.css */
-
-.download-btn {
-  background: transparent;
-  color: #2c5f8a;
-  border: 1px solid #2c5f8a;
-  padding: 0.3rem 0.8rem;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 0.7rem;
-  transition: all 0.2s ease;
-  margin-left: 10px;
-}
-
-.download-btn:hover {
-  background: #2c5f8a;
-  color: white;
-  transform: translateY(-1px);
-}
-
-.report-item {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem;
-  background: #f8f9fa;
-  border-radius: 12px;
-  transition: all 0.3s ease;
-}
-
-.report-item:hover {
-  background: #eef2f7;
-}
-
-.report-status {
-  padding: 0.3rem 0.8rem;
-  border-radius: 20px;
-  font-size: 0.7rem;
-  font-weight: 500;
-  background: #e8f5e9;
-  color: #2e7d32;
 }

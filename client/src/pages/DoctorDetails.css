@@ -1,11 +1,25 @@
+/* Professional Hospital Style Doctor Details */
 .doctor-details-page {
   padding: 100px 0 60px;
-  background: #f8f9fa;
+  background: #f8fafc;
   min-height: 100vh;
 }
 
 .imageBg {
-    background-color: #4a90e2;
+  background-color: #1a6b8a;
+  border-radius: 8px;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.imageBg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .doctor-details-container {
@@ -14,20 +28,46 @@
   padding: 0 2rem;
 }
 
-.doctor-not-found {
+/* Simple Text Message - Between Doctor Info and Booking Slots */
+.simple-message {
   text-align: center;
-  padding: 3rem;
-  background: white;
-  border-radius: 20px;
+  margin: 1rem 0;
+  padding: 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  animation: fadeInOut 0.3s ease;
+  background: transparent;
+  border: none;
+}
+
+.simple-message.success {
+  color: #2e7d32;
+}
+
+.simple-message.error {
+  color: #c0392b;
+}
+
+@keyframes fadeInOut {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Doctor Info Card */
 .doctor-info-card {
-  background: white;
-  border-radius: 20px;
+  background: #ffffff;
+  border-radius: 8px;
   padding: 2rem;
-  margin-bottom: 2rem;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e0e8f0;
 }
 
 .doctor-info2 {
@@ -36,80 +76,108 @@
   align-items: flex-start;
 }
 
-.doctor-image {
-  flex-shrink: 0;
-  width: 200px;
-  height: 200px;
-  border-radius: 15px;
-  overflow: hidden;
-  background: #f8f9fa;
-}
-
-.doctor-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 .doctor-content {
   flex: 1;
 }
 
 .doctor-content h1 {
   font-size: 1.8rem;
-  color: #1e3c72;
+  color: #1a3c5e;
   margin-bottom: 0.5rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  font-weight: 600;
 }
 
 .doctor-specialization {
-  color: #4a90e2;
-  font-size: 1rem;
+  color: #1a6b8a;
+  font-size: 0.95rem;
   margin-bottom: 1rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .about-section h3 {
-  color: #2c3e50;
-  font-size: 1.1rem;
+  color: #1a3c5e;
+  font-size: 1rem;
   margin-bottom: 0.5rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  font-weight: 600;
 }
 
 .about-section p {
-  color: #7f8c8d;
+  color: #5a6c7e;
   line-height: 1.6;
   margin-bottom: 1rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  font-size: 0.9rem;
 }
 
 .appointment-fee {
-  color: #1e3c72;
-  font-size: 1.1rem;
+  color: #1a3c5e;
+  font-size: 1rem;
   margin-top: 1rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+}
+
+.doctor-address {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #5a6c7e;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+}
+
+.doctor-status {
+  margin-top: 0.5rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+}
+
+.doctor-status .available {
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.doctor-status .unavailable {
+  color: #c0392b;
+  font-weight: 600;
 }
 
 /* Booking Slots Card */
 .booking-slots-card {
-  background: white;
-  border-radius: 20px;
+  background: #ffffff;
+  border-radius: 8px;
   padding: 2rem;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  margin-top: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e0e8f0;
 }
 
 .booking-slots-card h2 {
-  color: #1e3c72;
-  font-size: 1.5rem;
+  color: #1a3c5e;
+  font-size: 1.3rem;
   margin-bottom: 1.5rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  font-weight: 600;
 }
 
 /* Dates Scroll Container */
 .dates-scroll-container {
   overflow-x: auto;
   overflow-y: hidden;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  scrollbar-width: thin;
   margin-bottom: 1.5rem;
 }
 
 .dates-scroll-container::-webkit-scrollbar {
-  display: none;
+  height: 4px;
+}
+
+.dates-scroll-container::-webkit-scrollbar-track {
+  background: #e0e8f0;
+  border-radius: 4px;
+}
+
+.dates-scroll-container::-webkit-scrollbar-thumb {
+  background: #1a6b8a;
+  border-radius: 4px;
 }
 
 .dates-wrapper {
@@ -122,36 +190,64 @@
   min-width: 80px;
   text-align: center;
   padding: 0.8rem;
-  background: #f8f9fa;
-  border-radius: 12px;
-  transition: all 0.3s ease;
-  border: 1px solid #e9ecef;
+  background: #f8fafc;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  border: 1px solid #e0e8f0;
+  cursor: pointer;
+}
+
+.date-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(26, 107, 138, 0.1);
+  border-color: #1a6b8a;
+}
+
+.date-card.selected {
+  background: #1a6b8a;
+  border-color: #1a6b8a;
+}
+
+.date-card.selected .date-day,
+.date-card.selected .date-number {
+  color: #ffffff;
 }
 
 .date-day {
-  font-size: 0.85rem;
-  color: #7f8c8d;
+  font-size: 0.8rem;
+  color: #5a6c7e;
   text-transform: uppercase;
   margin-bottom: 0.3rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .date-number {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 700;
-  color: #2c3e50;
+  color: #1a3c5e;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 /* Times Scroll Container */
 .times-scroll-container {
   overflow-x: auto;
   overflow-y: hidden;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  scrollbar-width: thin;
   margin-bottom: 1.5rem;
 }
 
 .times-scroll-container::-webkit-scrollbar {
-  display: none;
+  height: 4px;
+}
+
+.times-scroll-container::-webkit-scrollbar-track {
+  background: #e0e8f0;
+  border-radius: 4px;
+}
+
+.times-scroll-container::-webkit-scrollbar-thumb {
+  background: #1a6b8a;
+  border-radius: 4px;
 }
 
 .times-wrapper {
@@ -163,137 +259,189 @@
 
 .time-slot-btn {
   min-width: 80px;
-  padding: 0.8rem 1rem;
-  background: #f8f9fa;
-  border: 1px solid #e9ecef;
-  border-radius: 12px;
-  font-size: 0.9rem;
+  padding: 0.7rem 1rem;
+  background: #f8fafc;
+  border: 1px solid #e0e8f0;
+  border-radius: 4px;
+  font-size: 0.85rem;
   font-weight: 500;
-  color: #2c3e50;
+  color: #1a3c5e;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   white-space: nowrap;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
-.time-slot-btn:hover {
-  background: #e3f2fd;
-  border-color: #4a90e2;
-  transform: translateY(-2px);
+.time-slot-btn:hover:not(:disabled) {
+  background: #e8f0f5;
+  border-color: #1a6b8a;
+  transform: translateY(-1px);
 }
 
 .time-slot-btn.selected {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border-color: transparent;
-  transform: scale(1.02);
+  background: #1a6b8a;
+  color: #ffffff;
+  border-color: #1a6b8a;
+}
+
+.time-slot-btn.unavailable {
+  background: #f5f5f5;
+  color: #999;
+  cursor: not-allowed;
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.time-slot-btn.unavailable:hover {
+  transform: none;
+  background: #f5f5f5;
+  box-shadow: none;
+}
+
+.unavailable-label {
+  font-size: 0.65rem;
+  margin-left: 4px;
+  color: #c0392b;
 }
 
 .selected-slot-info {
   text-align: center;
-  padding: 1rem;
+  padding: 0.8rem;
   background: #e8f5e9;
-  border-radius: 12px;
+  border-radius: 4px;
   margin-bottom: 1.5rem;
+  border-left: 3px solid #2e7d32;
 }
 
 .selected-slot-info p {
-  color: #2c3e50;
+  color: #1a3c5e;
   margin: 0;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  font-size: 0.85rem;
 }
 
 .selected-slot-info strong {
-  color: #4caf50;
+  color: #2e7d32;
 }
 
-.book-appointment-btn2 {
+.book-appointment-btn {
   width: 100%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: #1a6b8a;
+  color: #ffffff;
   border: none;
-  padding: 1rem;
-  border-radius: 50px;
-  font-size: 1.1rem;
+  padding: 0.9rem;
+  border-radius: 4px;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  letter-spacing: 0.5px;
 }
 
-.book-appointment-btn2:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+.book-appointment-btn:hover:not(:disabled) {
+  background: #0e5a77;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(26, 107, 138, 0.2);
 }
 
-/* Add these styles to your existing DoctorDetails.css */
-
-.date-card.selected {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-color: transparent;
-}
-
-.date-card.selected .date-day,
-.date-card.selected .date-number {
-  color: white;
-}
-
-.date-card {
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.date-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-.time-slot-btn:disabled {
+.book-appointment-btn:disabled {
+  opacity: 0.6;
   cursor: not-allowed;
-  opacity: 0.5;
 }
 
-/* Error and Success Messages */
-.error-message {
-  background: #ffebee;
-  color: #c62828;
-  padding: 0.8rem 1rem;
-  border-radius: 10px;
-  margin-bottom: 1rem;
-  font-size: 0.9rem;
-  border-left: 4px solid #c62828;
+/* Doctor Unavailable Card */
+.doctor-unavailable-card {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 2rem;
   text-align: center;
-  animation: slideIn 0.3s ease;
+  border: 1px solid #e0e8f0;
 }
 
-.success-message {
-  background: #e8f5e9;
-  color: #2e7d32;
-  padding: 0.8rem 1rem;
-  border-radius: 10px;
+.doctor-unavailable-card h2 {
+  color: #1a3c5e;
   margin-bottom: 1rem;
-  font-size: 0.9rem;
-  border-left: 4px solid #2e7d32;
-  text-align: center;
-  animation: slideIn 0.3s ease;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.doctor-unavailable-card p {
+  color: #5a6c7e;
+  margin-bottom: 1.5rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+}
+
+.back-btn {
+  background: #1a6b8a;
+  color: #ffffff;
+  border: none;
+  padding: 0.7rem 1.5rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.back-btn:hover {
+  background: #0e5a77;
+  transform: translateY(-1px);
+}
+
+/* Doctor Not Found */
+.doctor-not-found {
+  text-align: center;
+  padding: 3rem;
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #e0e8f0;
+}
+
+.doctor-not-found h2 {
+  color: #1a3c5e;
+  margin-bottom: 1rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+}
+
+.doctor-not-found button {
+  margin-top: 1rem;
+  padding: 0.6rem 1.5rem;
+  background: #1a6b8a;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+}
+
+.doctor-not-found button:hover {
+  background: #0e5a77;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  text-align: center;
+  padding: 3rem;
+  color: #8a9bb0;
+  font-size: 1rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .doctor-info {
+  .doctor-details-page {
+    padding: 80px 0 40px;
+  }
+  
+  .doctor-details-container {
+    padding: 0 1rem;
+  }
+  
+  .doctor-info2 {
     flex-direction: column;
     text-align: center;
   }
   
-  .doctor-image {
+  .imageBg {
     margin: 0 auto;
   }
   
@@ -311,7 +459,7 @@
   }
   
   .date-number {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
   
   .time-slot-btn {
@@ -319,10 +467,15 @@
     padding: 0.6rem 0.8rem;
     font-size: 0.8rem;
   }
+  
+  .simple-message {
+    font-size: 0.85rem;
+    margin: 0.8rem 0;
+  }
 }
 
 @media (max-width: 480px) {
-  .doctor-image {
+  .imageBg {
     width: 150px;
     height: 150px;
   }
@@ -345,116 +498,9 @@
     padding: 0.5rem 0.6rem;
     font-size: 0.7rem;
   }
-}
-
-/* Add these styles */
-
-.loading-spinner {
-  text-align: center;
-  padding: 3rem;
-  color: #7f8c8d;
-  font-size: 1.1rem;
-}
-
-.message-alert {
-  padding: 0.8rem 1rem;
-  border-radius: 10px;
-  margin-bottom: 1.5rem;
-  font-size: 0.9rem;
-  animation: slideIn 0.3s ease;
-  text-align: center;
-}
-
-.message-alert.success {
-  background: #e8f5e9;
-  color: #2e7d32;
-  border-left: 4px solid #2e7d32;
-}
-
-.message-alert.error {
-  background: #ffebee;
-  color: #c62828;
-  border-left: 4px solid #c62828;
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
+  
+  .simple-message {
+    font-size: 0.75rem;
+    margin: 0.6rem 0;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.doctor-not-found {
-  text-align: center;
-  padding: 3rem;
-  background: white;
-  border-radius: 20px;
-}
-
-.doctor-not-found button {
-  margin-top: 1rem;
-  padding: 0.6rem 1.5rem;
-  background: #2c5f8a;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.doctor-not-found button:hover {
-  background: #1e4568;
-}
-
-.time-slot-btn.booked {
-  background: #f5f5f5;
-  color: #999;
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-.time-slot-btn.booked:hover {
-  transform: none;
-  background: #f5f5f5;
-}
-
-.booked-label {
-  font-size: 0.7rem;
-  margin-left: 0.3rem;
-}
-
-.doctor-address {
-  margin-top: 0.5rem;
-  font-size: 0.9rem;
-  color: #5a6c7e;
-}
-
-.book-appointment-btn2:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-
-/* Unavailable slots styling */
-.time-slot-btn.unavailable {
-  background: #f5f5f5;
-  color: #999;
-  cursor: not-allowed;
-  text-decoration: line-through;
-  opacity: 0.6;
-}
-
-.time-slot-btn.unavailable:hover {
-  transform: none;
-  background: #f5f5f5;
-  box-shadow: none;
-}
-
-.unavailable-label {
-  font-size: 0.7rem;
-  margin-left: 4px;
-  color: #e74c3c;
 }

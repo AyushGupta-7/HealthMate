@@ -26,6 +26,11 @@
 
 .nav-logo h1 {
   font-size: 2.1rem;
+  margin: 0;
+  background: linear-gradient(135deg, #1a3c5e 0%, #2c6e9e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .nav-logo a {
@@ -107,13 +112,16 @@
   position: absolute;
   top: 50px;
   right: 0;
-  background: white;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
   min-width: 250px;
   z-index: 1000;
   animation: slideDown 0.2s ease-out;
   overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 @keyframes slideDown {
@@ -129,7 +137,7 @@
 
 .dropdown-header {
   padding: 1rem;
-  background: #f8f9fa;
+  background: rgba(248, 249, 250, 0.8);
 }
 
 .dropdown-user-name {
@@ -155,7 +163,7 @@
 .dropdown-item {
   width: 100%;
   padding: 0.75rem 1rem;
-  background: white;
+  background: transparent;
   border: none;
   text-align: left;
   cursor: pointer;
@@ -168,7 +176,7 @@
 }
 
 .dropdown-item:hover {
-  background: #f8f9fa;
+  background: rgba(44, 110, 158, 0.1);
 }
 
 .dropdown-icon-img {
@@ -186,7 +194,7 @@
 }
 
 .logout-item:hover {
-  background: #fee;
+  background: rgba(192, 57, 43, 0.1);
 }
 
 .hamburger {
@@ -227,11 +235,13 @@
     left: -100%;
     top: 70px;
     flex-direction: column;
-    background: white;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     width: 100%;
     text-align: center;
     transition: 0.3s;
-    box-shadow: 0 10px 27px rgba(0,0,0,0.05);
+    box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
     padding: 2rem 0;
     gap: 1.5rem;
   }

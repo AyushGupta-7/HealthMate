@@ -95,10 +95,10 @@ const AdminDashboard = () => {
           Welcome to the HealthMate Admin Dashboard. Here's your overview.
         </p>
         
-        <div className="stats-grid">
+        <div className="stats-grid-admin">
           <div className="stat-card">
             <div className="stat-icon">👨‍⚕️</div>
-            <div className="stat-info">
+            <div className="stat-info-admin">
               <h3>Total Doctors</h3>
               <p>{stats.totalDoctors}</p>
             </div>
@@ -106,7 +106,7 @@ const AdminDashboard = () => {
           
           <div className="stat-card">
             <div className="stat-icon">👥</div>
-            <div className="stat-info">
+            <div className="stat-info-admin">
               <h3>Total Users</h3>
               <p>{stats.totalUsers}</p>
             </div>
@@ -114,7 +114,7 @@ const AdminDashboard = () => {
           
           <div className="stat-card">
             <div className="stat-icon">📋</div>
-            <div className="stat-info">
+            <div className="stat-info-admin">
               <h3>Total Appointments</h3>
               <p>{stats.totalAppointments}</p>
             </div>
@@ -122,7 +122,7 @@ const AdminDashboard = () => {
           
           <div className="stat-card">
             <div className="stat-icon">⏳</div>
-            <div className="stat-info">
+            <div className="stat-info-admin">
               <h3>Pending</h3>
               <p>{stats.pendingAppointments}</p>
             </div>
@@ -130,7 +130,7 @@ const AdminDashboard = () => {
           
           <div className="stat-card">
             <div className="stat-icon">✅</div>
-            <div className="stat-info">
+            <div className="stat-info-admin">
               <h3>Completed</h3>
               <p>{stats.completedAppointments}</p>
             </div>
@@ -138,7 +138,7 @@ const AdminDashboard = () => {
           
           <div className="stat-card">
             <div className="stat-icon">❌</div>
-            <div className="stat-info">
+            <div className="stat-info-admin">
               <h3>Cancelled</h3>
               <p>{stats.cancelledAppointments}</p>
             </div>

@@ -22,7 +22,7 @@ const Poster = () => {
               Book Appointment <br />
               With 100+ Trusted Doctors
             </h2>
-            <button className="book-appointment-btn" onClick={scrollToTopDoctors}>
+            <button className="book-appointment-btn-landing" onClick={scrollToTopDoctors}>
               Book appointment
             </button>
           </div>

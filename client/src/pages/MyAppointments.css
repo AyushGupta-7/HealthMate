@@ -1,6 +1,7 @@
+/* Professional Hospital Style My Appointments */
 .my-appointments-page {
   padding: 50px 0 60px;
-  background: #f8f9fa;
+  background: #f8fafc;
   min-height: 100vh;
 }
 
@@ -12,36 +13,54 @@
 
 .page-title {
   font-size: 1.5rem;
-  color: #1e3c72;
+  color: #1a3c5e;
   margin-bottom: 2rem;
   font-weight: 700;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  text-align: center;
+  padding: 3rem;
+  color: #8a9bb0;
+  font-size: 1rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 /* Message Alert */
 .message-alert {
-  padding: 1rem;
-  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
   margin-bottom: 1.5rem;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   animation: slideIn 0.3s ease;
+  text-align: center;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .message-alert.success {
   background: #e8f5e9;
   color: #2e7d32;
-  border-left: 4px solid #2e7d32;
+  border-left: 3px solid #2e7d32;
 }
 
-.message-alert.warning {
-  background: #fff3e0;
-  color: #e65100;
-  border-left: 4px solid #e65100;
+.message-alert.error {
+  background: #ffebee;
+  color: #c0392b;
+  border-left: 3px solid #c0392b;
+}
+
+.message-alert.info {
+  background: #e3f2fd;
+  color: #1565c0;
+  border-left: 3px solid #1565c0;
 }
 
 @keyframes slideIn {
   from {
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateY(-5px);
   }
   to {
     opacity: 1;
@@ -49,34 +68,42 @@
   }
 }
 
+/* No Appointments */
 .no-appointments {
   text-align: center;
   padding: 3rem;
-  background: white;
-  border-radius: 20px;
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #e0e8f0;
 }
 
 .no-appointments p {
-  color: #7f8c8d;
+  color: #6a7c8e;
   margin-bottom: 1rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .no-appointments button {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: #1a6b8a;
+  color: #ffffff;
   border: none;
-  padding: 0.8rem 2rem;
-  border-radius: 50px;
+  padding: 0.7rem 2rem;
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 1rem;
-  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  letter-spacing: 0.5px;
 }
 
 .no-appointments button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+  background: #0e5a77;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(26, 107, 138, 0.2);
 }
 
+/* Appointments List */
 .appointments-list {
   display: flex;
   flex-direction: column;
@@ -84,29 +111,31 @@
 }
 
 .appointment-card {
-  background: white;
-  border-radius: 20px;
-  padding: 1.8rem;
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 1.5rem;
   display: flex;
-  gap: 1.8rem;
+  gap: 1.5rem;
   align-items: center;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
   position: relative;
+  border: 1px solid #e0e8f0;
 }
 
 .appointment-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(26, 107, 138, 0.08);
+  border-color: #1a6b8a;
 }
 
 .appointment-image {
   width: 100px;
   height: 100px;
-  border-radius: 15px;
+  border-radius: 8px;
   overflow: hidden;
   flex-shrink: 0;
-  background: #f8f9fa;
+  background: #f0f4f8;
 }
 
 .appointment-image img {
@@ -120,37 +149,42 @@
 }
 
 .appointment-details h3 {
-  color: #1e3c72;
-  font-size: 1.3rem;
+  color: #1a3c5e;
+  font-size: 1.2rem;
   margin-bottom: 0.5rem;
   font-weight: 600;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .appointment-details .specialty {
-  color: #4a90e2;
-  font-size: 0.9rem;
+  color: #1a6b8a;
+  font-size: 0.85rem;
   margin-bottom: 0.5rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .appointment-details .address {
-  color: #7f8c8d;
-  font-size: 0.9rem;
+  color: #6a7c8e;
+  font-size: 0.85rem;
   margin-bottom: 0.3rem;
   line-height: 1.4;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .appointment-details .datetime {
-  color: #2c3e50;
-  font-size: 0.95rem;
+  color: #2c5a7a;
+  font-size: 0.85rem;
   font-weight: 500;
   margin-top: 0.3rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .appointment-details .fee {
-  color: #1e3c72;
-  font-size: 0.9rem;
+  color: #1a3c5e;
+  font-size: 0.85rem;
   font-weight: 600;
   margin-top: 0.5rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .appointment-actions {
@@ -162,62 +196,66 @@
 
 .btn-pay, .btn-cancel {
   padding: 0.6rem 1rem;
-  border-radius: 25px;
-  font-size: 0.85rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   text-align: center;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  letter-spacing: 0.3px;
 }
 
 .btn-pay {
-  background: #4caf50;
-  color: white;
+  background: #2e7d32;
+  color: #ffffff;
   border: none;
 }
 
 .btn-pay:hover {
-  background: #45a049;
-  transform: translateY(-2px);
+  background: #1b5e20;
+  transform: translateY(-1px);
 }
 
 .btn-cancel {
   background: transparent;
-  color: #e74c3c;
-  border: 1.5px solid #e74c3c;
+  color: #c0392b;
+  border: 1px solid #c0392b;
 }
 
 .btn-cancel:hover {
-  background: #e74c3c;
-  color: white;
-  transform: translateY(-2px);
+  background: #c0392b;
+  color: #ffffff;
+  transform: translateY(-1px);
 }
 
+/* Status Badges */
 .status-paid, .status-completed, .status-cancelled {
   padding: 0.6rem 1rem;
-  border-radius: 25px;
-  font-size: 0.85rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
   font-weight: 600;
   text-align: center;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .status-paid {
-  background: #4caf50;
-  color: white;
+  background: #2e7d32;
+  color: #ffffff;
 }
 
 .status-completed {
-  background: #2196f3;
-  color: white;
+  background: #1565c0;
+  color: #ffffff;
 }
 
 .status-cancelled {
-  background: #e74c3c;
-  color: white;
+  background: #c0392b;
+  color: #ffffff;
 }
 
-/* Cancel Confirmation Modal */
-.cancel-confirm-overlay {
+/* Confirmation Modal Styles */
+.confirm-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -231,76 +269,105 @@
   animation: fadeIn 0.2s ease;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.cancel-confirm-modal {
-  background: white;
-  border-radius: 20px;
+.confirm-modal {
+  background: #ffffff;
+  border-radius: 8px;
   padding: 2rem;
   max-width: 400px;
   width: 90%;
   text-align: center;
-  animation: modalSlideIn 0.3s ease;
+  animation: slideUp 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e0e8f0;
 }
 
-@keyframes modalSlideIn {
+.confirm-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.confirm-modal h3 {
+  font-size: 1.2rem;
+  color: #1a3c5e;
+  margin-bottom: 1rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  font-weight: 600;
+}
+
+.confirm-modal p {
+  color: #5a6c7e;
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  font-size: 0.9rem;
+}
+
+.payment-details {
+  font-size: 0.85rem;
+  color: #1a6b8a;
+  font-weight: 500;
+}
+
+.confirm-warning {
+  color: #c0392b;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+}
+
+.confirm-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.confirm-yes, .confirm-no {
+  padding: 0.6rem 1.5rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+}
+
+.confirm-yes {
+  background: #1a6b8a;
+  color: #ffffff;
+}
+
+.confirm-yes:hover {
+  background: #0e5a77;
+  transform: translateY(-1px);
+}
+
+.confirm-no {
+  background: #f0f4f8;
+  color: #5a6c7e;
+  border: 1px solid #d4dee8;
+}
+
+.confirm-no:hover {
+  background: #e8eef3;
+  transform: translateY(-1px);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
   from {
     opacity: 0;
-    transform: translateY(-30px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-.cancel-confirm-modal p {
-  color: #2c3e50;
-  font-size: 1.1rem;
-  margin-bottom: 1.5rem;
-}
-
-.cancel-confirm-buttons {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-}
-
-.confirm-yes, .confirm-no {
-  padding: 0.6rem 1.5rem;
-  border-radius: 25px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: none;
-}
-
-.confirm-yes {
-  background: #e74c3c;
-  color: white;
-}
-
-.confirm-yes:hover {
-  background: #c0392b;
-  transform: translateY(-2px);
-}
-
-.confirm-no {
-  background: #e9ecef;
-  color: #2c3e50;
-}
-
-.confirm-no:hover {
-  background: #dee2e6;
-  transform: translateY(-2px);
 }
 
 /* Responsive */
@@ -316,7 +383,7 @@
   .appointment-card {
     flex-direction: column;
     text-align: center;
-    padding: 1.5rem;
+    padding: 1.2rem;
   }
   
   .appointment-details {
@@ -333,7 +400,7 @@
   }
   
   .page-title {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
   
   .appointment-image {
@@ -341,344 +408,35 @@
     height: 80px;
   }
   
-  .cancel-confirm-modal {
+  .confirm-modal {
     padding: 1.5rem;
     width: 85%;
   }
   
-  .cancel-confirm-modal p {
-    font-size: 1rem;
+  .confirm-modal h3 {
+    font-size: 1.1rem;
+  }
+  
+  .confirm-modal p {
+    font-size: 0.85rem;
   }
 }
 
-
-/* Add to existing MyAppointments.css */
-
-.loading-spinner {
-  text-align: center;
-  padding: 3rem;
-  color: #7f8c8d;
-  font-size: 1.1rem;
-}
-
-.message-alert {
-  padding: 0.8rem 1rem;
-  border-radius: 10px;
-  margin-bottom: 1.5rem;
-  font-size: 0.9rem;
-  animation: slideIn 0.3s ease;
-  text-align: center;
-}
-
-.message-alert.success {
-  background: #e8f5e9;
-  color: #2e7d32;
-  border-left: 4px solid #2e7d32;
-}
-
-.message-alert.error {
-  background: #ffebee;
-  color: #c62828;
-  border-left: 4px solid #c62828;
-}
-
-.message-alert.info {
-  background: #e3f2fd;
-  color: #1565c0;
-  border-left: 4px solid #1565c0;
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
+@media (max-width: 480px) {
+  .appointment-actions {
+    flex-direction: column;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  
+  .btn-pay, .btn-cancel {
+    width: 100%;
   }
-}
-
-/* Cancel Confirmation Modal */
-.cancel-confirm-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  animation: fadeIn 0.2s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.cancel-confirm-modal {
-  background: white;
-  border-radius: 20px;
-  padding: 2rem;
-  max-width: 400px;
-  width: 90%;
-  text-align: center;
-  animation: modalSlideIn 0.3s ease;
-}
-
-@keyframes modalSlideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
+  
+  .confirm-buttons {
+    flex-direction: column;
+    gap: 0.8rem;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.cancel-confirm-modal p {
-  color: #2c3e50;
-  font-size: 1.1rem;
-  margin-bottom: 1.5rem;
-}
-
-.cancel-confirm-buttons {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-}
-
-.confirm-yes, .confirm-no {
-  padding: 0.6rem 1.5rem;
-  border-radius: 25px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: none;
-}
-
-.confirm-yes {
-  background: #e74c3c;
-  color: white;
-}
-
-.confirm-yes:hover {
-  background: #c0392b;
-  transform: translateY(-2px);
-}
-
-.confirm-no {
-  background: #e9ecef;
-  color: #2c3e50;
-}
-
-.confirm-no:hover {
-  background: #dee2e6;
-  transform: translateY(-2px);
-}
-
-
-
-/* Add to existing MyAppointments.css */
-
-.loading-spinner {
-  text-align: center;
-  padding: 50px;
-  color: #8a9bb0;
-  font-size: 1.1rem;
-}
-
-.message-alert {
-  padding: 12px 16px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  animation: slideIn 0.3s ease;
-}
-
-.message-alert.success {
-  background: #e8f5e9;
-  color: #2e7d32;
-  border-left: 4px solid #2e7d32;
-}
-
-.message-alert.error {
-  background: #ffebee;
-  color: #c62828;
-  border-left: 4px solid #c62828;
-}
-
-.message-alert.info {
-  background: #e3f2fd;
-  color: #1565c0;
-  border-left: 4px solid #1565c0;
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-
-/* Confirmation Modal Styles */
-.confirm-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  animation: fadeIn 0.2s ease;
-}
-
-.confirm-modal {
-  background: white;
-  border-radius: 20px;
-  padding: 2rem;
-  max-width: 400px;
-  width: 90%;
-  text-align: center;
-  animation: slideUp 0.3s ease;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-}
-
-.confirm-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-}
-
-.confirm-modal h3 {
-  font-size: 1.3rem;
-  color: #1a2c3e;
-  margin-bottom: 1rem;
-}
-
-.confirm-modal p {
-  color: #5a6c7e;
-  margin-bottom: 0.5rem;
-  line-height: 1.5;
-}
-
-.payment-details {
-  font-size: 0.9rem;
-  color: #2c5f8a;
-  font-weight: 500;
-}
-
-.confirm-warning {
-  color: #e74c3c;
-  font-size: 0.85rem;
-  margin-top: 0.5rem;
-}
-
-.confirm-buttons {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  margin-top: 1.5rem;
-}
-
-.confirm-yes, .confirm-no {
-  padding: 0.6rem 1.5rem;
-  border-radius: 25px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: none;
-}
-
-.confirm-yes {
-  background: #2c5f8a;
-  color: white;
-}
-
-.confirm-yes:hover {
-  background: #1e4568;
-  transform: translateY(-2px);
-}
-
-.confirm-no {
-  background: #e9ecef;
-  color: #5a6c7e;
-}
-
-.confirm-no:hover {
-  background: #dee2e6;
-  transform: translateY(-2px);
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Loading spinner */
-.loading-spinner {
-  text-align: center;
-  padding: 50px;
-  color: #8a9bb0;
-  font-size: 1.1rem;
-}
-
-/* Message Alerts */
-.message-alert {
-  padding: 12px 16px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  animation: slideIn 0.3s ease;
-}
-
-.message-alert.success {
-  background: #e8f5e9;
-  color: #2e7d32;
-  border-left: 4px solid #2e7d32;
-}
-
-.message-alert.error {
-  background: #ffebee;
-  color: #c62828;
-  border-left: 4px solid #c62828;
-}
-
-.message-alert.info {
-  background: #e3f2fd;
-  color: #1565c0;
-  border-left: 4px solid #1565c0;
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  
+  .confirm-yes, .confirm-no {
+    width: 100%;
   }
 }

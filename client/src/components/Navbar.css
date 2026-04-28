@@ -1,28 +1,25 @@
+/* Professional Hospital Style Navbar */
 .navbar {
-  background: rgba(253, 253, 253, 0.2);
-  backdrop-filter: blur(20px); 
-  -webkit-backdrop-filter: blur(20px);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  background: #ffffff;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   position: fixed;
   top: 0;
   width: 100%;
   z-index: 1000;
+  border-bottom: 2px solid #1a6b8a;
+  padding-left: 36px;
 }
 
 .nav-container {
-  max-width: calc(100% - 45px); /* 30px left + 15px right */
-  margin-left: 80px;
-  margin-right: 15px;
-  padding: 1rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0.75rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.nav-logo h1 {
-  font-size: 2.1rem;
-}
-
+/* Logo Section */
 .nav-logo {
   display: flex;
   align-items: center;
@@ -32,19 +29,30 @@
   text-decoration: none;
   display: flex;
   align-items: center;
+  gap: 0.75rem;
 }
 
 .logo-image {
-  height: 45px;
+  height: 42px;
   width: auto;
-  transition: transform 0.3s ease;
+  transition: all 0.2s ease;
   display: block;
 }
 
 .logo-image:hover {
-  transform: scale(1.05);
+  opacity: 0.85;
 }
 
+.nav-logo h1 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #1a3c5e;
+  margin: 0;
+  letter-spacing: -0.3px;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+}
+
+/* Navigation Menu */
 .nav-menu {
   display: flex;
   align-items: center;
@@ -56,76 +64,108 @@
   list-style: none;
   gap: 2rem;
   align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li {
+  margin: 0;
 }
 
 .nav-links a {
   text-decoration: none;
-  color: #2c3e50;
+  color: #2c5a7a;
   font-weight: 500;
-  transition: color 0.3s ease;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
   cursor: pointer;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  letter-spacing: 0.3px;
+  padding: 0.5rem 0;
+  border-bottom: 2px solid transparent;
 }
 
 .nav-links a:hover {
-  color: #4a90e2;
+  color: #1a6b8a;
+  border-bottom-color: #1a6b8a;
 }
 
+/* Login Link - Formal Style */
 .nav-login-link {
   background: transparent;
-  color: #2c3e50;
-  font-weight: 500;
-  transition: color 0.3s ease;
+  color: #2c5a7a;
+  font-weight: 600;
+  transition: all 0.2s ease;
   cursor: pointer;
   text-decoration: none;
-  padding: 0;
+  padding: 0.5rem 0;
   border: none;
 }
 
 .nav-login-link:hover {
-  color: #4a90e2;
+  color: #1a6b8a;
   background: transparent;
-  transform: none;
+  border-bottom-color: #1a6b8a;
 }
 
+/* Get Started Button - Professional Medical Style */
 .btn-get-started {
-  background: #4a90e2;
+  background: #1a6b8a;
   color: white;
   border: none;
-  padding: 0.6rem 1.5rem;
-  border-radius: 25px;
+  padding: 0.6rem 1.6rem;
+  border-radius: 4px;
   font-weight: 600;
+  font-size: 0.9rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .btn-get-started:hover {
-  background: #357abd;
-  transform: translateY(-2px);
+  background: #0e5a77;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(26, 107, 138, 0.2);
 }
 
+.btn-get-started:active {
+  transform: translateY(0);
+}
+
+/* Hamburger Menu */
 .hamburger {
   display: none;
   flex-direction: column;
   cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0.5rem;
 }
 
 .hamburger span {
   width: 25px;
-  height: 3px;
-  background: #1e3c72;
+  height: 2px;
+  background: #1a3c5e;
   margin: 3px 0;
-  transition: 0.3s;
+  transition: all 0.3s ease;
+  border-radius: 1px;
 }
 
+/* Responsive Styles */
 @media (max-width: 768px) {
   .nav-container {
-    padding: 0.8rem 1.5rem;
-    margin-left: 20px;
-    margin-right: 15px;
+    padding: 0.7rem 1.5rem;
   }
   
   .logo-image {
-    height: 38px;
+    height: 36px;
+  }
+  
+  .nav-logo h1 {
+    font-size: 1.3rem;
   }
   
   .hamburger {
@@ -135,14 +175,16 @@
   .nav-menu {
     position: fixed;
     left: -100%;
-    top: 70px;
+    top: 65px;
     flex-direction: column;
-    background: white;
+    background: #ffffff;
     width: 100%;
     text-align: center;
-    transition: 0.3s;
-    box-shadow: 0 10px 27px rgba(0,0,0,0.05);
+    transition: 0.3s ease-in-out;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     padding: 2rem 0;
+    gap: 1.5rem;
+    border-top: 1px solid #e0e8f0;
   }
   
   .nav-menu.active {
@@ -151,11 +193,18 @@
   
   .nav-links {
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.2rem;
+  }
+  
+  .nav-links a {
+    font-size: 1rem;
+    padding: 0.4rem 0;
   }
   
   .btn-get-started {
-    margin-top: 1rem;
+    margin-top: 0.5rem;
+    padding: 0.7rem 2rem;
+    font-size: 0.9rem;
   }
   
   .nav-login-link {
@@ -164,12 +213,48 @@
 }
 
 @media (max-width: 480px) {
-  .logo-image {
-    height: 32px;
+  .nav-container {
+    padding: 0.6rem 1rem;
   }
   
+  .logo-image {
+    height: 30px;
+  }
+  
+  .nav-logo h1 {
+    font-size: 1.1rem;
+  }
+  
+  .nav-menu {
+    top: 58px;
+  }
+  
+  .btn-get-started {
+    padding: 0.6rem 1.6rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Desktop Large Screens */
+@media (min-width: 1400px) {
   .nav-container {
-    margin-left: 15px;
-    padding: 0.6rem 1rem;
+    padding: 0.9rem 2rem;
+  }
+  
+  .nav-logo h1 {
+    font-size: 1.8rem;
+  }
+  
+  .logo-image {
+    height: 46px;
+  }
+  
+  .nav-links a {
+    font-size: 1rem;
+  }
+  
+  .btn-get-started {
+    padding: 0.7rem 1.8rem;
+    font-size: 0.8rem;
   }
 }

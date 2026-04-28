@@ -1,3 +1,4 @@
+/* Professional Hospital Style Hero Section */
 .hero {
   padding: 120px 0 80px;
   min-height: 100vh;
@@ -27,7 +28,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  /* background: rgba(255, 255, 255, 0.92); */
+  /* background: rgba(255, 255, 255, 0.88); */
   z-index: 1;
 }
 
@@ -51,14 +52,15 @@
 
 .hero-title {
   font-size: 3rem;
-  font-weight: 800;
-  color: #1e3c72;
+  font-weight: 700;
+  color: #1a3c5e;
   margin-bottom: 1.5rem;
   line-height: 1.2;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .highlight {
-  color: #4a90e2;
+  color: #1a6b8a;
   position: relative;
   display: inline-block;
 }
@@ -66,18 +68,19 @@
 .highlight::after {
   content: '';
   position: absolute;
-  bottom: -5px;
+  bottom: -8px;
   left: 0;
   width: 100%;
   height: 3px;
-  background: linear-gradient(90deg, #4a90e2, #667eea);
+  background: #1a6b8a;
 }
 
 .hero-description {
   font-size: 1.1rem;
-  color: #5a6c7e;
+  color: #4a627a;
   line-height: 1.6;
   margin-bottom: 2rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .hero-buttons {
@@ -88,35 +91,37 @@
 .btn-book, .btn-upload {
   padding: 0.9rem 2rem;
   border: none;
-  border-radius: 50px;
+  border-radius: 4px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  letter-spacing: 0.5px;
 }
 
 .btn-book {
-  background: #4a90e2;
+  background: #1a6b8a;
   color: white;
-  box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+  box-shadow: 0 2px 4px rgba(26, 107, 138, 0.2);
 }
 
 .btn-book:hover {
-  background: #357abd;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
+  background: #0e5a77;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(26, 107, 138, 0.3);
 }
 
 .btn-upload {
   background: transparent;
-  color: #4a90e2;
-  border: 2px solid #4a90e2;
+  color: #1a6b8a;
+  border: 2px solid #1a6b8a;
 }
 
 .btn-upload:hover {
-  background: #4a90e2;
+  background: #1a6b8a;
   color: white;
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
 .hero-right {
@@ -126,39 +131,42 @@
 }
 
 .info-card {
-  background: white;
-  border-radius: 16px;
+  background: #ffffff;
+  border-radius: 8px;
   padding: 1.5rem;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
-  border: 1px solid #eef2f7;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease;
+  border: 1px solid #e0e8f0;
 }
 
 .info-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-  border-color: #4a90e2;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(26, 107, 138, 0.1);
+  border-color: #1a6b8a;
 }
 
 .info-card h3 {
-  color: #1e3c72;
-  font-size: 1rem;
+  color: #1a3c5e;
+  font-size: 0.9rem;
   font-weight: 600;
   margin-bottom: 1rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .appointment-time {
   font-size: 1.4rem;
   font-weight: 700;
-  color: #4a90e2;
+  color: #1a6b8a;
   margin-bottom: 0.5rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .doctor-name {
-  color: #7f8c8d;
-  font-size: 0.95rem;
+  color: #7a8e9e;
+  font-size: 0.9rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .report-circle {
@@ -171,28 +179,32 @@
 
 .report-percentage {
   font-size: 2.5rem;
-  font-weight: 800;
-  color: #4a90e2;
+  font-weight: 700;
+  color: #1a6b8a;
   line-height: 1;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .report-status {
-  font-size: 0.85rem;
-  color: #7f8c8d;
+  font-size: 0.8rem;
+  color: #7a8e9e;
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-top: 0.25rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .ai-badge {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #1a6b8a;
   color: white;
   padding: 0.2rem 0.6rem;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  font-weight: 700;
+  border-radius: 3px;
+  font-size: 0.7rem;
+  font-weight: 600;
   display: inline-block;
   margin-right: 0.5rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  letter-spacing: 0.5px;
 }
 
 .insights-list {
@@ -203,11 +215,12 @@
 
 .insights-list li {
   padding: 0.5rem 0;
-  color: #2c3e50;
+  color: #2c5a7a;
   font-size: 0.9rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .insights-list li:last-child {
@@ -216,11 +229,12 @@
 
 .insights-list li::before {
   content: '✓';
-  color: #4a90e2;
+  color: #1a6b8a;
   font-weight: bold;
   font-size: 1rem;
 }
 
+/* Responsive Styles */
 @media (max-width: 968px) {
   .hero-container {
     grid-template-columns: 1fr;
@@ -230,6 +244,7 @@
   .hero-left {
     text-align: center;
     padding-top: 0;
+    padding-right: 0;
   }
   
   .hero-buttons {
@@ -237,7 +252,7 @@
   }
   
   .hero-title {
-    font-size: 2.2rem;
+    font-size: 2.4rem;
   }
   
   .hero-right {
@@ -275,5 +290,25 @@
   
   .report-percentage {
     font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 1.5rem;
+  }
+  
+  .hero-description {
+    font-size: 0.9rem;
+  }
+  
+  .hero-buttons {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  
+  .btn-book, .btn-upload {
+    width: 100%;
+    padding: 0.7rem 1.2rem;
   }
 }

@@ -1,6 +1,7 @@
+/* Professional Hospital Style AI Insights */
 .ai-insights-page {
   padding: 50px 0 60px;
-  background: #f5f7fa;
+  background: #f8fafc;
   min-height: 100vh;
 }
 
@@ -24,21 +25,66 @@
 .ai-insights-header h1 {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #1a2c3e;
+  color: #1a3c5e;
   margin-bottom: 0.5rem;
   letter-spacing: -0.3px;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .ai-insights-header p {
-  color: #6c7a89;
-  font-size: 0.95rem;
+  color: #5a6c7e;
+  font-size: 0.9rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  text-align: center;
+  padding: 3rem;
+  color: #8a9bb0;
+  font-size: 1rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+}
+
+/* Message Alert */
+.message-alert {
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+  font-size: 0.85rem;
+  animation: slideIn 0.3s ease;
+  text-align: center;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+}
+
+.message-alert.success {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border-left: 3px solid #2e7d32;
+}
+
+.message-alert.error {
+  background: #ffebee;
+  color: #c0392b;
+  border-left: 3px solid #c0392b;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Reports List Sidebar */
 .reports-list-sidebar {
-  background: white;
-  border-radius: 16px;
-  border: 1px solid #eef2f6;
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #e0e8f0;
   padding: 1.25rem;
   margin-bottom: 2rem;
 }
@@ -51,20 +97,22 @@
 }
 
 .reports-header h3 {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 600;
-  color: #1a2c3e;
+  color: #1a3c5e;
   margin: 0;
   text-transform: uppercase;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.5px;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .report-count {
   font-size: 0.7rem;
-  color: #8a9bb0;
-  background: #f5f7fa;
+  color: #6a7c8e;
+  background: #f0f4f8;
   padding: 0.2rem 0.6rem;
-  border-radius: 20px;
+  border-radius: 4px;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .reports-buttons {
@@ -78,23 +126,24 @@
   align-items: baseline;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
-  background: #fafbfc;
-  border: 1px solid #eef2f6;
-  border-radius: 8px;
+  background: #f8fafc;
+  border: 1px solid #e0e8f0;
+  border-radius: 4px;
   cursor: pointer;
   transition: all 0.2s ease;
   font-size: 0.85rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .report-btn:hover {
-  background: #f5f7fa;
-  border-color: #d0d8e3;
+  background: #f0f4f8;
+  border-color: #1a6b8a;
 }
 
 .report-btn.active {
-  background: #2c5f8a;
-  color: white;
-  border-color: #2c5f8a;
+  background: #1a6b8a;
+  color: #ffffff;
+  border-color: #1a6b8a;
 }
 
 .report-btn.active .report-date {
@@ -110,104 +159,26 @@
   color: #8a9bb0;
 }
 
-/* Insights Grid */
-.insights-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
-.insight-card {
-  background: white;
-  border-radius: 12px;
-  padding: 1.25rem;
-  border: 1px solid #eef2f6;
-  transition: all 0.2s ease;
-}
-
-.insight-card:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-}
-
-.insight-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 0.75rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid #eef2f6;
-}
-
-.insight-header h3 {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #1a2c3e;
-  margin: 0;
-}
-
-.insight-date {
-  font-size: 0.7rem;
-  color: #8a9bb0;
-}
-
-.insight-text {
-  color: #5a6c7e;
-  line-height: 1.5;
-  font-size: 0.9rem;
-  margin-bottom: 1rem;
-}
-
-.insight-recommendation {
-  background: #fafbfc;
-  padding: 0.75rem;
-  border-radius: 10px;
-  border-left: 2px solid #2c5f8a;
-}
-
-.recommendation-title {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #2c5f8a;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-  margin-bottom: 0.5rem;
-}
-
-.insight-recommendation ul {
-  margin: 0;
-  padding-left: 1.2rem;
-}
-
-.insight-recommendation li {
-  font-size: 0.85rem;
-  color: #5a6c7e;
-  margin-bottom: 0.3rem;
-  line-height: 1.4;
-}
-
-.insight-recommendation li:last-child {
-  margin-bottom: 0;
-}
-
 /* Chat Section */
 .ai-chat-section {
-  background: white;
-  border-radius: 16px;
-  border: 1px solid #eef2f6;
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #e0e8f0;
   padding: 1.25rem;
+  margin-bottom: 2rem;
 }
 
 .ai-chat-section h3 {
   font-size: 1rem;
   font-weight: 600;
-  color: #1a2c3e;
+  color: #1a3c5e;
   margin-bottom: 1rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .chat-container {
-  border: 1px solid #eef2f6;
-  border-radius: 12px;
+  border: 1px solid #e0e8f0;
+  border-radius: 8px;
   overflow: hidden;
 }
 
@@ -215,7 +186,21 @@
   height: 320px;
   overflow-y: auto;
   padding: 1rem;
-  background: #fafbfc;
+  background: #f8fafc;
+}
+
+.chat-history::-webkit-scrollbar {
+  width: 4px;
+}
+
+.chat-history::-webkit-scrollbar-track {
+  background: #e0e8f0;
+  border-radius: 4px;
+}
+
+.chat-history::-webkit-scrollbar-thumb {
+  background: #1a6b8a;
+  border-radius: 4px;
 }
 
 .chat-message {
@@ -239,8 +224,8 @@
 .message-avatar {
   width: 32px;
   height: 32px;
-  border-radius: 8px;
-  background: #eef2f6;
+  border-radius: 4px;
+  background: #e0e8f0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -251,63 +236,72 @@
 }
 
 .chat-message.user .message-avatar {
-  background: #2c5f8a;
-  color: white;
+  background: #1a6b8a;
+  color: #ffffff;
 }
 
 .message-text {
   flex: 1;
   padding: 0.6rem 1rem;
-  background: white;
-  border-radius: 12px;
+  background: #ffffff;
+  border-radius: 8px;
   font-size: 0.85rem;
-  color: #2c3e50;
+  color: #1a3c5e;
   line-height: 1.5;
-  border: 1px solid #eef2f6;
+  border: 1px solid #e0e8f0;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .chat-message.user .message-text {
-  background: #eef2f6;
-  border-color: #e0e6ed;
+  background: #f0f4f8;
+  border-color: #d4dee8;
+}
+
+.chat-message.typing .message-text {
+  background: #f8fafc;
+  color: #8a9bb0;
 }
 
 .chat-input-area {
   display: flex;
   padding: 1rem;
-  background: white;
-  border-top: 1px solid #eef2f6;
+  background: #ffffff;
+  border-top: 1px solid #e0e8f0;
   gap: 0.5rem;
 }
 
 .chat-input-area input {
   flex: 1;
   padding: 0.7rem 1rem;
-  border: 1px solid #e0e6ed;
-  border-radius: 8px;
+  border: 1px solid #d4dee8;
+  border-radius: 4px;
   font-size: 0.85rem;
-  font-family: inherit;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
   transition: all 0.2s ease;
 }
 
 .chat-input-area input:focus {
   outline: none;
-  border-color: #2c5f8a;
+  border-color: #1a6b8a;
+  box-shadow: 0 0 0 2px rgba(26, 107, 138, 0.1);
 }
 
 .chat-input-area button {
-  background: #2c5f8a;
-  color: white;
+  background: #1a6b8a;
+  color: #ffffff;
   border: none;
   padding: 0.7rem 1.5rem;
-  border-radius: 8px;
+  border-radius: 4px;
   font-size: 0.85rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  letter-spacing: 0.5px;
 }
 
 .chat-input-area button:hover:not(:disabled) {
-  background: #1e4568;
+  background: #0e5a77;
   transform: translateY(-1px);
 }
 
@@ -316,13 +310,127 @@
   cursor: not-allowed;
 }
 
+/* Insights Grid */
+.insights-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.insight-card {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 1.25rem;
+  border: 1px solid #e0e8f0;
+  transition: all 0.2s ease;
+}
+
+.insight-card:hover {
+  box-shadow: 0 2px 8px rgba(26, 107, 138, 0.06);
+  border-color: #1a6b8a;
+}
+
+.insight-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e0e8f0;
+}
+
+.insight-header h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1a3c5e;
+  margin: 0;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+}
+
+.insight-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.download-insight-btn {
+  background: transparent;
+  color: #1a6b8a;
+  border: 1px solid #1a6b8a;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+}
+
+.download-insight-btn:hover {
+  background: #1a6b8a;
+  color: #ffffff;
+}
+
+.insight-text {
+  color: #5a6c7e;
+  line-height: 1.5;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+}
+
+.insight-recommendation {
+  background: #f8fafc;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border-left: 3px solid #1a6b8a;
+  margin-bottom: 0.75rem;
+}
+
+.recommendation-title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #1a6b8a;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.5rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+}
+
+.insight-recommendation ul {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.insight-recommendation li {
+  font-size: 0.85rem;
+  color: #5a6c7e;
+  margin-bottom: 0.3rem;
+  line-height: 1.4;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+}
+
+.insight-recommendation li:last-child {
+  margin-bottom: 0;
+}
+
+.insight-insight {
+  background: #e8f0f5;
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: #1a3c5e;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  border-left: 3px solid #1a6b8a;
+}
+
 /* Empty State */
 .no-reports-message {
   text-align: center;
   padding: 3rem;
-  background: white;
-  border-radius: 16px;
-  border: 1px solid #eef2f6;
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #e0e8f0;
   color: #8a9bb0;
 }
 
@@ -330,25 +438,12 @@
   font-weight: 500;
   color: #5a6c7e;
   margin-bottom: 0.5rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .empty-hint {
   font-size: 0.85rem;
-}
-
-/* Typing Animation */
-.typing-dots {
-  animation: blink 1.4s infinite;
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 0; }
-  50% { opacity: 1; }
-}
-
-.chat-message.typing .message-text {
-  background: #f5f7fa;
-  color: #8a9bb0;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 /* Responsive */
@@ -368,7 +463,11 @@
   }
   
   .ai-insights-header h1 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
+  }
+  
+  .ai-insights-header p {
+    font-size: 0.85rem;
   }
   
   .reports-buttons {
@@ -381,7 +480,7 @@
   
   .insight-header {
     flex-direction: column;
-    gap: 0.3rem;
+    gap: 0.5rem;
   }
   
   .chat-message {
@@ -389,8 +488,8 @@
   }
   
   .message-avatar {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     font-size: 0.7rem;
   }
   
@@ -401,66 +500,32 @@
   .chat-input-area button {
     width: 100%;
   }
-}
-
-/* Add to existing AIInsights.css */
-
-.insight-actions {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.download-insight-btn {
-  background: transparent;
-  color: #2c5f8a;
-  border: 1px solid #2c5f8a;
-  padding: 0.2rem 0.6rem;
-  border-radius: 15px;
-  font-size: 0.7rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.download-insight-btn:hover {
-  background: #2c5f8a;
-  color: white;
-}
-
-.insight-insight {
-  background: #e3f2fd;
-  padding: 0.8rem;
-  border-radius: 10px;
-  margin-top: 0.8rem;
-  font-size: 0.85rem;
-  color: #1565c0;
-}
-
-.message-alert {
-  padding: 12px 16px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  animation: slideIn 0.3s ease;
-}
-
-.message-alert.success {
-  background: #e8f5e9;
-  color: #2e7d32;
-  border-left: 4px solid #2e7d32;
-}
-
-.message-alert.error {
-  background: #ffebee;
-  color: #c62828;
-  border-left: 4px solid #c62828;
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
+  
+  .message-alert {
+    font-size: 0.8rem;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+}
+
+@media (max-width: 480px) {
+  .reports-header {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+  
+  .insight-card {
+    padding: 1rem;
+  }
+  
+  .insight-header h3 {
+    font-size: 0.9rem;
+  }
+  
+  .insight-text {
+    font-size: 0.85rem;
+  }
+  
+  .insight-recommendation li {
+    font-size: 0.8rem;
   }
 }

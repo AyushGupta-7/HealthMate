@@ -76,7 +76,7 @@ const Vitals = () => {
       if (response.data.success) {
         setCurrentVitals(editData)
         setIsEditing(false)
-        setShowSuccessMessage('Current vitals updated successfully!')
+        setShowSuccessMessage('✓ Current vitals updated successfully!')
         setTimeout(() => setShowSuccessMessage(''), 3000)
       }
     } catch (error) {
@@ -123,7 +123,7 @@ const Vitals = () => {
         if (refreshedHistory.data.success) {
           setVitalsHistory(refreshedHistory.data.data)
         }
-        setShowSuccessMessage('Vitals updated and saved to history successfully!')
+        setShowSuccessMessage('✓ Vitals updated and saved to history successfully!')
         setTimeout(() => setShowSuccessMessage(''), 3000)
       }
     } catch (error) {
@@ -150,7 +150,7 @@ const Vitals = () => {
       
       if (response.data.success) {
         setVitalsHistory(prevHistory => prevHistory.filter(entry => entry._id !== id))
-        setShowSuccessMessage('Vitals entry deleted successfully!')
+        setShowSuccessMessage('✓ Vitals entry deleted successfully!')
         setTimeout(() => setShowSuccessMessage(''), 3000)
       } else {
         setShowErrorMessage(response.data.message || 'Failed to delete vitals entry')
@@ -183,17 +183,6 @@ const Vitals = () => {
         <div className="reports-layout">
           <ReportSidebar />
           <div className="vitals-container">
-            {showSuccessMessage && (
-              <div className="success-message">
-                ✓ {showSuccessMessage}
-              </div>
-            )}
-            {showErrorMessage && (
-              <div className="error-message">
-                ⚠️ {showErrorMessage}
-              </div>
-            )}
-
             <div className="vitals-header">
               <h1>Health Vitals</h1>
               <p>Track your Blood Pressure, Blood Sugar, and Weight</p>
@@ -305,6 +294,14 @@ const Vitals = () => {
                 </div>
               )}
             </div>
+
+            {/* Confirmation Messages - Simple green/red text between sections */}
+            {showSuccessMessage && (
+              <div className="confirmation-msg success">{showSuccessMessage}</div>
+            )}
+            {showErrorMessage && (
+              <div className="confirmation-msg error">{showErrorMessage}</div>
+            )}
 
             {vitalsHistory.length > 0 && (
               <div className="vitals-history-section">

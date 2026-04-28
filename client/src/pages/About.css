@@ -1,6 +1,7 @@
+/* Professional Hospital Style About Page */
 .about-page {
   padding: 50px 0 60px;
-  background: #f8f9fa;
+  background: #f8fafc;
   min-height: 100vh;
 }
 
@@ -22,11 +23,12 @@
 
 .about-header h1 {
   font-size: 1.5rem;
-  color: #1e3c72;
+  color: #1a3c5e;
   font-weight: 700;
   position: relative;
   display: inline-block;
   letter-spacing: 1px;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .about-header h1::after {
@@ -36,19 +38,20 @@
   left: 50%;
   transform: translateX(-50%);
   width: 60px;
-  height: 3px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 2px;
+  height: 2px;
+  background: #1a6b8a;
+  border-radius: 1px;
 }
 
 .about-content {
   display: flex;
   gap: 3rem;
   align-items: center;
-  background: white;
-  border-radius: 20px;
+  background: #ffffff;
+  border-radius: 8px;
   padding: 2rem;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e0e8f0;
 }
 
 .about-text {
@@ -59,8 +62,9 @@
   color: #5a6c7e;
   line-height: 1.8;
   margin-bottom: 1.5rem;
-  font-size: 1rem;
+  font-size: 0.95rem;
   text-align: justify;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .about-text p:last-child {
@@ -68,7 +72,7 @@
 }
 
 .highlight {
-  color: #4a90e2;
+  color: #1a6b8a;
   font-weight: 600;
 }
 
@@ -83,19 +87,20 @@
   width: 100%;
   max-width: 350px;
   height: auto;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e0e8f0;
 }
 
 /* Our Vision Section */
 .vision-section {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 20px;
+  background: #1a6b8a;
+  border-radius: 8px;
   padding: 3rem;
   margin-bottom: 4rem;
   text-align: center;
-  color: white;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .vision-section h2 {
@@ -103,13 +108,16 @@
   font-weight: 700;
   margin-bottom: 1.5rem;
   letter-spacing: 1px;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .vision-section p {
   line-height: 1.8;
-  font-size: 1rem;
+  font-size: 0.95rem;
   max-width: 900px;
   margin: 0 auto;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  color: #e8f0f5;
 }
 
 .vision-section .highlight {
@@ -119,22 +127,24 @@
 
 /* Why Choose Us Section */
 .why-choose-section {
-  background: white;
-  border-radius: 20px;
+  background: #ffffff;
+  border-radius: 8px;
   padding: 3rem;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e0e8f0;
 }
 
 .why-choose-section h2 {
   text-align: center;
   font-size: 2rem;
-  color: #1e3c72;
+  color: #1a3c5e;
   font-weight: 700;
   margin-bottom: 2rem;
   letter-spacing: 1px;
   position: relative;
   display: inline-block;
   width: 100%;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .why-choose-section h2::after {
@@ -144,9 +154,9 @@
   left: 50%;
   transform: translateX(-50%);
   width: 60px;
-  height: 3px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 2px;
+  height: 2px;
+  background: #1a6b8a;
+  border-radius: 1px;
 }
 
 .features-grid-about {
@@ -159,46 +169,50 @@
 .feature-card-about {
   text-align: center;
   padding: 2rem;
-  background: #f8f9fa;
-  border-radius: 15px;
-  transition: all 0.3s ease;
-  border: 1px solid #e9ecef;
+  background: #f8fafc;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  border: 1px solid #e0e8f0;
 }
 
 .feature-card-about:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  border-color: #4a90e2;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(26, 107, 138, 0.1);
+  border-color: #1a6b8a;
 }
 
 .feature-card-about h3 {
-  color: #4a90e2;
-  font-size: 1.2rem;
+  color: #1a6b8a;
+  font-size: 1.1rem;
   font-weight: 700;
   margin-bottom: 1rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  letter-spacing: 0.5px;
 }
 
 .feature-card-about p {
   color: #5a6c7e;
   line-height: 1.6;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .additional-info {
   margin-top: 2rem;
   padding-top: 2rem;
-  border-top: 1px solid #e9ecef;
+  border-top: 1px solid #e0e8f0;
 }
 
 .additional-info p {
   color: #5a6c7e;
   line-height: 1.8;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   text-align: center;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .additional-info .highlight {
-  color: #4a90e2;
+  color: #1a6b8a;
   font-weight: 600;
 }
 
@@ -229,7 +243,7 @@
   }
   
   .about-header h1 {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
   
   .about-content {
@@ -288,7 +302,7 @@
   }
   
   .about-header h1 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
   
   .about-content {

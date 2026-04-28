@@ -13,12 +13,12 @@ const Specialty = () => {
   const navigate = useNavigate()
 
   const specialties = [
-    { name: "General physician", path: "GeneralPhysician", image: generalPhysician, color: "#4a90e2", bgColor: "#e3f2fd" },
-    { name: "Gynecologist", path: "Gynecologist", image: gynecologist, color: "#4a90e2", bgColor: "#fce4ec" },
-    { name: "Dermatologist", path: "Dermatologist", image: dermatologist, color: "#4a90e2", bgColor: "#f3e5f5" },
-    { name: "Pediatricians", path: "Pediatricians", image: pediatrician, color: "#4a90e2", bgColor: "#fff3e0" },
-    { name: "Neurologist", path: "Neurologist", image: neurologist, color: "#4a90e2", bgColor: "#e0f7fa" },
-    { name: "Gastroenterologist", path: "Gastroenterologist", image: gastroenterologist, color: "#4a90e2", bgColor: "#f1f8e9" }
+    { name: "General physician", path: "GeneralPhysician", image: generalPhysician, color: "#1a6b8a", bgColor: "#e8f0f5" },
+    { name: "Gynecologist", path: "Gynecologist", image: gynecologist, color: "#1a6b8a", bgColor: "#f8eef0" },
+    { name: "Dermatologist", path: "Dermatologist", image: dermatologist, color: "#1a6b8a", bgColor: "#f0eef8" },
+    { name: "Pediatricians", path: "Pediatricians", image: pediatrician, color: "#1a6b8a", bgColor: "#fef5e8" },
+    { name: "Neurologist", path: "Neurologist", image: neurologist, color: "#1a6b8a", bgColor: "#e8f4f8" },
+    { name: "Gastroenterologist", path: "Gastroenterologist", image: gastroenterologist, color: "#1a6b8a", bgColor: "#f0f8e8" }
   ]
 
   const handleSpecialtyClick = (path) => {

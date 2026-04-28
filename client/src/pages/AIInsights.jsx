@@ -181,7 +181,7 @@ const AIInsights = () => {
                   </div>
                 </div>
 
-                    <div className="ai-chat-section">
+                <div className="ai-chat-section">
                   <h3>Ask AI Health Assistant</h3>
                   <div className="chat-container">
                     <div className="chat-history">
@@ -217,7 +217,6 @@ const AIInsights = () => {
                     </div>
                   </div>
                 </div>
-
 
                 <div className="insights-grid">
                   {insights.map(insight => (
