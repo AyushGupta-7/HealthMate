@@ -7,6 +7,8 @@ import './AdminDoctors.css';
 const AdminDoctors = () => {
   const navigate = useNavigate();
   const [doctors, setDoctors] = useState([]);
+  const [filteredDoctors, setFilteredDoctors] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -39,12 +41,27 @@ const AdminDoctors = () => {
     fetchDoctors();
   }, [navigate]);
 
+  // Filter doctors when search term changes
+  useEffect(() => {
+    if (searchTerm.trim() === '') {
+      setFilteredDoctors(doctors);
+    } else {
+      const filtered = doctors.filter(doctor => 
+        doctor.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        doctor.speciality.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        doctor.email.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredDoctors(filtered);
+    }
+  }, [searchTerm, doctors]);
+
   const fetchDoctors = async () => {
     try {
       setLoading(true);
       const response = await API.get('/admin/doctors');
       if (response.data.success) {
         setDoctors(response.data.data);
+        setFilteredDoctors(response.data.data);
       }
     } catch (error) {
       console.error('Error fetching doctors:', error);
@@ -135,6 +152,10 @@ const AdminDoctors = () => {
     });
   };
 
+  const clearSearch = () => {
+    setSearchTerm('');
+  };
+
   if (loading) {
     return (
       <AdminLayout>
@@ -158,6 +179,30 @@ const AdminDoctors = () => {
           <div className={`message ${message.type}`}>{message.text}</div>
         )}
 
+        {/* Search Bar */}
+        <div className="search-section">
+          <div className="search-wrapper">
+            <div className="search-icon">🔍</div>
+            <input
+              type="text"
+              className="search-input"
+              placeholder="Search by doctor name, speciality, or email..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            {searchTerm && (
+              <button className="clear-search-btn" onClick={clearSearch}>
+                ✕
+              </button>
+            )}
+          </div>
+          {searchTerm && (
+            <div className="search-results-count">
+              Found {filteredDoctors.length} doctor(s) matching "{searchTerm}"
+            </div>
+          )}
+        </div>
+
         <div className="doctors-table-wrapper">
           <table className="doctors-table">
             <thead>
@@ -172,30 +217,42 @@ const AdminDoctors = () => {
               </tr>
             </thead>
             <tbody>
-              {doctors.map(doctor => (
-                <tr key={doctor._id}>
-                  <td><img src={doctor.image} alt={doctor.name} className="doctor-thumb" /></td>
-                  <td>{doctor.name}</td>
-                  <td>{doctor.speciality}</td>
-                  <td>{doctor.experience}</td>
-                  <td>₹{doctor.fees}</td>
-                  <td>
-                    <span className={`status-badge ${doctor.available ? 'available' : 'unavailable'}`}>
-                      {doctor.available ? 'Available' : 'Unavailable'}
-                    </span>
-                   </td>
-                  <td>
-                    <button 
-                      className={`action-btn ${doctor.available ? 'make-unavailable' : 'make-available'}`} 
-                      onClick={() => handleToggleAvailability(doctor)}
-                    >
-                      {doctor.available ? 'Mark Unavailable' : 'Mark Available'}
-                    </button>
-                   </td>
-                 </tr>
-              ))}
+              {filteredDoctors.length === 0 ? (
+                <tr>
+                  <td colSpan="7" className="no-results">
+                    <div className="no-results-content">
+                      <span className="no-results-icon">👨‍⚕️</span>
+                      <p>No doctors found matching your search.</p>
+                      <p className="no-results-hint">Try searching with different keywords or clear the search.</p>
+                    </div>
+                  </td>
+                </tr>
+              ) : (
+                filteredDoctors.map(doctor => (
+                  <tr key={doctor._id}>
+                    <td><img src={doctor.image} alt={doctor.name} className="doctor-thumb" /></td>
+                    <td className="doctor-name-cell">{doctor.name}</td>
+                    <td>{doctor.speciality}</td>
+                    <td>{doctor.experience}</td>
+                    <td>₹{doctor.fees}</td>
+                    <td>
+                      <span className={`status-badge ${doctor.available ? 'available' : 'unavailable'}`}>
+                        {doctor.available ? 'Available' : 'Unavailable'}
+                      </span>
+                    </td>
+                    <td>
+                      <button 
+                        className={`action-btn ${doctor.available ? 'make-unavailable' : 'make-available'}`} 
+                        onClick={() => handleToggleAvailability(doctor)}
+                      >
+                        {doctor.available ? 'Mark Unavailable' : 'Mark Available'}
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
-           </table>
+          </table>
         </div>
 
         {/* Add Doctor Modal */}
