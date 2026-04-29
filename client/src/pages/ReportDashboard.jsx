@@ -33,44 +33,60 @@ const ReportDashboard = () => {
   }
 
   const handleFileUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    
-    setUploading(true);
-    setUploadProgress('Uploading file...');
-    setShowSuccessMessage('');
-    setShowErrorMessage('');
-    
-    const formData = new FormData();
-    formData.append('report', file);
-    formData.append('title', file.name.replace(/\.[^/.]+$/, ""));
-    formData.append('type', file.type.includes('image') ? 'Image' : file.type.includes('pdf') ? 'PDF' : 'Document');
-    
-    try {
-      const response = await API.post('/reports/upload', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
-      
-      if (response.data.success) {
-        setUploadProgress('AI analyzing report...');
-        setTimeout(() => {
-          setUploadProgress('');
-          setUploading(false);
-          setShowSuccessMessage(`"${file.name}" uploaded and AI analysis started.`);
-          fetchReports();
-          setTimeout(() => setShowSuccessMessage(''), 5000);
-        }, 1500);
-      }
-      e.target.value = '';
-    } catch (error) {
-      console.error('Upload failed:', error);
-      setUploading(false);
-      setUploadProgress('');
-      setShowErrorMessage(error.response?.data?.message || `Failed to upload "${file.name}"`);
-      setTimeout(() => setShowErrorMessage(''), 5000);
-      e.target.value = '';
-    }
+  const file = e.target.files[0];
+  if (!file) return;
+  
+  // Validate file size (max 10MB)
+  if (file.size > 10 * 1024 * 1024) {
+    setShowErrorMessage('File size must be less than 10MB');
+    setTimeout(() => setShowErrorMessage(''), 3000);
+    return;
   }
+  
+  // Validate file type
+  const allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png', 'text/plain'];
+  if (!allowedTypes.includes(file.type)) {
+    setShowErrorMessage('Invalid file type. Please upload PDF, JPG, PNG, or TXT files.');
+    setTimeout(() => setShowErrorMessage(''), 3000);
+    return;
+  }
+  
+  setUploading(true);
+  setUploadProgress('Uploading file...');
+  setShowSuccessMessage('');
+  setShowErrorMessage('');
+  
+  const formData = new FormData();
+  formData.append('report', file);
+  formData.append('title', file.name.replace(/\.[^/.]+$/, ""));
+  formData.append('type', file.type.includes('image') ? 'Image' : file.type.includes('pdf') ? 'PDF' : 'Document');
+  
+  try {
+    const response = await API.post('/reports/upload', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+    
+    if (response.data.success) {
+      setUploadProgress('AI analyzing report...');
+      setTimeout(() => {
+        setUploadProgress('');
+        setUploading(false);
+        setShowSuccessMessage(`"${file.name}" uploaded successfully! AI analysis started.`);
+        fetchReports();
+        setTimeout(() => setShowSuccessMessage(''), 5000);
+      }, 1500);
+    }
+    e.target.value = '';
+  } catch (error) {
+    console.error('Upload failed:', error);
+    setUploading(false);
+    setUploadProgress('');
+    const errorMsg = error.response?.data?.message || `Failed to upload "${file.name}". Please try again.`;
+    setShowErrorMessage(errorMsg);
+    setTimeout(() => setShowErrorMessage(''), 5000);
+    e.target.value = '';
+  }
+};
 
   const handleDownload = async (reportId, title) => {
     try {
