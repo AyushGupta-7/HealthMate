@@ -1,0 +1,367 @@
+import nodemailer from 'nodemailer';
+import Contact from '../models/Contact.js';
+
+// Helper function to get IP address
+const getIpAddress = (req) => {
+  return req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
+};
+
+// @desc    Submit contact form
+// @route   POST /api/contact
+// @access  Public
+export const submitContactForm = async (req, res) => {
+  console.log('=== Contact Form Submission ===');
+  console.log('Request body:', req.body);
+  
+  const { name, email, subject, message } = req.body;
+
+  // Validation
+  if (!name || !email || !subject || !message) {
+    console.log('Validation failed');
+    return res.status(400).json({ 
+      success: false, 
+      message: 'All fields are required' 
+    });
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ 
+      success: false, 
+      message: 'Please provide a valid email address' 
+    });
+  }
+
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    console.error('Email configuration missing in .env');
+    return res.status(500).json({ 
+      success: false, 
+      message: 'Server configuration error. Please contact support.' 
+    });
+  }
+
+  try {
+    // Save to database
+    const newContact = new Contact({
+      name,
+      email,
+      subject,
+      message,
+      status: 'pending',
+      ipAddress: getIpAddress(req),
+      userAgent: req.headers['user-agent']
+    });
+
+    const savedContact = await newContact.save();
+    console.log('Contact saved to database with ID:', savedContact._id);
+
+    // Send emails
+    await sendEmails(savedContact, name, email, subject, message);
+
+    res.status(200).json({ 
+      success: true, 
+      message: 'Message sent successfully! We will get back to you within 24 hours.',
+      inquiryId: savedContact._id,
+      acknowledgmentSent: true
+    });
+    
+  } catch (error) {
+    console.error('=== ERROR DETAILS ===');
+    console.error('Error message:', error.message);
+    console.error('Error code:', error.code);
+    
+    let userMessage = 'Failed to send message. ';
+    if (error.code === 'EAUTH') {
+      userMessage += 'Email authentication failed. Please contact support.';
+    } else if (error.code === 'ESOCKET') {
+      userMessage += 'Network error. Please try again.';
+    } else {
+      userMessage += 'Please try again later.';
+    }
+    
+    res.status(500).json({ 
+      success: false, 
+      message: userMessage
+    });
+  }
+};
+
+// Helper function to send emails
+const sendEmails = async (savedContact, name, email, subject, message) => {
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS
+    }
+  });
+
+  // Send to admin
+  const adminInfo = await transporter.sendMail({
+    from: `"HealthMate" <${process.env.EMAIL_USER}>`,
+    to: 'ayufer9@gmail.com',
+    subject: `Contact Form: ${subject} (ID: ${savedContact._id})`,
+    text: `Name: ${name}\nEmail: ${email}\nSubject: ${subject}\nMessage: ${message}\n\nInquiry ID: ${savedContact._id}`,
+    html: `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <style>
+          body { font-family: Arial, sans-serif; line-height: 1.6; }
+          .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+          .header { background: #4CAF50; color: white; padding: 10px; text-align: center; }
+          .content { padding: 20px; background: #f9f9f9; }
+          .inquiry-id { background: #e8f5e9; padding: 10px; border-left: 4px solid #4CAF50; margin: 15px 0; }
+          .footer { background: #f4f4f4; padding: 10px; text-align: center; font-size: 12px; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h2>📧 New Contact Inquiry</h2>
+          </div>
+          <div class="content">
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Subject:</strong> ${subject}</p>
+            <p><strong>Message:</strong></p>
+            <p>${message.replace(/\n/g, '<br>')}</p>
+            <div class="inquiry-id">
+              <strong>📌 Inquiry ID:</strong> ${savedContact._id}<br>
+              <strong>📅 Submitted:</strong> ${new Date().toLocaleString()}
+            </div>
+          </div>
+          <div class="footer">
+            <p>Sent from HealthMate App | Chitkara University, Baddi</p>
+            <p><a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/admin/contacts">View in Admin Panel</a></p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `
+  });
+
+  console.log('Admin email sent:', adminInfo.messageId);
+
+  // Send acknowledgment to user
+  const userInfo = await transporter.sendMail({
+    from: `"HealthMate Support" <${process.env.EMAIL_USER}>`,
+    to: email,
+    subject: `✓ Acknowledgment: We received your message - HealthMate`,
+    html: `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <style>
+          body { font-family: Arial, sans-serif; line-height: 1.6; }
+          .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+          .header { background: #4CAF50; color: white; padding: 10px; text-align: center; }
+          .content { padding: 20px; background: #f9f9f9; }
+          .ack-box { background: #e8f5e9; padding: 15px; border-radius: 5px; margin: 15px 0; text-align: center; }
+          .inquiry-details { background: white; padding: 15px; border-left: 4px solid #4CAF50; margin: 15px 0; }
+          .footer { background: #f4f4f4; padding: 10px; text-align: center; font-size: 12px; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h2>✓ We received your message</h2>
+          </div>
+          <div class="content">
+            <div class="ack-box">
+              <h3>Dear ${name},</h3>
+              <p><strong>Thank you for contacting HealthMate!</strong></p>
+            </div>
+            
+            <p>We have received your message and our support team will get back to you within <strong>24 hours</strong>.</p>
+            
+            <div class="inquiry-details">
+              <p><strong>📝 Your Message Details:</strong></p>
+              <p><strong>Subject:</strong> ${subject}</p>
+              <p><strong>Message:</strong></p>
+              <p>${message.replace(/\n/g, '<br>')}</p>
+              <hr>
+              <p><small><strong>Inquiry Reference ID:</strong> ${savedContact._id}</small></p>
+              <p><small><strong>Submitted on:</strong> ${new Date().toLocaleString()}</small></p>
+            </div>
+            
+            <p><strong>What happens next?</strong></p>
+            <ol>
+              <li>Our team will review your inquiry</li>
+              <li>You'll receive a response within 24 hours</li>
+              <li>For urgent matters, please call us at (01795) 555-0132</li>
+            </ol>
+            
+            <p>Please save this email for your records. Your inquiry reference ID is: <strong>${savedContact._id}</strong></p>
+            
+            <p style="margin-top: 20px;">Best regards,<br>
+            <strong>HealthMate Customer Support Team</strong><br>
+            Chitkara University, Baddi, Himachal Pradesh</p>
+          </div>
+          <div class="footer">
+            <p>© 2024 HealthMate - Your Health, Our Priority</p>
+            <p>This is an automated acknowledgment. Please do not reply directly to this email.</p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `
+  });
+
+  console.log('Acknowledgment email sent to user:', userInfo.messageId);
+};
+
+// @desc    Get all contact inquiries
+// @route   GET /api/contact/all
+// @access  Private/Admin
+export const getAllContacts = async (req, res) => {
+  try {
+    const contacts = await Contact.find().sort({ createdAt: -1 });
+    res.json({
+      success: true,
+      count: contacts.length,
+      contacts
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// @desc    Get single contact inquiry
+// @route   GET /api/contact/:id
+// @access  Private/Admin
+export const getContactById = async (req, res) => {
+  try {
+    const contact = await Contact.findById(req.params.id);
+    
+    if (!contact) {
+      return res.status(404).json({ success: false, message: 'Inquiry not found' });
+    }
+    
+    res.json({ success: true, contact });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// @desc    Update contact status
+// @route   PUT /api/contact/:id/status
+// @access  Private/Admin
+export const updateContactStatus = async (req, res) => {
+  const { status } = req.body;
+  const updateData = { status };
+  
+  if (status === 'read') updateData.readAt = new Date();
+  if (status === 'replied') updateData.repliedAt = new Date();
+  
+  try {
+    const contact = await Contact.findByIdAndUpdate(
+      req.params.id,
+      updateData,
+      { new: true }
+    );
+    
+    if (!contact) {
+      return res.status(404).json({ success: false, message: 'Inquiry not found' });
+    }
+    
+    res.json({ success: true, contact });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// @desc    Add admin notes to contact
+// @route   POST /api/contact/:id/notes
+// @access  Private/Admin
+export const addAdminNotes = async (req, res) => {
+  const { notes } = req.body;
+  
+  try {
+    const contact = await Contact.findByIdAndUpdate(
+      req.params.id,
+      { adminNotes: notes },
+      { new: true }
+    );
+    
+    if (!contact) {
+      return res.status(404).json({ success: false, message: 'Inquiry not found' });
+    }
+    
+    res.json({ success: true, contact });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// @desc    Delete contact inquiry
+// @route   DELETE /api/contact/:id
+// @access  Private/Admin
+export const deleteContact = async (req, res) => {
+  try {
+    const contact = await Contact.findByIdAndDelete(req.params.id);
+    
+    if (!contact) {
+      return res.status(404).json({ success: false, message: 'Inquiry not found' });
+    }
+    
+    res.json({ success: true, message: 'Inquiry deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// @desc    Get contacts by status
+// @route   GET /api/contact/status/:status
+// @access  Private/Admin
+export const getContactsByStatus = async (req, res) => {
+  const { status } = req.params;
+  
+  try {
+    const contacts = await Contact.find({ status }).sort({ createdAt: -1 });
+    res.json({
+      success: true,
+      count: contacts.length,
+      contacts
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// @desc    Get pending contacts count
+// @route   GET /api/contact/pending/count
+// @access  Private/Admin
+export const getPendingCount = async (req, res) => {
+  try {
+    const count = await Contact.countDocuments({ status: 'pending' });
+    res.json({ success: true, count });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// @desc    Bulk update contact status
+// @route   PUT /api/contact/bulk/status
+// @access  Private/Admin
+export const bulkUpdateStatus = async (req, res) => {
+  const { ids, status } = req.body;
+  
+  try {
+    const updateData = { status };
+    if (status === 'read') updateData.readAt = new Date();
+    if (status === 'replied') updateData.repliedAt = new Date();
+    
+    const result = await Contact.updateMany(
+      { _id: { $in: ids } },
+      updateData
+    );
+    
+    res.json({
+      success: true,
+      message: `${result.modifiedCount} contacts updated successfully`
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
