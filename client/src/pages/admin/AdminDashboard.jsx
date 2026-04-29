@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import AdminLayout from '../../components/AdminLayout';
 import API from '../../services/api';
 import './AdminDashboard.css';
@@ -12,7 +12,8 @@ const AdminDashboard = () => {
     totalAppointments: 0,
     pendingAppointments: 0,
     completedAppointments: 0,
-    cancelledAppointments: 0
+    cancelledAppointments: 0,
+    pendingContacts: 0 
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -37,6 +38,7 @@ const AdminDashboard = () => {
     }
     
     fetchStats();
+    fetchPendingContacts(); 
   }, [navigate]);
 
   const fetchStats = async () => {
@@ -62,6 +64,18 @@ const AdminDashboard = () => {
       }
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchPendingContacts = async () => {
+    try {
+      const response = await API.get('/contact/all');
+      if (response.data.success) {
+        const pendingCount = response.data.contacts.filter(c => c.status === 'pending').length;
+        setStats(prev => ({ ...prev, pendingContacts: pendingCount }));
+      }
+    } catch (error) {
+      console.error('Error fetching contacts:', error);
     }
   };
 
@@ -95,6 +109,34 @@ const AdminDashboard = () => {
           Welcome to the HealthMate Admin Dashboard. Here's your overview.
         </p>
         
+        {/* Quick Actions Bar */}
+        <div className="admin-quick-actions">
+          <Link to="/admin/contacts" className="quick-action-card">
+            <div className="quick-action-icon">📬</div>
+            <div className="quick-action-info">
+              <h3>Contact Inquiries</h3>
+              <p>View and respond to customer messages</p>
+              {stats.pendingContacts > 0 && (
+                <span className="notification-badge">{stats.pendingContacts} Pending</span>
+              )}
+            </div>
+          </Link>
+          <Link to="/admin/doctors" className="quick-action-card">
+            <div className="quick-action-icon">👨‍⚕️</div>
+            <div className="quick-action-info">
+              <h3>Manage Doctors</h3>
+              <p>Add, edit, or remove doctors</p>
+            </div>
+          </Link>
+          <Link to="/admin/availability" className="quick-action-card">
+            <div className="quick-action-icon">📅</div>
+            <div className="quick-action-info">
+              <h3>Manage Availability</h3>
+              <p>Set doctor schedules</p>
+            </div>
+          </Link>
+        </div>
+        
         <div className="admin-stats-grid">
           <div className="admin-stat-card">
             <div className="admin-stat-icon">👨‍⚕️</div>
@@ -120,10 +162,21 @@ const AdminDashboard = () => {
             </div>
           </div>
           
+          <div className="admin-stat-card contact-card" onClick={() => navigate('/admin/contacts')}>
+            <div className="admin-stat-icon">📬</div>
+            <div className="admin-stat-info">
+              <h3 className="admin-stat-label">Pending Contacts</h3>
+              <p className="admin-stat-value">{stats.pendingContacts || 0}</p>
+              {stats.pendingContacts > 0 && (
+                <span className="pending-badge">Needs Attention</span>
+              )}
+            </div>
+          </div>
+          
           <div className="admin-stat-card">
             <div className="admin-stat-icon">⏳</div>
             <div className="admin-stat-info">
-              <h3 className="admin-stat-label">Pending</h3>
+              <h3 className="admin-stat-label">Pending Appointments</h3>
               <p className="admin-stat-value">{stats.pendingAppointments}</p>
             </div>
           </div>
@@ -131,7 +184,7 @@ const AdminDashboard = () => {
           <div className="admin-stat-card">
             <div className="admin-stat-icon">✅</div>
             <div className="admin-stat-info">
-              <h3 className="admin-stat-label">Completed</h3>
+              <h3 className="admin-stat-label">Completed Appointments</h3>
               <p className="admin-stat-value">{stats.completedAppointments}</p>
             </div>
           </div>
@@ -139,7 +192,7 @@ const AdminDashboard = () => {
           <div className="admin-stat-card">
             <div className="admin-stat-icon">❌</div>
             <div className="admin-stat-info">
-              <h3 className="admin-stat-label">Cancelled</h3>
+              <h3 className="admin-stat-label">Cancelled Appointments</h3>
               <p className="admin-stat-value">{stats.cancelledAppointments}</p>
             </div>
           </div>

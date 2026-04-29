@@ -17,6 +17,9 @@ import ProtectedRoute from './components/ProtectedRoute'
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminDoctors from './pages/admin/AdminDoctors';
 import AdminAvailability from './pages/admin/AdminAvailability';
+
+import AdminContacts from './pages/admin/AdminContacts';
+
 import './App.css'
 
 function App() {
@@ -36,6 +39,7 @@ function App() {
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/doctors" element={<AdminDoctors />} />
           <Route path="/admin/availability" element={<AdminAvailability />} />
+          <Route path="/admin/contacts" element={<AdminContacts />} />
 
 
           {/* User Protected Routes */}

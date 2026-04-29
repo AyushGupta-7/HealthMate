@@ -1,4 +1,3 @@
-/* Professional Hospital Style Contact Page */
 .contact-page {
   padding: 50px 0 60px;
   background: #f8fafc;
@@ -18,7 +17,7 @@
 }
 
 .contact-header h1 {
-  font-size: 1.5rem;
+  font-size: 2rem;
   color: #1a3c5e;
   font-weight: 700;
   position: relative;
@@ -156,6 +155,12 @@
   box-shadow: 0 0 0 2px rgba(26, 107, 138, 0.1);
 }
 
+.contact-form input:disabled,
+.contact-form textarea:disabled {
+  background: #f5f5f5;
+  cursor: not-allowed;
+}
+
 .contact-form input {
   flex: 1;
 }
@@ -165,6 +170,7 @@
   width: 100%;
 }
 
+/* Send Button */
 .send-btn {
   background: #1a6b8a;
   color: #ffffff;
@@ -179,15 +185,139 @@
   margin-top: 0.5rem;
   font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
   letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
 }
 
-.send-btn:hover {
+.send-btn:hover:not(:disabled) {
   background: #0e5a77;
   transform: translateY(-1px);
   box-shadow: 0 2px 6px rgba(26, 107, 138, 0.2);
 }
 
+.send-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.send-btn.loading {
+  position: relative;
+  color: transparent;
+}
+
+.send-btn.loading::after {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  top: 50%;
+  left: 50%;
+  margin-left: -9px;
+  margin-top: -9px;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Enhanced Success Message */
 .success-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  border-left: 4px solid #4caf50;
+  padding: 15px;
+  margin-top: 20px;
+  border-radius: 8px;
+  animation: slideDown 0.5s ease;
+}
+
+.success-icon {
+  font-size: 24px;
+  background: #4caf50;
+  color: white;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: bold;
+  animation: bounce 0.5s ease;
+  flex-shrink: 0;
+}
+
+.success-content {
+  flex: 1;
+}
+
+.success-content strong {
+  color: #2e7d32;
+  font-size: 16px;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.success-content p {
+  color: #1b5e20;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Enhanced Error Message */
+.error-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+  border-left: 4px solid #f44336;
+  padding: 15px;
+  margin-top: 20px;
+  border-radius: 8px;
+  animation: shake 0.5s ease;
+}
+
+.error-icon {
+  font-size: 24px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.error-content {
+  flex: 1;
+}
+
+.error-content strong {
+  color: #c62828;
+  font-size: 16px;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.error-content p {
+  color: #b71c1c;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Simple Success Message (Backward Compatible) */
+.success-message:not(:has(.success-icon)) {
   background: #e8f5e9;
   color: #2e7d32;
   padding: 0.7rem;
@@ -199,6 +329,7 @@
   border-left: 3px solid #2e7d32;
 }
 
+/* Animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -208,6 +339,44 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+/* Loading Spinner for Button */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 /* Responsive Design */
@@ -272,6 +441,23 @@
     padding: 0.65rem 1.5rem;
     font-size: 0.85rem;
   }
+  
+  /* Responsive message styles */
+  .success-message,
+  .error-message {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .success-icon,
+  .error-icon {
+    margin: 0 auto;
+  }
+  
+  .success-content strong,
+  .error-content strong {
+    text-align: center;
+  }
 }
 
 @media (max-width: 480px) {
@@ -294,4 +480,15 @@
   .mailbox-description {
     font-size: 0.8rem;
   }
+}
+
+.send-btn:focus-visible,
+.contact-form input:focus-visible,
+.contact-form textarea:focus-visible {
+  outline: 2px solid #1a6b8a;
+  outline-offset: 2px;
+}
+
+html {
+  scroll-behavior: smooth;
 }

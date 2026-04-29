@@ -11,6 +11,8 @@ const Contact = () => {
     message: ''
   })
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -18,15 +20,42 @@ const Contact = () => {
       ...prev,
       [name]: value
     }))
+    // Clear error when user starts typing
+    if (errorMessage) setErrorMessage('')
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log('Form submitted:', formData)
-    setIsSubmitted(true)
-    setTimeout(() => setIsSubmitted(false), 3000)
-    setFormData({ name: '', email: '', subject: '', message: '' })
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setErrorMessage('');
+    
+    try {
+      const response = await fetch('http://localhost:5000/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setIsSubmitted(true);
+        // Clear form
+        setFormData({ name: '', email: '', subject: '', message: '' });
+        // Auto hide success message after 5 seconds
+        setTimeout(() => setIsSubmitted(false), 5000);
+      } else {
+        setErrorMessage(data.message || 'Failed to send message. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setErrorMessage('Network error. Please check your connection and try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Layout>
@@ -64,6 +93,7 @@ const Contact = () => {
                       value={formData.name}
                       onChange={handleChange}
                       required
+                      disabled={isLoading}
                     />
                     <input
                       type="email"
@@ -72,6 +102,7 @@ const Contact = () => {
                       value={formData.email}
                       onChange={handleChange}
                       required
+                      disabled={isLoading}
                     />
                   </div>
                   <input
@@ -81,6 +112,7 @@ const Contact = () => {
                     value={formData.subject}
                     onChange={handleChange}
                     required
+                    disabled={isLoading}
                   />
                   <textarea
                     name="message"
@@ -89,13 +121,32 @@ const Contact = () => {
                     value={formData.message}
                     onChange={handleChange}
                     required
+                    disabled={isLoading}
                   ></textarea>
-                  <button type="submit" className="send-btn">
-                    Send Message
+                  
+                  <button type="submit" className="send-btn" disabled={isLoading}>
+                    {isLoading ? 'Sending...' : 'Send Message'}
                   </button>
+                  
+                  {/* Success Message */}
                   {isSubmitted && (
                     <div className="success-message">
-                      ✓ Message sent successfully! We'll get back to you soon.
+                      <div className="success-icon">✓</div>
+                      <div className="success-content">
+                        <strong>Message Sent Successfully!</strong>
+                        <p>Thank you for contacting HealthMate. We have received your message and will get back to you within 24 hours. A confirmation email has been sent to your inbox.</p>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Error Message */}
+                  {errorMessage && (
+                    <div className="error-message">
+                      <div className="error-icon">⚠️</div>
+                      <div className="error-content">
+                        <strong>Failed to Send Message</strong>
+                        <p>{errorMessage}</p>
+                      </div>
                     </div>
                   )}
                 </form>

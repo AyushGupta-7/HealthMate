@@ -1,10 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
+// import API from '../../services/api';
 import './AdminLayout.css';
 
 const AdminLayout = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [pendingCount, setPendingCount] = useState(0);
+
+  useEffect(() => {
+    fetchPendingContactsCount();
+    
+    const interval = setInterval(fetchPendingContactsCount, 30000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const fetchPendingContactsCount = async () => {
+    try {
+      const response = await API.get('/contact/all');
+      if (response.data.success) {
+        const pending = response.data.contacts.filter(c => c.status === 'pending').length;
+        setPendingCount(pending);
+      }
+    } catch (error) {
+      console.error('Error fetching pending contacts:', error);
+    }
+  };
 
   const handleLogout = () => {
     localStorage.clear();
@@ -15,6 +36,7 @@ const AdminLayout = ({ children }) => {
     { path: '/admin/dashboard', label: 'Dashboard', icon: '📊' },
     { path: '/admin/doctors', label: 'Manage Doctors', icon: '👨‍⚕️' },
     { path: '/admin/availability', label: 'Set Availability', icon: '📅' },
+    { path: '/admin/contacts', label: 'Contact Inquiries', icon: '📬', badge: pendingCount > 0 ? pendingCount : null },
   ];
 
   return (
@@ -35,6 +57,11 @@ const AdminLayout = ({ children }) => {
             >
               <span className="nav-icon">{item.icon}</span>
               <span className="nav-label">{item.label}</span>
+              {item.badge && (
+                <span className={`nav-badge ${item.badge > 0 ? 'has-pending' : ''}`}>
+                  {item.badge}
+                </span>
+              )}
             </Link>
           ))}
           

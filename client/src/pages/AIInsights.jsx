@@ -19,7 +19,6 @@ const AIInsights = () => {
     fetchReports()
   }, [])
 
-  // Auto-refresh for pending reports
   useEffect(() => {
     let interval
     if (analyzingReports.length > 0) {
