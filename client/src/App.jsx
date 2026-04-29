@@ -39,7 +39,15 @@ function App() {
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/doctors" element={<AdminDoctors />} />
           <Route path="/admin/availability" element={<AdminAvailability />} />
-          <Route path="/admin/contacts" element={<AdminContacts />} />
+
+          <Route 
+  path="/admin/contacts" 
+  element={
+    <ProtectedRoute adminOnly={true}>
+      <AdminContacts />
+    </ProtectedRoute>
+  } 
+/>
 
 
           {/* User Protected Routes */}
