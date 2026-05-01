@@ -99,7 +99,7 @@ const sendEmails = async (savedContact, name, email, subject, message) => {
   // Send to admin
   const adminInfo = await transporter.sendMail({
     from: `"HealthMate" <${process.env.EMAIL_USER}>`,
-    to: 'ayufer9@gmail.com',
+    to: 'ayutv7@gmail.com',
     subject: `Contact Form: ${subject} (ID: ${savedContact._id})`,
     text: `Name: ${name}\nEmail: ${email}\nSubject: ${subject}\nMessage: ${message}\n\nInquiry ID: ${savedContact._id}`,
     html: `
