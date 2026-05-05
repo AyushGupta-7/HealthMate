@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
-// import API from '../../services/api';
+import API from '../services/api';  // ← Make sure API is imported
 import './AdminLayout.css';
 
 const AdminLayout = ({ children }) => {
@@ -11,19 +11,27 @@ const AdminLayout = ({ children }) => {
   useEffect(() => {
     fetchPendingContactsCount();
     
+    // Refresh pending count every 30 seconds
     const interval = setInterval(fetchPendingContactsCount, 30000);
     return () => clearInterval(interval);
   }, []);
 
   const fetchPendingContactsCount = async () => {
     try {
+      // Make sure API is defined
+      if (!API) {
+        console.error('API not initialized');
+        return;
+      }
+      
       const response = await API.get('/contact/all');
-      if (response.data.success) {
+      if (response.data && response.data.success) {
         const pending = response.data.contacts.filter(c => c.status === 'pending').length;
         setPendingCount(pending);
       }
     } catch (error) {
       console.error('Error fetching pending contacts:', error);
+      // Don't show error to user, just log it
     }
   };
 
