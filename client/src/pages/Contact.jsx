@@ -31,10 +31,6 @@ const Contact = () => {
     setIsLoading(true);
     setErrorMessage('');
     
-    // Create an AbortController for timeout
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
-    
     console.log('Sending to:', `${API_URL}/contact`);
     console.log('Form data:', formData);
     
@@ -44,11 +40,9 @@ const Contact = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
-        signal: controller.signal // Add abort signal
+        body: JSON.stringify(formData)
       });
 
-      clearTimeout(timeoutId);
       console.log('Response status:', response.status);
       
       const data = await response.json();
@@ -62,16 +56,8 @@ const Contact = () => {
         setErrorMessage(data.message || 'Failed to send message. Please try again.');
       }
     } catch (error) {
-      clearTimeout(timeoutId);
       console.error('Detailed error:', error);
-      
-      if (error.name === 'AbortError') {
-        setErrorMessage('Request timed out. Please check your connection and try again.');
-      } else if (error.message === 'Failed to fetch') {
-        setErrorMessage('Cannot connect to server. Please check if the backend is running.');
-      } else {
-        setErrorMessage(`Error: ${error.message}`);
-      }
+      setErrorMessage(`Error: ${error.message}. Please try again.`);
     } finally {
       setIsLoading(false);
     }
