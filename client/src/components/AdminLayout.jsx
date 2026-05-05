@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
-import API from '../services/api';  // ← Make sure API is imported
+import API from '../services/api';  // ← IMPORT THIS
 import './AdminLayout.css';
 
 const AdminLayout = ({ children }) => {
