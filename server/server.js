@@ -29,7 +29,8 @@ const app = express();
 const allowedOrigins = [
   'http://localhost:5173',           // Local Vite dev
   'http://localhost:3000',           // Local React dev
-  process.env.FRONTEND_URL,          // Production frontend URL (Vercel)
+  'https://health-mate-tawny.vercel.app',  // Your Vercel frontend URL (ADD THIS)
+  process.env.FRONTEND_URL,          // Production frontend URL from env
 ].filter(Boolean); // Remove undefined values
 
 app.use(cors({
@@ -94,6 +95,7 @@ app.get('/', (req, res) => {
     endpoints: {
       health: '/api/health',
       auth: '/api/auth',
+      doctors: '/api/doctors',
       contact: '/api/contact'
     }
   });
@@ -117,6 +119,7 @@ const server = app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`✅ CORS enabled for: ${allowedOrigins.join(', ')}`);
+  console.log(`🔗 API URL: http://localhost:${PORT}/api/health`);
 });
 
 // Graceful shutdown for Render
