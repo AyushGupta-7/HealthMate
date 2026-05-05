@@ -23,7 +23,6 @@ const Contact = () => {
       ...prev,
       [name]: value
     }))
-    // Clear error when user starts typing
     if (errorMessage) setErrorMessage('')
   }
 
@@ -32,36 +31,47 @@ const Contact = () => {
     setIsLoading(true);
     setErrorMessage('');
     
+    // Create an AbortController for timeout
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+    
     console.log('Sending to:', `${API_URL}/contact`);
     console.log('Form data:', formData);
     
     try {
-      // Use environment variable instead of hardcoded localhost
       const response = await fetch(`${API_URL}/contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
+        signal: controller.signal // Add abort signal
       });
 
+      clearTimeout(timeoutId);
       console.log('Response status:', response.status);
+      
       const data = await response.json();
       console.log('Response data:', data);
 
       if (response.ok && data.success) {
         setIsSubmitted(true);
-        // Clear form
         setFormData({ name: '', email: '', subject: '', message: '' });
-        // Auto hide success message after 5 seconds
         setTimeout(() => setIsSubmitted(false), 5000);
       } else {
         setErrorMessage(data.message || 'Failed to send message. Please try again.');
       }
     } catch (error) {
+      clearTimeout(timeoutId);
       console.error('Detailed error:', error);
-      console.error('Error message:', error.message);
-      setErrorMessage(`Network error: ${error.message}. Please check your connection and try again.`);
+      
+      if (error.name === 'AbortError') {
+        setErrorMessage('Request timed out. Please check your connection and try again.');
+      } else if (error.message === 'Failed to fetch') {
+        setErrorMessage('Cannot connect to server. Please check if the backend is running.');
+      } else {
+        setErrorMessage(`Error: ${error.message}`);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -138,7 +148,6 @@ const Contact = () => {
                     {isLoading ? 'Sending...' : 'Send Message'}
                   </button>
                   
-                  {/* Success Message */}
                   {isSubmitted && (
                     <div className="success-message">
                       <div className="success-icon">✓</div>
@@ -149,7 +158,6 @@ const Contact = () => {
                     </div>
                   )}
                   
-                  {/* Error Message */}
                   {errorMessage && (
                     <div className="error-message">
                       <div className="error-icon">⚠️</div>
