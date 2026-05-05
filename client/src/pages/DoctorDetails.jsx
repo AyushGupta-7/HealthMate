@@ -4,6 +4,22 @@ import Layout from '../components/Layout';
 import API from '../services/api';
 import './DoctorDetails.css';
 
+// Helper function to fix image URLs
+const fixImageUrl = (imageUrl) => {
+  if (!imageUrl) return null;
+  if (typeof imageUrl !== 'string') return null;
+  // Replace localhost with production URL
+  if (imageUrl.includes('localhost:5000')) {
+    return imageUrl.replace('http://localhost:5000', 'https://healthmate-5kl0.onrender.com');
+  }
+  return imageUrl;
+};
+
+// Helper function for fallback avatar
+const getFallbackImage = (name) => {
+  return `https://ui-avatars.com/api/?name=${encodeURIComponent(name || 'Doctor')}&background=1a6b8a&color=white&size=200&rounded=true`;
+};
+
 const DoctorDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -79,7 +95,6 @@ const DoctorDetails = () => {
   const timeSlots = [
     "10:30", "11:00", "11:30", "12:00", "12:30", "13:00",
     "13:30", "14:00", "14:30", "15:00", "15:30", "16:00"
-    // "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00"
   ];
 
   const dates = generateDates();
@@ -112,7 +127,7 @@ const DoctorDetails = () => {
         doctorId: doctor._id,
         doctorName: doctor.name,
         doctorSpecialty: doctor.speciality,
-        doctorImage: doctor.image,
+        doctorImage: fixImageUrl(doctor.image) || getFallbackImage(doctor.name), // Fix image URL
         doctorAddress: typeof doctor.address === 'object' 
           ? `${doctor.address.line1 || ''}, ${doctor.address.city || ''}` 
           : doctor.address || '',
@@ -199,7 +214,13 @@ const DoctorDetails = () => {
           <div className="doctor-info-card">
             <div className="doctor-info2">
               <div className='imageBg'>
-                <img src={doctor.image} alt={doctor.name} />
+                <img 
+                  src={fixImageUrl(doctor.image) || getFallbackImage(doctor.name)} 
+                  alt={doctor.name}
+                  onError={(e) => {
+                    e.target.src = getFallbackImage(doctor.name);
+                  }}
+                />
               </div>
               <div className="doctor-content">
                 <h1>{doctor.name}</h1>
