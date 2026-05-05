@@ -3,6 +3,9 @@ import Layout from '../components/Layout'
 import './Contact.css'
 import contactImage from '../assets/images/contact_image.png'
 
+// Use environment variable for API URL
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
 const Contact = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -30,7 +33,8 @@ const Contact = () => {
     setErrorMessage('');
     
     try {
-      const response = await fetch('http://localhost:5000/api/contact', {
+      // Use environment variable instead of hardcoded localhost
+      const response = await fetch(`${API_URL}/contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
