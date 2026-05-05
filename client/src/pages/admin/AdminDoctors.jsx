@@ -4,6 +4,22 @@ import AdminLayout from '../../components/AdminLayout';
 import API from '../../services/api';
 import './AdminDoctors.css';
 
+// Helper function to fix image URLs
+const fixImageUrl = (imageUrl) => {
+  if (!imageUrl) return null;
+  if (typeof imageUrl !== 'string') return null;
+  // Replace localhost with production URL
+  if (imageUrl.includes('localhost:5000')) {
+    return imageUrl.replace('http://localhost:5000', 'https://healthmate-5kl0.onrender.com');
+  }
+  return imageUrl;
+};
+
+// Helper function for fallback avatar
+const getFallbackImage = (name) => {
+  return `https://ui-avatars.com/api/?name=${encodeURIComponent(name || 'Doctor')}&background=1a6b8a&color=white&size=150&rounded=true`;
+};
+
 const AdminDoctors = () => {
   const navigate = useNavigate();
   const [doctors, setDoctors] = useState([]);
@@ -230,7 +246,16 @@ const AdminDoctors = () => {
               ) : (
                 filteredDoctors.map(doctor => (
                   <tr key={doctor._id}>
-                    <td><img src={doctor.image} alt={doctor.name} className="doctor-thumb" /></td>
+                    <td className="doctor-image-cell">
+                      <img 
+                        src={fixImageUrl(doctor.image) || getFallbackImage(doctor.name)} 
+                        alt={doctor.name} 
+                        className="doctor-thumb"
+                        onError={(e) => {
+                          e.target.src = getFallbackImage(doctor.name);
+                        }}
+                      />
+                    </td>
                     <td className="doctor-name-cell">{doctor.name}</td>
                     <td>{doctor.speciality}</td>
                     <td>{doctor.experience}</td>
