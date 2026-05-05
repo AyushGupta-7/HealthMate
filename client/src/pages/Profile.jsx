@@ -6,6 +6,21 @@ import './Profile.css';
 // Import PNG icon
 import userFillIcon from '../assets/icons/userFill.png';
 
+// Helper function to fix image URLs
+const fixImageUrl = (imageUrl) => {
+  if (!imageUrl) return null;
+  // Replace localhost with production URL
+  if (imageUrl.includes('localhost:5000')) {
+    return imageUrl.replace('http://localhost:5000', 'https://healthmate-5kl0.onrender.com');
+  }
+  return imageUrl;
+};
+
+// Helper function for fallback avatar
+const getFallbackAvatar = (name) => {
+  return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=1a6b8a&color=white&size=150&rounded=true`;
+};
+
 const Profile = () => {
   const [profile, setProfile] = useState({
     name: '',
@@ -57,8 +72,10 @@ const Profile = () => {
         image: userData.image || ''
       });
       
+      // Fix the image URL for preview
       if (userData.image) {
-        setImagePreview(userData.image.startsWith('http') ? userData.image : `http://localhost:5000${userData.image}`);
+        const fixedUrl = fixImageUrl(userData.image.startsWith('http') ? userData.image : `http://localhost:5000${userData.image}`);
+        setImagePreview(fixedUrl);
       }
       
       setEditData({
@@ -149,9 +166,11 @@ const Profile = () => {
       });
       
       if (response.data.success) {
-        const imageUrl = `http://localhost:5000${response.data.data.imageUrl}`;
-        setImagePreview(imageUrl);
-        setProfile(prev => ({ ...prev, image: response.data.data.imageUrl }));
+        // Fix the returned image URL
+        const imageUrl = response.data.data.imageUrl;
+        const fixedUrl = fixImageUrl(`https://healthmate-5kl0.onrender.com${imageUrl}`);
+        setImagePreview(fixedUrl);
+        setProfile(prev => ({ ...prev, image: imageUrl }));
         setMessage({ type: 'success', text: '✓ Profile photo updated!' });
         setTimeout(() => setMessage({ type: '', text: '' }), 3000);
       }
@@ -218,7 +237,14 @@ const Profile = () => {
             <div className="profile-photo-section">
               <div className="photo-container" onClick={() => fileInputRef.current?.click()}>
                 {imagePreview ? (
-                  <img src={imagePreview} alt="Profile" className="profile-photo" />
+                  <img 
+                    src={imagePreview} 
+                    alt="Profile" 
+                    className="profile-photo"
+                    onError={(e) => {
+                      e.target.src = getFallbackAvatar(profile.name);
+                    }}
+                  />
                 ) : (
                   <div className="photo-placeholder">
                     <img src={userFillIcon} alt="User" className="user-fill-icon" />
