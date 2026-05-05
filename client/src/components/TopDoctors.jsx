@@ -9,6 +9,21 @@ const TopDoctors = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
+  // Helper function to fix image URLs
+  const fixImageUrl = (imageUrl) => {
+    if (!imageUrl) return null;
+    // Replace localhost with production URL
+    if (imageUrl.includes('localhost:5000')) {
+      return imageUrl.replace('http://localhost:5000', 'https://healthmate-5kl0.onrender.com');
+    }
+    return imageUrl;
+  };
+
+  // Helper function to get fallback image
+  const getFallbackImage = (doctorName) => {
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(doctorName)}&background=1a6b8a&color=white&size=150&rounded=true`;
+  };
+
   useEffect(() => {
     fetchTopDoctors()
   }, [])
@@ -83,11 +98,11 @@ const TopDoctors = () => {
             >
               <div className="doctor-image-container2">
                 <img 
-                  src={doctor.image} 
+                  src={fixImageUrl(doctor.image) || getFallbackImage(doctor.name)} 
                   alt={doctor.name}
                   className="doctor-image"
                   onError={(e) => {
-                    e.target.src = 'https://via.placeholder.com/150?text=Doctor'
+                    e.target.src = getFallbackImage(doctor.name);
                   }}
                 />
                 <div className="availability-badge">
