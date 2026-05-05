@@ -21,6 +21,21 @@ const Doctors = () => {
     { name: "Gastroenterologist", path: "Gastroenterologist" }
   ]
 
+  // Helper function to fix image URLs
+  const fixImageUrl = (imageUrl) => {
+    if (!imageUrl) return null;
+    // Replace localhost with production URL
+    if (imageUrl.includes('localhost:5000')) {
+      return imageUrl.replace('http://localhost:5000', 'https://healthmate-5kl0.onrender.com');
+    }
+    return imageUrl;
+  };
+
+  // Helper function to get fallback image
+  const getFallbackImage = (doctorName) => {
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(doctorName)}&background=1a6b8a&color=white&size=150&rounded=true`;
+  };
+
   // Fetch doctors from backend
   useEffect(() => {
     fetchDoctors()
@@ -35,13 +50,18 @@ const Doctors = () => {
       if (specialtyParam) {
         const specialty = specialties.find(s => s.path === specialtyParam)
         if (specialty) {
-          url = `/doctors/specialty/${specialty.name}`
+          url = `/doctors/specialty/${encodeURIComponent(specialty.name)}`
         }
       }
       
+      console.log('Fetching doctors from:', url) // Debug log
       const response = await API.get(url)
+      console.log('Response:', response.data) // Debug log
+      
       if (response.data.success) {
         setDoctors(response.data.data)
+      } else {
+        setError('Failed to load doctors')
       }
     } catch (err) {
       console.error('Error fetching doctors:', err)
@@ -148,11 +168,11 @@ const Doctors = () => {
                   >
                     <div className="doctor-image-container">
                       <img 
-                        src={doctor.image} 
+                        src={fixImageUrl(doctor.image) || getFallbackImage(doctor.name)} 
                         alt={doctor.name}
                         className="doctor-image"
                         onError={(e) => {
-                          e.target.src = 'https://via.placeholder.com/150?text=Doctor'
+                          e.target.src = getFallbackImage(doctor.name);
                         }}
                       />
                       <div className="availability-badge">

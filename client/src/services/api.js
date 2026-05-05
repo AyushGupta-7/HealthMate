@@ -1,16 +1,16 @@
 import axios from 'axios';
 
-// Use environment variable for production, fallback to localhost for development
+// Use environment variable for API URL
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
-console.log('API URL:', API_URL); // This will help debug
+console.log('API URL:', API_URL); // Debug log
 
 const API = axios.create({
-  baseURL: API_URL,  // ← Changed from hardcoded localhost
+  baseURL: API_URL,  // This should be https://healthmate-5kl0.onrender.com/api
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 10000, // 10 second timeout
+  timeout: 10000,
 });
 
 // Add token to requests
@@ -33,7 +33,6 @@ API.interceptors.response.use(
   (error) => {
     if (error.code === 'ERR_NETWORK') {
       console.error('Network error: Backend server might not be running');
-      // Don't redirect, just show error in component
       return Promise.reject(error);
     }
     
@@ -43,10 +42,6 @@ API.interceptors.response.use(
       localStorage.removeItem('isAdmin');
       localStorage.removeItem('userName');
       localStorage.removeItem('userEmail');
-      
-      // if (window.location.pathname.includes('/admin')) {
-      //   window.location.href = '/admin/login';
-      // } 
     }
     return Promise.reject(error);
   }

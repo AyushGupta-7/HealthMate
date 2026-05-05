@@ -75,6 +75,7 @@ app.use('/api/reports', reportRoutes);
 app.use('/api/vitals', vitalsRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // ==================== HEALTH CHECK ====================
 app.get('/api/health', (req, res) => {
