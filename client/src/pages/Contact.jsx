@@ -32,6 +32,9 @@ const Contact = () => {
     setIsLoading(true);
     setErrorMessage('');
     
+    console.log('Sending to:', `${API_URL}/contact`);
+    console.log('Form data:', formData);
+    
     try {
       // Use environment variable instead of hardcoded localhost
       const response = await fetch(`${API_URL}/contact`, {
@@ -42,9 +45,11 @@ const Contact = () => {
         body: JSON.stringify(formData)
       });
 
+      console.log('Response status:', response.status);
       const data = await response.json();
+      console.log('Response data:', data);
 
-      if (data.success) {
+      if (response.ok && data.success) {
         setIsSubmitted(true);
         // Clear form
         setFormData({ name: '', email: '', subject: '', message: '' });
@@ -54,8 +59,9 @@ const Contact = () => {
         setErrorMessage(data.message || 'Failed to send message. Please try again.');
       }
     } catch (error) {
-      console.error('Error:', error);
-      setErrorMessage('Network error. Please check your connection and try again.');
+      console.error('Detailed error:', error);
+      console.error('Error message:', error.message);
+      setErrorMessage(`Network error: ${error.message}. Please check your connection and try again.`);
     } finally {
       setIsLoading(false);
     }
