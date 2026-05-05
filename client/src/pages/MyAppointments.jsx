@@ -3,6 +3,21 @@ import Layout from '../components/Layout'
 import API from '../services/api'
 import './MyAppointments.css'
 
+// Helper function to fix image URLs
+const fixImageUrl = (imageUrl) => {
+  if (!imageUrl) return null;
+  // Replace localhost with production URL
+  if (imageUrl && imageUrl.includes('localhost:5000')) {
+    return imageUrl.replace('http://localhost:5000', 'https://healthmate-5kl0.onrender.com');
+  }
+  return imageUrl;
+};
+
+// Helper function for fallback avatar
+const getFallbackAvatar = (name) => {
+  return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=1a6b8a&color=white&size=150&rounded=true`;
+};
+
 const MyAppointments = () => {
   const [appointments, setAppointments] = useState([])
   const [loading, setLoading] = useState(true)
@@ -140,9 +155,11 @@ const MyAppointments = () => {
                 <div className="appointment-card" key={appointment._id}>
                   <div className="appointment-image">
                     <img 
-                      src={appointment.doctorImage || '/default-doctor.png'} 
+                      src={fixImageUrl(appointment.doctorImage) || getFallbackAvatar(appointment.doctorName)} 
                       alt={appointment.doctorName}
-                      onError={(e) => { e.target.src = '/default-doctor.png' }}
+                      onError={(e) => {
+                        e.target.src = getFallbackAvatar(appointment.doctorName);
+                      }}
                     />
                   </div>
                   <div className="appointment-details">
