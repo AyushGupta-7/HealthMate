@@ -25,19 +25,16 @@ connectDB();
 const app = express();
 
 // ==================== CORS CONFIGURATION ====================
-// Allow multiple origins for production and development
 const allowedOrigins = [
-  'http://localhost:5173',           // Local Vite dev
-  'http://localhost:3000',           // Local React dev
-  'https://health-mate-tawny.vercel.app',  // Your Vercel frontend URL (ADD THIS)
-  process.env.FRONTEND_URL,          // Production frontend URL from env
-].filter(Boolean); // Remove undefined values
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'https://health-mate-tawny.vercel.app',  // Your Vercel frontend
+  process.env.FRONTEND_URL,
+].filter(Boolean);
 
 app.use(cors({
   origin: function(origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl)
     if (!origin) return callback(null, true);
-    
     if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV !== 'production') {
       callback(null, true);
     } else {
@@ -46,7 +43,7 @@ app.use(cors({
     }
   },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],  // ← Added PATCH
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
 
@@ -63,7 +60,6 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // ==================== STATIC FILES ====================
-// Serve static files for uploads
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // ==================== ROUTES ====================
@@ -75,7 +71,6 @@ app.use('/api/reports', reportRoutes);
 app.use('/api/vitals', vitalsRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/contact', contactRoutes);
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // ==================== HEALTH CHECK ====================
 app.get('/api/health', (req, res) => {
@@ -120,7 +115,7 @@ const server = app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`✅ CORS enabled for: ${allowedOrigins.join(', ')}`);
-  console.log(`🔗 API URL: http://localhost:${PORT}/api/health`);
+  console.log(`✅ Allowed methods: GET, POST, PUT, PATCH, DELETE, OPTIONS`);
 });
 
 // Graceful shutdown for Render
