@@ -27,41 +27,41 @@ const Contact = () => {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setErrorMessage('');
-    
-    console.log('Sending to:', `${API_URL}/contact`);
-    console.log('Form data:', formData);
-    
-    try {
-      const response = await fetch(`${API_URL}/contact`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData)
-      });
+  e.preventDefault();
+  setIsLoading(true);
+  setErrorMessage('');
+  
+  console.log('Sending to:', `${API_URL}/contact`);
+  console.log('Form data:', formData);
+  
+  try {
+    const response = await fetch(`${API_URL}/contact`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData)
+    });
 
-      console.log('Response status:', response.status);
-      
-      const data = await response.json();
-      console.log('Response data:', data);
+    console.log('Response status:', response.status);
+    
+    const data = await response.json();
+    console.log('Response data:', data);
 
-      if (response.ok && data.success) {
-        setIsSubmitted(true);
-        setFormData({ name: '', email: '', subject: '', message: '' });
-        setTimeout(() => setIsSubmitted(false), 5000);
-      } else {
-        setErrorMessage(data.message || 'Failed to send message. Please try again.');
-      }
-    } catch (error) {
-      console.error('Detailed error:', error);
-      setErrorMessage(`Error: ${error.message}. Please try again.`);
-    } finally {
-      setIsLoading(false);
+    if (response.ok && data.success) {
+      setIsSubmitted(true);
+      setFormData({ name: '', email: '', subject: '', message: '' });
+      setTimeout(() => setIsSubmitted(false), 5000);
+    } else {
+      setErrorMessage(data.message || 'Failed to send message. Please try again.');
     }
-  };
+  } catch (error) {
+    console.error('Detailed error:', error);
+    setErrorMessage(`Error: ${error.message}. Please try again.`);
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   return (
     <Layout>
